@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 /* ================================================================
    APPISTRY — THE HIDDEN KEY
@@ -941,4 +940,53 @@ h1, h2, h3, h4, h5, h6 {
   width: 2px;
   background: linear-gradient(to bottom, transparent, #00d2ff, transparent);
   opacity: 0.7;
+}
+
+/* Decorative framing for the editorial event hero. */
+.hero-wave {
+  position: absolute;
+  z-index: 1;
+  width: min(36vw, 510px);
+  height: min(36vw, 510px);
+  opacity: 0.32;
+  pointer-events: none;
+  background: repeating-radial-gradient(ellipse at 50% 50%, transparent 0 9px, rgba(156, 204, 239, 0.33) 10px 11px, transparent 12px 17px);
+  filter: blur(0.1px);
+}
+
+.hero-wave-top {
+  top: -235px;
+  left: -120px;
+  transform: rotate(-26deg) skewX(23deg);
+}
+
+.hero-wave-bottom {
+  right: -125px;
+  bottom: -300px;
+  transform: rotate(150deg) skewX(20deg);
+}
+
+.appistry-mark {
+  position: relative;
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  background: #05070d;
+  box-shadow: 0 16px 28px rgba(0, 0, 0, 0.42), inset 0 0 0 1px rgba(255,255,255,0.06);
+}
+
+.appistry-mark i {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.appistry-mark i:nth-child(1) { top: 10px; left: 16px; background: #ff6a3d; }
+.appistry-mark i:nth-child(2) { top: 16px; right: 10px; background: #00c8ff; }
+.appistry-mark i:nth-child(3) { bottom: 10px; left: 16px; background: #a855f7; }
+.appistry-mark i:nth-child(4) { bottom: 16px; right: 16px; background: #10d7a3; }
+
+@media (max-width: 700px) {
+  .hero-wave { opacity: 0.16; width: 370px; height: 370px; }
 }

@@ -11,31 +11,35 @@ import AnnouncementsSection from '@/components/event/AnnouncementsSection'
 import FAQSection from '@/components/event/FAQSection'
 import RulesSection from '@/components/event/RulesSection'
 import AntiInspection from '@/components/security/AntiInspection'
+import RibbonWaves from '@/components/animations/RibbonWaves'
 
 export default function HomePage() {
   const [activeSlide, setActiveSlide] = useState(1)
 
   return (
-    <div className="relative min-h-screen w-full bg-[#040814] text-white selection:bg-[#00d2ff] selection:text-black overflow-x-hidden font-sans">
+    <div className="relative min-h-screen w-full bg-[#050814] text-white selection:bg-[#00d2ff] selection:text-black overflow-x-hidden font-sans">
       <AntiInspection />
+
+      {/* ── 3D Ribbon Wave Curves on outer backdrop (Exact match to reference canvas) ── */}
+      <RibbonWaves />
 
       {/* Subtle organic ambient glow */}
       <div 
-        className="fixed inset-0 pointer-events-none opacity-30 z-0"
+        className="fixed inset-0 pointer-events-none opacity-25 z-0"
         style={{
           backgroundImage: 'radial-gradient(ellipse at 15% 25%, rgba(0, 210, 255, 0.16) 0%, transparent 50%), radial-gradient(ellipse at 85% 75%, rgba(121, 66, 247, 0.16) 0%, transparent 50%)',
         }}
       />
 
-      {/* ── REFERENCE UI STAGE (FAITHFUL THEME & LAYOUT REPLICA) ── */}
+      {/* ── REFERENCE UI STAGE (EXACT THEME & 3-COLUMN REPLICA) ── */}
       <div className="relative z-10 w-full min-h-screen flex items-center justify-center p-3 sm:p-6 lg:p-10">
         
         {/* The Main Reference Container Card */}
         <div 
-          className="relative w-full max-w-[1360px] rounded-[24px] overflow-hidden flex flex-col justify-between shadow-[0_30px_90px_rgba(0,0,0,0.95)] border border-[rgba(0,210,255,0.2)] my-4"
+          className="relative w-full max-w-[1240px] rounded-[26px] overflow-hidden flex flex-col justify-between shadow-[0_30px_90px_rgba(0,0,0,0.85)] border border-[rgba(0,210,255,0.18)] my-4"
           style={{
             background: 'linear-gradient(108deg, #071c36 0%, #0a2344 38%, #03050c 50%, #160728 62%, #220835 100%)',
-            minHeight: '680px',
+            minHeight: '660px',
           }}
         >
           {/* Vertical Laser Beams & Guidelines from Reference */}
@@ -140,15 +144,15 @@ export default function HomePage() {
               
               {/* Central Dark Vertical Showcase Frame from Reference */}
               <div 
-                className="relative w-[260px] sm:w-[300px] h-[360px] sm:h-[440px] bg-[#010309] rounded-[20px] overflow-hidden flex items-end justify-center shadow-[0_20px_60px_rgba(0,0,0,0.95)] border border-white/10 z-10"
+                className="relative w-[260px] sm:w-[290px] h-[360px] sm:h-[430px] bg-[#010309] rounded-[20px] overflow-hidden flex items-end justify-center shadow-[0_20px_60px_rgba(0,0,0,0.95)] border border-white/10 z-10"
               >
                 {/* Holographic Avatar Image */}
                 <div className="relative w-full h-full flex items-center justify-center">
                   <Image 
                     src="/holo-avatar-clean.png" 
                     alt="Holographic Cyborg Avatar"
-                    width={300}
-                    height={440}
+                    width={290}
+                    height={430}
                     priority
                     className="object-contain h-[95%] w-auto select-none pointer-events-none drop-shadow-[0_20px_35px_rgba(0,210,255,0.35)] animate-float"
                   />
