@@ -14,3 +14,4 @@ sharp('public/reference-card.png')
     console.log('Center (1490, 865):', sample(1490, 865));
     console.log('Right (2500, 865):', sample(2500, 865));
   });
+

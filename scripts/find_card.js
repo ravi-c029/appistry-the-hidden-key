@@ -12,3 +12,4 @@ sharp('public/reference-design.jpeg')
       if (x % 50 === 0) console.log('x=' + x + ' -> RGB(' + data[idx] + ',' + data[idx+1] + ',' + data[idx+2] + ')');
     }
   });
+

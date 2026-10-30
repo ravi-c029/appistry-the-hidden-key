@@ -11,3 +11,4 @@ sharp('public/reference-design.jpeg')
       }
     }
   });
+
