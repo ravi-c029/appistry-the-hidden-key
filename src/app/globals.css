@@ -831,3 +831,114 @@ h1, h2, h3, h4, h5, h6 {
   padding: 1rem 2rem;
   text-align: center;
 }
+
+
+/* ================================================================
+   REFERENCE UI THEME EXTENSIONS (Deep Indigo & Holographic Neon)
+   ================================================================ */
+
+:root {
+  --bg-dark: #040814;
+  --bg-deep-blue: #09172c;
+  --bg-indigo: #0c1c36;
+  --bg-panel: #060914;
+  --bg-purple-dark: #110825;
+  --neon-cyan: #00d2ff;
+  --neon-pink: #ff007f;
+  --neon-purple: #7942f7;
+  --neon-purple-light: #9d6fff;
+}
+
+.reference-card-frame {
+  background: linear-gradient(135deg, rgba(12, 28, 54, 0.6) 0%, rgba(17, 8, 37, 0.6) 100%);
+  border: 1px solid rgba(0, 210, 255, 0.15);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.pill-button {
+  background: #ffffff;
+  color: #040814;
+  font-weight: 700;
+  border-radius: 9999px;
+  padding: 0.65rem 2rem;
+  font-size: 0.9rem;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
+}
+
+.pill-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 210, 255, 0.4);
+  background: #00d2ff;
+  color: #040814;
+}
+
+.pill-button-secondary {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  padding: 0.65rem 1.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.pill-button-secondary:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #00d2ff;
+  color: #00d2ff;
+}
+
+/* Portal Rings Exactly as Reference */
+.hologram-rings {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 580px;
+  height: 200px;
+  pointer-events: none;
+}
+
+.ring-layer {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotateX(72deg);
+  border-radius: 50%;
+  border: 1.5px solid rgba(0, 210, 255, 0.35);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.15);
+}
+
+.ring-1 { width: 520px; height: 520px; border-color: rgba(0, 210, 255, 0.25); }
+.ring-2 { width: 440px; height: 440px; border-color: rgba(0, 210, 255, 0.35); }
+.ring-3 { width: 360px; height: 360px; border-color: rgba(0, 210, 255, 0.45); }
+
+.pulse-ring-anim {
+  animation: pulse-ring 4s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) rotateX(72deg) scale(1); }
+  50% { opacity: 0.6; transform: translate(-50%, -50%) rotateX(72deg) scale(1.03); }
+}
+
+.neon-laser-line {
+  position: absolute;
+  width: 2px;
+  background: linear-gradient(to bottom, transparent, #00d2ff, transparent);
+  opacity: 0.7;
+}

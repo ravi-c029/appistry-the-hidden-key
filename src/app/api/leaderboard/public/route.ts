@@ -37,4 +37,4 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export const revalidate = 15
+export const dynamic = 'force-dynamic'
