@@ -1,0 +1,13 @@
+{
+  "name": "hidden-key-challenge",
+  "version": "1.0.0",
+  "description": "APPISTRY — The Hidden Key: Official Mystery Hunt Challenge Repository",
+  "scripts": {
+    "start": "node scripts/unlock.js",
+    "unlock": "node scripts/unlock.js",
+    "inspect": "node scripts/verify.js"
+  },
+  "keywords": ["appistry", "iit-patna", "stc", "ctf", "mystery-hunt"],
+  "author": "APPISTRY Tech Team",
+  "license": "MIT"
+}

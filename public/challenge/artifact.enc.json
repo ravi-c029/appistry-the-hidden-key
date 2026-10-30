@@ -1,0 +1,10 @@
+{
+  "algorithm": "AES-256-GCM",
+  "kdf": "scrypt",
+  "salt": "e58a13be52d5f970323a2778053f350b",
+  "iv": "ec8190350bb3b9832a92a4a5",
+  "tag": "f38cda7bbf965a78bdfbadfefa1a8cc1",
+  "ciphertext": "a7f3299be16034ec09fff2299c40c9",
+  "hint": "The password is the holy union of the Student Technical Council, our premier institute, and the hybrid spirit.",
+  "format": "UPPERCASE_SPACE_SEPARATED"
+}
