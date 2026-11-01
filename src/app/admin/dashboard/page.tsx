@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
 interface Stats {
@@ -238,9 +239,20 @@ export default function AdminDashboardPage() {
           justifyContent: 'space-between',
         }}
       >
-        <div className="flex items-center gap-4">
-          <Link href="/" className="font-display gradient-text-cyan" style={{ fontSize: '1.25rem', fontWeight: 800 }}>
-            APPISTRY
+        <div className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="w-7 h-7 rounded-lg overflow-hidden border border-[#00d2ff]/30 bg-[#070e24] p-0.5 flex items-center justify-center">
+              <Image
+                src="/images/appistry-logo.png"
+                alt="Logo"
+                width={28}
+                height={28}
+                className="w-full h-full object-cover rounded-md"
+              />
+            </div>
+            <span className="font-display gradient-text-cyan" style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+              APPISTRY
+            </span>
           </Link>
           <span style={{ color: 'var(--border-cyan)' }}>/</span>
           <span className="font-mono" style={{ fontSize: '0.85rem', color: 'var(--cyan-bright)', letterSpacing: '0.05em' }}>
@@ -369,8 +381,11 @@ export default function AdminDashboardPage() {
                       <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-bright)' }}>
                         {stats.firstBlood.winnerName}
                       </div>
-                      <div className="font-mono" style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
-                        {new Date(stats.firstBlood.serverTime).toLocaleTimeString()}
+                      <div className="font-mono text-cyan" style={{ fontSize: '0.75rem', fontWeight: 600 }}>
+                        {new Date(stats.firstBlood.serverTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                      </div>
+                      <div className="font-mono" style={{ fontSize: '0.65rem', color: 'var(--text-dim)' }}>
+                        {new Date(stats.firstBlood.serverTime).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </div>
                     </div>
                   ) : (
@@ -423,8 +438,11 @@ export default function AdminDashboardPage() {
                           >
                             {sub.isFirstBlood ? '🩸 FIRST BLOOD' : sub.isValid ? 'VALID' : 'INVALID'}
                           </span>
-                          <div className="font-mono" style={{ fontSize: '0.7rem', color: 'var(--text-dim)', marginTop: '0.25rem' }}>
-                            {new Date(sub.serverTime).toLocaleTimeString()}
+                          <div className="font-mono text-cyan" style={{ fontSize: '0.75rem', fontWeight: 600, marginTop: '0.25rem' }}>
+                            {new Date(sub.serverTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                          </div>
+                          <div className="font-mono" style={{ fontSize: '0.65rem', color: 'var(--text-dim)' }}>
+                            {new Date(sub.serverTime).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </div>
                         </div>
                       </div>

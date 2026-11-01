@@ -71,18 +71,12 @@
   --duration-epic: 1200ms;
 
   /* Typography */
-  --font-display: 'Syne', sans-serif;
-  --font-body: 'Plus Jakarta Sans', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 }
 
 /* ── Base Reset & Typography ─────────────────────────────── */
-
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
 
 html {
   scroll-behavior: smooth;
@@ -207,34 +201,35 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 2rem;
-  background: linear-gradient(135deg, var(--cyan), var(--violet));
-  color: var(--void);
-  font-family: var(--font-display);
+  padding: 0.65rem 1.5rem;
+  background: linear-gradient(135deg, #00d2ff, #7942f7);
+  color: #040814;
+  font-family: var(--font-body);
   font-weight: 700;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   border: none;
-  border-radius: var(--radius-md);
+  border-radius: 9999px;
   cursor: pointer;
   transition: all var(--duration-base) var(--ease-smooth);
   position: relative;
   overflow: hidden;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .btn-primary::before {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255,255,255,0.1), transparent);
+  background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
   opacity: 0;
   transition: opacity var(--duration-fast);
 }
 
 .btn-primary:hover::before { opacity: 1; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow-cyan); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 25px rgba(0, 210, 255, 0.4); }
 .btn-primary:active { transform: translateY(0); }
 
 .btn-secondary {
@@ -242,25 +237,27 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  padding: 0.75rem 2rem;
-  background: transparent;
-  color: var(--cyan);
-  font-family: var(--font-display);
+  padding: 0.65rem 1.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
+  font-family: var(--font-body);
   font-weight: 600;
-  font-size: 0.9rem;
+  font-size: 0.85rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  border: 1px solid var(--border-glow);
-  border-radius: var(--radius-md);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
   cursor: pointer;
   transition: all var(--duration-base) var(--ease-smooth);
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .btn-secondary:hover {
-  background: var(--cyan-ghost);
-  border-color: var(--cyan);
-  box-shadow: var(--glow-cyan);
+  background: rgba(0, 210, 255, 0.1);
+  border-color: #00d2ff;
+  color: #00d2ff;
+  box-shadow: 0 0 20px rgba(0, 210, 255, 0.25);
   transform: translateY(-2px);
 }
 

@@ -1,0 +1,197 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model AdminUser {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  name         String
+  role         AdminRole      @default(MODERATOR)
+  isActive     Boolean        @default(true)
+  lastLoginAt  DateTime?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  sessions     AdminSession[]
+  auditLogs    AuditLog[]
+
+  @@map("admin_users")
+}
+
+enum AdminRole {
+  SUPER_ADMIN
+  ADMIN
+  MODERATOR
+}
+
+model AdminSession {
+  id        String    @id @default(cuid())
+  token     String    @unique
+  adminId   String
+  admin     AdminUser @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  expiresAt DateTime
+  createdAt DateTime  @default(now())
+  ipAddress String?
+  userAgent String?
+
+  @@map("admin_sessions")
+}
+
+model Participant {
+  id           String       @id @default(cuid())
+  name         String
+  email        String       @unique
+  isVerified   Boolean      @default(false)
+  isDisqualified Boolean    @default(false)
+  disqualifiedReason String?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  submissions  Submission[]
+  firstBlood   FirstBlood?
+
+  @@map("participants")
+}
+
+model Submission {
+  id            String       @id @default(cuid())
+  participantId String
+  participant   Participant  @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  keyword       String
+  isValid       Boolean      @default(false)
+  isFirstBlood  Boolean      @default(false)
+  ipAddress     String?
+  userAgent     String?
+  serverTime    DateTime     @default(now())
+  reviewedAt    DateTime?
+  reviewNote    String?
+  createdAt     DateTime     @default(now())
+
+  @@map("submissions")
+}
+
+model FirstBlood {
+  id            String      @id @default(cuid())
+  participantId String      @unique
+  participant   Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  submissionId  String      @unique
+  serverTime    DateTime
+  isPublic      Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+
+  @@map("first_blood")
+}
+
+model LeaderboardEntry {
+  id            String   @id @default(cuid())
+  participantId String   @unique
+  displayName   String
+  serverTime    DateTime
+  rank          Int
+  isVisible     Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@map("leaderboard_entries")
+}
+
+model Hint {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  order       Int       @default(0)
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  scheduledAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("hints")
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  content     String
+  type        AnnouncementType @default(INFO)
+  isPublished Boolean   @default(false)
+  publishedAt DateTime?
+  scheduledAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@map("announcements")
+}
+
+enum AnnouncementType {
+  INFO
+  WARNING
+  SUCCESS
+  FIRST_BLOOD
+  WINNER
+}
+
+model EventConfig {
+  id                  String   @id @default(cuid())
+  key                 String   @unique
+  value               String
+  updatedAt           DateTime @updatedAt
+
+  @@map("event_config")
+}
+
+model VisitorSession {
+  id          String   @id @default(cuid())
+  sessionId   String   @unique
+  ipAddress   String?
+  userAgent   String?
+  firstSeen   DateTime @default(now())
+  lastSeen    DateTime @updatedAt
+  pageViews   Int      @default(1)
+  isActive    Boolean  @default(true)
+  events      AnalyticsEvent[]
+
+  @@map("visitor_sessions")
+}
+
+model AnalyticsEvent {
+  id          String         @id @default(cuid())
+  sessionId   String
+  session     VisitorSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  eventType   String
+  page        String?
+  metadata    String?
+  createdAt   DateTime       @default(now())
+
+  @@map("analytics_events")
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  adminId     String?
+  admin       AdminUser? @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  action      String
+  target      String?
+  targetId    String?
+  metadata    String?
+  ipAddress   String?
+  createdAt   DateTime  @default(now())
+
+  @@map("audit_logs")
+}
+
+model SystemSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  updatedAt DateTime @updatedAt
+
+  @@map("system_settings")
+}

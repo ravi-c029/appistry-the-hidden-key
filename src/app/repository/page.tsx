@@ -1,0 +1,184 @@
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import AntiInspection from '@/components/security/AntiInspection'
+import RibbonWaves from '@/components/animations/RibbonWaves'
+import CyberGrid from '@/components/animations/CyberGrid'
+import CyberFrameStage from '@/components/layout/CyberFrameStage'
+
+export default function RepositoryPage() {
+  const [copied, setCopied] = useState<string | null>(null)
+  const repoUrl = 'https://github.com/appistry/hidden-key-challenge'
+
+  const copyToClipboard = (text: string, key: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(key)
+      setTimeout(() => setCopied(null), 2000)
+    })
+  }
+
+  return (
+    <div className="relative min-h-screen w-full bg-[#030612] text-white selection:bg-[#00d2ff] selection:text-black font-sans overflow-x-hidden">
+      <AntiInspection />
+      <RibbonWaves />
+      <CyberGrid />
+
+      <main className="relative z-10 py-6 sm:py-10">
+        <CyberFrameStage
+          activeNav="repository"
+          characterImage="/cyber-hacker-blue.png"
+          titleBackdrop={{
+            left: 'REPO &',
+            right: 'TOOLING',
+          }}
+          leftCallout={{
+            title: 'Security Architecture',
+            description: 'Zero secret exposure occurs client-side. The encrypted artifact is unpacked offline with Node.js.',
+          }}
+          rightContent={{
+            badge: 'Developer Toolkit',
+            title: 'REPOSITORY &',
+            highlightTitle: 'LOCAL CLI',
+            description: 'The official codebase houses the encrypted payload, challenge build scripts, and local unlock CLI engine.',
+            buttonText: 'Submit Key',
+            buttonHref: '/submit',
+          }}
+          bottomCards={[
+            {
+              type: 'stat-image',
+              image: '/cyber-hacker-blue.png',
+              stat: 'Scrypt KDF',
+              label: 'Key Derivation',
+              sublabel: 'N=32768, r=8, p=1 authenticated standard',
+            },
+            {
+              type: 'feature',
+              subtitle: 'Cipher Standard',
+              title: 'AES-256-GCM',
+              description: 'Authenticated decryption validates payload integrity and prevents tampering.',
+            },
+            {
+              type: 'stat-badge',
+              stat: '0ms',
+              label: 'Offline Latency',
+            },
+          ]}
+        >
+          {/* Main Terminal & Specs Section */}
+          <div className="max-w-[1000px] mx-auto py-4">
+            
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start mb-8">
+              
+              {/* Left: Terminal Commands */}
+              <div className="lg:col-span-7 space-y-4">
+                
+                {/* Clone Box */}
+                <div className="rounded-2xl bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-[#00d2ff]">01. Clone Codebase</span>
+                    <button
+                      onClick={() => copyToClipboard(`git clone ${repoUrl}`, 'clone')}
+                      className="text-xs px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition-colors cursor-pointer"
+                    >
+                      {copied === 'clone' ? 'Copied' : 'Copy'}
+                    </button>
+                  </div>
+                  <pre className="font-mono text-xs text-white/90 bg-[#01030a] border border-white/10 rounded-xl p-3.5 overflow-x-auto">
+                    git clone {repoUrl}
+                    <br />
+                    cd hidden-key-challenge
+                  </pre>
+                </div>
+
+                {/* Install Box */}
+                <div className="rounded-2xl bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-[#2563eb]">02. Install Dependencies</span>
+                    <button
+                      onClick={() => copyToClipboard('npm install', 'install')}
+                      className="text-xs px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition-colors cursor-pointer"
+                    >
+                      {copied === 'install' ? 'Copied' : 'Copy'}
+                    </button>
+                  </div>
+                  <pre className="font-mono text-xs text-white/90 bg-[#01030a] border border-white/10 rounded-xl p-3.5 overflow-x-auto">
+                    npm install
+                  </pre>
+                </div>
+
+                {/* Unlock CLI Box */}
+                <div className="rounded-2xl bg-[#070e24]/85 border border-[#00d2ff]/30 p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-xs font-bold text-[#00d2ff]">03. Run Offline Unlock CLI</span>
+                    <button
+                      onClick={() => copyToClipboard('npm run unlock', 'unlock')}
+                      className="text-xs px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition-colors cursor-pointer"
+                    >
+                      {copied === 'unlock' ? 'Copied' : 'Copy'}
+                    </button>
+                  </div>
+                  <pre className="font-mono text-xs text-[#00d2ff] bg-[#01030a] border border-white/10 rounded-xl p-3.5 overflow-x-auto">
+                    npm run unlock
+                  </pre>
+                  <p className="text-xs text-white/50 mt-2">
+                    Supplies your deduced mystery passphrase to derive the AES-256-GCM key and decrypt the payload.
+                  </p>
+                </div>
+
+              </div>
+
+              {/* Right: Security & Architecture Specs */}
+              <div className="lg:col-span-5 space-y-4">
+                
+                <div className="rounded-2xl bg-gradient-to-br from-[#0c1836]/90 via-[#070e22]/95 to-[#160a2b]/90 border border-[#00d2ff]/20 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                  <h3 className="text-base font-bold text-white mb-4">
+                    Cryptographic Specifications
+                  </h3>
+                  <ul className="space-y-3 text-xs text-white/70 leading-relaxed font-light">
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 shrink-0" />
+                      <span><strong>Algorithm:</strong> AES-256-GCM with Authenticated Decryption tag.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 shrink-0" />
+                      <span><strong>Key Derivation:</strong> Scrypt KDF with N=32768, r=8, p=1 and unique random salt.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 shrink-0" />
+                      <span><strong>Verification:</strong> Strict server-side verification in atomic transaction.</span>
+                    </li>
+                  </ul>
+
+                  <div className="mt-6 pt-4 border-t border-white/10">
+                    <Link
+                      href="/submit"
+                      className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all shadow-[0_4px_25px_rgba(0,210,255,0.4)] hover:opacity-95"
+                    >
+                      <span>Proceed to Submission Portal</span>
+                      <span>→</span>
+                    </Link>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+
+            {/* Back to Home Link */}
+            <div className="text-center mt-6">
+              <Link
+                href="/"
+                className="text-xs font-mono text-white/50 hover:text-[#00d2ff] transition-colors inline-flex items-center gap-1.5"
+              >
+                <span>←</span>
+                <span>Back to Main Stage</span>
+              </Link>
+            </div>
+
+          </div>
+        </CyberFrameStage>
+      </main>
+    </div>
+  )
+}

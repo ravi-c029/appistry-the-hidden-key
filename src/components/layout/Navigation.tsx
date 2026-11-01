@@ -2,13 +2,15 @@
 
 import { useState, useEffect, useCallback } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
-  { href: '/#how-it-works', label: 'How It Works' },
-  { href: '/mission', label: 'Mission' },
+  { href: '/mission', label: 'Mission Brief' },
+  { href: '/repository', label: 'Repository & CLI' },
+  { href: '/submit', label: 'Submit Answer' },
+  { href: '/rules', label: 'Rules & Bounty' },
   { href: '/leaderboard', label: 'Leaderboard' },
-  { href: '/#faq', label: 'FAQ' },
 ]
 
 export default function Navigation() {
@@ -27,183 +29,113 @@ export default function Navigation() {
   return (
     <>
       <nav
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 1000,
-          height: '70px',
-          display: 'flex',
-          alignItems: 'center',
-          padding: '0 1.5rem',
-          transition: 'all 0.3s ease',
-          background: scrolled
-            ? 'rgba(5, 8, 20, 0.95)'
-            : 'transparent',
-          backdropFilter: scrolled ? 'blur(20px)' : 'none',
-          borderBottom: scrolled
-            ? '1px solid var(--border)'
-            : '1px solid transparent',
-        }}
+        className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 flex items-center px-4 sm:px-8 ${
+          scrolled 
+            ? 'bg-[#050814]/90 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)]' 
+            : 'bg-transparent border-b border-transparent'
+        }`}
       >
-        <div
-          style={{
-            width: '100%',
-            maxWidth: '1280px',
-            margin: '0 auto',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-          }}
-        >
-          {/* Logo */}
-          <Link
-            href="/"
-            style={{
-              textDecoration: 'none',
-              display: 'flex',
-              flexDirection: 'column',
-              lineHeight: 1.1,
-            }}
-          >
-            <span
-              className="font-display gradient-text-cyan"
-              style={{ fontSize: '1.1rem', fontWeight: 800, letterSpacing: '-0.02em' }}
-            >
-              APPISTRY
-            </span>
-            <span
-              style={{ fontSize: '0.6rem', color: 'var(--text-muted)', letterSpacing: '0.12em', textTransform: 'uppercase' }}
-            >
-              The Hidden Key
-            </span>
+        <div className="w-full max-w-[1280px] mx-auto flex items-center justify-between">
+          
+          {/* Brand Logo with Official Appistry Emblem */}
+          <Link href="/" className="flex items-center gap-3 select-none group">
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-[#00d2ff]/30 bg-[#070e24] flex items-center justify-center p-0.5 shadow-[0_0_20px_rgba(0,210,255,0.2)] group-hover:border-[#00d2ff] group-hover:shadow-[0_0_25px_rgba(0,210,255,0.4)] transition-all">
+              <Image
+                src="/images/appistry-logo.png"
+                alt="APPISTRY Logo"
+                width={36}
+                height={36}
+                className="w-full h-full object-cover rounded-lg"
+                priority
+              />
+            </div>
+            <div className="flex flex-col gap-1">
+              <span className="text-lg font-black tracking-[0.08em] uppercase text-white group-hover:text-[#00d2ff] transition-colors leading-none">
+                APPISTRY
+              </span>
+              <span className="text-[9px] font-semibold tracking-[0.2em] text-[#ff007f] uppercase leading-none">
+                STC IIT PATNA HYBRID
+              </span>
+            </div>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8">
+          {/* Desktop Navigation Links */}
+          <div className="hidden md:flex items-center gap-7">
             {NAV_ITEMS.map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className={`nav-link ${pathname === href ? 'active' : ''}`}
+                className={`text-xs uppercase tracking-wider font-semibold transition-colors ${
+                  pathname === href 
+                    ? 'text-[#00d2ff] font-bold' 
+                    : 'text-white/70 hover:text-white'
+                }`}
               >
                 {label}
               </Link>
             ))}
           </div>
 
-          {/* CTA + Mobile toggle */}
+          {/* Right Action Items */}
           <div className="flex items-center gap-4">
             <Link
-              href="/submit"
-              className="btn-primary"
-              style={{ padding: '0.5rem 1.25rem', fontSize: '0.8rem', display: 'none' }}
-              id="nav-submit-btn"
+              href="/admin"
+              className="text-[10px] font-mono text-white/40 hover:text-[#00d2ff] uppercase tracking-widest transition-colors hidden sm:inline-block"
             >
-              Submit
+              Admin
             </Link>
 
-            {/* Mobile hamburger */}
+            <Link
+              href="/submit"
+              className="bg-white text-[#040814] font-bold text-xs uppercase tracking-wider px-5 py-2 rounded-full hover:bg-[#00d2ff] hover:text-black transition-all shadow-[0_2px_15px_rgba(255,255,255,0.2)] hover:shadow-[0_4px_20px_rgba(0,210,255,0.4)] whitespace-nowrap hidden sm:inline-flex items-center gap-1.5"
+            >
+              <span>Submit Key</span>
+            </Link>
+
+            {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              style={{
-                background: 'none',
-                border: 'none',
-                cursor: 'pointer',
-                color: 'var(--text-primary)',
-                padding: '0.25rem',
-              }}
-              className="md:hidden"
-              aria-label="Toggle menu"
+              className="md:hidden flex flex-col items-end justify-center gap-1.5 p-2 text-white"
+              aria-label="Toggle navigation menu"
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                {menuOpen ? (
-                  <>
-                    <line x1="18" y1="6" x2="6" y2="18" />
-                    <line x1="6" y1="6" x2="18" y2="18" />
-                  </>
-                ) : (
-                  <>
-                    <line x1="4" y1="8" x2="20" y2="8" />
-                    <line x1="4" y1="16" x2="20" y2="16" />
-                  </>
-                )}
-              </svg>
+              <div className={`h-[2px] bg-white transition-all ${menuOpen ? 'w-6 rotate-45 translate-y-2' : 'w-6'}`} />
+              <div className={`h-[2px] bg-white transition-all ${menuOpen ? 'opacity-0' : 'w-4'}`} />
+              <div className={`h-[2px] bg-white transition-all ${menuOpen ? 'w-6 -rotate-45 -translate-y-2' : 'w-6'}`} />
             </button>
           </div>
+
         </div>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Drawer Menu */}
       {menuOpen && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            zIndex: 999,
-            background: 'rgba(5, 8, 20, 0.98)',
-            backdropFilter: 'blur(20px)',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '2rem',
-          }}
-        >
-          <button
-            onClick={closeMenu}
-            style={{
-              position: 'absolute',
-              top: '1.5rem',
-              right: '1.5rem',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-              color: 'var(--text-primary)',
-            }}
-            aria-label="Close menu"
-          >
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="18" y1="6" x2="6" y2="18" />
-              <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-          </button>
-
+        <div className="fixed inset-0 z-40 bg-[#050814]/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-6 p-6 md:hidden">
           {NAV_ITEMS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               onClick={closeMenu}
-              style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: '2rem',
-                fontWeight: 800,
-                color: 'var(--text-primary)',
-                textDecoration: 'none',
-                letterSpacing: '-0.02em',
-                transition: 'color 0.2s',
-              }}
-              onMouseEnter={e => ((e.target as HTMLElement).style.color = 'var(--cyan)')}
-              onMouseLeave={e => ((e.target as HTMLElement).style.color = 'var(--text-primary)')}
+              className="text-xl font-bold tracking-wider uppercase text-white hover:text-[#00d2ff] transition-colors"
             >
               {label}
             </Link>
           ))}
-
-          <Link href="/submit" onClick={closeMenu} className="btn-primary" style={{ marginTop: '1rem', fontSize: '1rem' }}>
-            Submit Answer
+          <Link
+            href="/admin"
+            onClick={closeMenu}
+            className="text-sm font-mono text-white/50 hover:text-[#00d2ff] uppercase tracking-widest mt-2"
+          >
+            Admin Console
+          </Link>
+          <Link
+            href="/submit"
+            onClick={closeMenu}
+            className="bg-gradient-to-r from-[#00d2ff] to-[#7942f7] text-black font-bold text-sm uppercase tracking-wider px-8 py-3 rounded-full mt-4 shadow-[0_4px_20px_rgba(0,210,255,0.3)]"
+          >
+            Submit Discovered Key
           </Link>
         </div>
       )}
-
-      <style>{`
-        @media (min-width: 768px) {
-          .hidden.md\\:flex { display: flex !important; }
-          #nav-submit-btn { display: inline-flex !important; }
-          .md\\:hidden { display: none !important; }
-        }
-      `}</style>
     </>
   )
 }

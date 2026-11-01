@@ -31,23 +31,42 @@ async function main() {
     await prisma.hint.createMany({
       data: [
         {
-          title: 'The Hidden Chamber in the Build Scripts',
-          content: 'Examine the package configuration and look for obscure unlock scripts. The mystery begins where the code is prepared, not just where it runs.',
+          title: "The Name Game 🧐",
+          content: `Okay, let's start with something simple. Or maybe not. 👀
+
+Every team needs an identity, right? But this one's got three little pieces.
+
+- First, think of the people who make technology and creativity come together.
+- Next, think of a place famous for its legacy of knowledge, where ancient Magadh meets modern minds.
+- And finally, what happens when online meets offline? Yep, something in between!
+
+Three clues, three pieces, one name.
+
+Thoda dimaag lagao, Google Baba ko thoda rest do. 😂
+
+Did you connect the dots?`,
           order: 1,
           isPublished: true,
           publishedAt: new Date(),
         },
         {
-          title: 'A Key Forged in Hexadecimal',
-          content: 'A password prompt protects the cryptographic artifact. Look closely at the comments left behind in the utility tool.',
+          title: "What's in a Name? ✨",
+          content: `Every great journey has a starting point. Some start small, some start from scratch.
+
+But hey, who said you have to stay there? 😉
+
+Think of two extremes:
+- One represents nothingness. (Literally!)
+- The other represents the highest point you can reach.
+
+Now imagine a creative universe where ideas turn into experiences and imagination has no limits.
+
+Put these thoughts together and you might just discover the name of what's coming next!
+
+From where it all begins to where dreams reach their peak. 🔥`,
           order: 2,
-          isPublished: false,
-        },
-        {
-          title: 'The Echo of STC IIT Patna',
-          content: 'The secret phrase honors the organizers and the hybrid spirit of IIT Patna developer culture.',
-          order: 3,
-          isPublished: false,
+          isPublished: true,
+          publishedAt: new Date(),
         },
       ],
     })

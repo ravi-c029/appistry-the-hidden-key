@@ -1,4 +1,4 @@
-import { timingSafeEqual, createHash } from 'crypto'
+import { timingSafeEqual, createHash, createHmac } from 'crypto'
 
 /**
  * Verifies the submitted keyword against the server-side secret.
@@ -14,36 +14,61 @@ export function verifySecretKeyword(submitted: string): boolean {
 
   // Normalize: uppercase, trim all whitespace
   const normalize = (s: string) => s.trim().toUpperCase().replace(/\s+/g, ' ')
-
   const normalizedSubmitted = normalize(submitted)
-  const normalizedSecret = normalize(secret)
 
-  // Use timing-safe comparison via hash to handle different-length strings safely
-  const hashSubmitted = createHash('sha256').update(normalizedSubmitted).digest()
-  const hashSecret = createHash('sha256').update(normalizedSecret).digest()
-
-  try {
-    return timingSafeEqual(hashSubmitted, hashSecret)
-  } catch {
-    return false
+  // Support the primary secret, plus clean variants if wrapped in APPISTRY{...}
+  const acceptable = [secret]
+  if (secret.startsWith('APPISTRY{') && secret.endsWith('}')) {
+    const inner = secret.slice(9, -1)
+    acceptable.push(inner)
+    acceptable.push(inner.replace(/_/g, ' '))
+    acceptable.push(inner.replace(/\s+/g, '_'))
   }
+
+  const hashSubmitted = createHash('sha256').update(normalizedSubmitted).digest()
+
+  for (const item of acceptable) {
+    const hashTarget = createHash('sha256').update(normalize(item)).digest()
+    try {
+      if (timingSafeEqual(hashSubmitted, hashTarget)) {
+        return true
+      }
+    } catch {}
+  }
+
+  return false
 }
 
 /**
- * Validates that an email belongs to IIT Patna or the admin allowlist.
+ * Validates that an email strictly belongs to IIT Patna (@iitp.ac.in).
  */
 export function isEligibleEmail(email: string): boolean {
+  if (!email) return false
   const normalized = email.trim().toLowerCase()
+  return normalized.endsWith('@iitp.ac.in')
+}
 
-  // Primary IITP domain
-  if (normalized.endsWith('@iitp.ac.in')) return true
+/**
+ * Generates a tamper-proof HMAC verification token for a submission.
+ */
+export function generateSubmissionToken(submissionId: string): string {
+  const secret = process.env.SESSION_SECRET || 'appistry-secret-token'
+  return createHmac('sha256', secret).update(submissionId).digest('hex')
+}
 
-  // Allow additional domains from admin config (can be extended)
-  const allowedDomains = (process.env.ALLOWED_EMAIL_DOMAINS || '').split(',')
-    .map(d => d.trim().toLowerCase())
-    .filter(Boolean)
-
-  return allowedDomains.some(domain => normalized.endsWith(`@${domain}`))
+/**
+ * Verifies the submission HMAC token safely.
+ */
+export function verifySubmissionToken(submissionId: string, token: string): boolean {
+  if (!submissionId || !token) return false
+  const expected = generateSubmissionToken(submissionId)
+  const hashExpected = createHash('sha256').update(expected).digest()
+  const hashToken = createHash('sha256').update(token).digest()
+  try {
+    return timingSafeEqual(hashExpected, hashToken)
+  } catch {
+    return false
+  }
 }
 
 /**
@@ -73,4 +98,31 @@ export function checkRateLimit(identifier: string): { allowed: boolean; remainin
 
   entry.count++
   return { allowed: true, remaining: maxAttempts - entry.count, resetAt: entry.resetAt }
+}
+
+/**
+ * Global submission rate limiter:
+ * Maximum 20 submissions per 60-second window across all participants.
+ */
+let minuteSubmissionTimestamps: number[] = []
+const GLOBAL_SUBMISSION_LIMIT_PER_MINUTE = 20
+const ONE_MINUTE_MS = 60 * 1000
+
+export function checkGlobalMinuteRateLimit(): { allowed: boolean; count: number; secondsLeft: number } {
+  const now = Date.now()
+  // Clean timestamps older than 60 seconds
+  minuteSubmissionTimestamps = minuteSubmissionTimestamps.filter(t => now - t < ONE_MINUTE_MS)
+
+  if (minuteSubmissionTimestamps.length >= GLOBAL_SUBMISSION_LIMIT_PER_MINUTE) {
+    const oldestTimestamp = minuteSubmissionTimestamps[0]
+    const waitMs = oldestTimestamp + ONE_MINUTE_MS - now
+    const secondsLeft = Math.max(1, Math.ceil(waitMs / 1000))
+    return { allowed: false, count: minuteSubmissionTimestamps.length, secondsLeft }
+  }
+
+  return { allowed: true, count: minuteSubmissionTimestamps.length, secondsLeft: 0 }
+}
+
+export function recordGlobalMinuteSubmission(): void {
+  minuteSubmissionTimestamps.push(Date.now())
 }

@@ -12,6 +12,11 @@ export const metadata: Metadata = {
     description: "A Code Mystery Hunt. Dive into the source. Find what lies beneath.",
     type: "website",
   },
+  icons: {
+    icon: '/images/appistry-logo.png',
+    shortcut: '/images/appistry-logo.png',
+    apple: '/images/appistry-logo.png',
+  },
 };
 
 export default function RootLayout({

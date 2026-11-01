@@ -16,7 +16,6 @@ export default function CountdownTimer() {
   const [eventStatus, setEventStatus] = useState<string>('UPCOMING')
 
   useEffect(() => {
-    // Fetch event config
     fetch('/api/event/config')
       .then(r => r.json())
       .then(data => {
@@ -26,7 +25,6 @@ export default function CountdownTimer() {
         }
       })
       .catch(() => {
-        // Default: 48h from now
         setTargetDate(new Date(Date.now() + 48 * 60 * 60 * 1000))
       })
   }, [])
@@ -58,33 +56,26 @@ export default function CountdownTimer() {
 
   if (eventStatus === 'LIVE') {
     return (
-      <div style={{ textAlign: 'center' }}>
-        <div
-          className="badge badge-green animate-glow-pulse"
-          style={{ margin: '0 auto 0.5rem', fontSize: '0.9rem', padding: '0.5rem 1.5rem' }}
-        >
-          <span style={{ width: 8, height: 8, borderRadius: '50%', background: '#4ADE80', display: 'inline-block', marginRight: '0.5rem' }} />
-          EVENT IS LIVE
-        </div>
+      <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
+        <span className="w-2 h-2 rounded-full bg-emerald-400" />
+        <span>Hunt Is Live</span>
       </div>
     )
   }
 
   if (eventStatus === 'ENDED') {
     return (
-      <div className="badge badge-red" style={{ margin: '0 auto', fontSize: '0.9rem', padding: '0.5rem 1.5rem' }}>
-        Event has ended
+      <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-wider">
+        <span>Event Concluded</span>
       </div>
     )
   }
 
   if (!timeLeft) {
     return (
-      <div className="flex gap-6">
-        {['--', '--', '--', '--'].map((_, i) => (
-          <div key={i} className="text-center">
-            <div className="countdown-digit skeleton" style={{ width: 60, height: 56, borderRadius: '4px' }} />
-          </div>
+      <div className="flex gap-4">
+        {['Days', 'Hours', 'Mins', 'Secs'].map((label, i) => (
+          <div key={i} className="w-18 sm:w-22 h-20 sm:h-24 rounded-2xl bg-[#070e24] border border-white/10 animate-pulse" />
         ))}
       </div>
     )
@@ -98,36 +89,27 @@ export default function CountdownTimer() {
   ]
 
   return (
-    <div>
-      <p style={{ textAlign: 'center', fontSize: '0.75rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1rem' }}>
-        Event starts in
-      </p>
-      <div className="flex items-end gap-4">
-        {units.map(({ value, label }, i) => (
-          <div key={label} className="text-center">
-            <div
-              className="glass-card"
-              style={{
-                padding: '1rem 1.25rem',
-                minWidth: '72px',
-                position: 'relative',
-                overflow: 'hidden',
-              }}
-            >
-              {/* Top highlight */}
-              <div style={{
-                position: 'absolute',
-                top: 0,
-                left: '15%',
-                right: '15%',
-                height: '1px',
-                background: 'linear-gradient(90deg, transparent, var(--cyan-dim), transparent)',
-              }} />
-              <div className="countdown-digit">
+    <div className="flex flex-col items-center">
+      <div className="flex items-center gap-3 sm:gap-5">
+        {units.map(({ value, label }) => (
+          <div key={label} className="flex flex-col items-center">
+            
+            {/* Timer Pod */}
+            <div className="relative w-18 sm:w-22 h-20 sm:h-24 rounded-[18px] bg-[#070e24]/90 border border-[#00d2ff]/20 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.8)] overflow-hidden">
+              {/* Notches */}
+              <div className="absolute top-0 left-0 w-2 h-2 rounded-br-sm bg-[#00d2ff]" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 rounded-tl-sm bg-[#00d2ff]" />
+
+              {/* Digits */}
+              <span className="font-mono text-2xl sm:text-4xl font-bold text-white tracking-tight">
                 {String(value).padStart(2, '0')}
-              </div>
+              </span>
             </div>
-            <div className="countdown-label">{label}</div>
+
+            {/* Label */}
+            <span className="text-xs font-medium tracking-wide text-white/60 mt-2">
+              {label}
+            </span>
           </div>
         ))}
       </div>

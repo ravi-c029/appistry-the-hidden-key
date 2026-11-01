@@ -45,3 +45,25 @@ dev.db-journal
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# prompts, specs & development notes
+*prompt*.txt
+*masterprompt*.txt
+*.prompt
+*.spec.txt
+*.log
+
+# temporary screenshots & scratch dumps
+screen*.png
+v_*.png
+shot_*.png
+ref.jpg
+scratch/
+
+# OS and agent artifacts
+*.tmp
+*.bak
+*.swp
+.user_uploaded
+.system_generated
+brain

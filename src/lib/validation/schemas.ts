@@ -8,7 +8,10 @@ export const SubmissionSchema = z.object({
   email: z.string()
     .email('Invalid email address')
     .toLowerCase()
-    .trim(),
+    .trim()
+    .refine((e) => e.endsWith('@iitp.ac.in'), {
+      message: 'Only official IIT Patna student email addresses (@iitp.ac.in) are permitted to submit.',
+    }),
   keyword: z.string()
     .min(1, 'Keyword cannot be empty')
     .max(200, 'Keyword is too long')

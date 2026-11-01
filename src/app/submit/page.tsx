@@ -1,9 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import Navigation from '@/components/layout/Navigation'
-import ParticleCanvas from '@/components/animations/ParticleCanvas'
 import Link from 'next/link'
+import AntiInspection from '@/components/security/AntiInspection'
+import RibbonWaves from '@/components/animations/RibbonWaves'
+import CyberGrid from '@/components/animations/CyberGrid'
+import CyberFrameStage from '@/components/layout/CyberFrameStage'
 
 type FormState = 'idle' | 'loading' | 'success' | 'error'
 
@@ -19,6 +21,14 @@ export default function SubmitPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (state === 'loading') return
+
+    const cleanEmail = email.trim().toLowerCase()
+    if (!cleanEmail.endsWith('@iitp.ac.in')) {
+      setState('error')
+      setMessage('Submission is restricted to official IIT Patna student emails (@iitp.ac.in). Please use your college email.')
+      return
+    }
+
     setState('loading')
     setMessage('')
 
@@ -35,10 +45,10 @@ export default function SubmitPage() {
         setState('success')
         setRank(data.rank ?? null)
         setIsFirstBlood(data.isFirstBlood ?? false)
-        setMessage(data.message || 'Your submission has been recorded!')
+        setMessage(data.message || 'Your submission has been verified and recorded!')
       } else {
         setState('error')
-        setMessage(data.error || 'Something went wrong. Please try again.')
+        setMessage(data.error || 'Something went wrong. Please check your inputs.')
       }
     } catch {
       setState('error')
@@ -47,216 +57,191 @@ export default function SubmitPage() {
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--gradient-hero)' }}>
-      <ParticleCanvas />
-      <Navigation />
+    <div className="relative min-h-screen w-full bg-[#030612] text-white selection:bg-[#00d2ff] selection:text-black font-sans overflow-x-hidden">
+      <AntiInspection />
+      <RibbonWaves />
+      <CyberGrid />
 
-      <main style={{ paddingTop: '100px', paddingBottom: '80px' }}>
-        <div style={{ maxWidth: 560, margin: '0 auto', padding: '0 1.5rem' }}>
+      <main className="relative z-10 py-6 sm:py-10">
+        <CyberFrameStage
+          activeNav="submit"
+          characterImage="/cyber-hacker-blue.png"
+          titleBackdrop={{
+            left: 'SUBMIT',
+            right: 'KEYWORD',
+          }}
+          leftCallout={{
+            title: 'Eligibility Requirements',
+            description: 'Participation strictly requires @iitp.ac.in credentials. Single verified submission per participant.',
+          }}
+          rightContent={{
+            badge: 'Submission Gateway',
+            title: 'SUBMIT',
+            highlightTitle: 'SECRET KEY',
+            description: 'Enter the exact secret keyword unlocked via the offline CLI utility. Instant atomic server timestamps register your ranking on the official board.',
+            buttonText: 'View Leaderboard',
+            buttonHref: '/leaderboard',
+          }}
+          bottomCards={[
+            {
+              type: 'stat-image',
+              image: '/cyber-hacker-blue.png',
+              stat: '100% Validated',
+              label: 'Server Verification',
+              sublabel: 'Cryptographic validation prevents any client-side tampering',
+            },
+            {
+              type: 'feature',
+              subtitle: 'Rate Protection',
+              title: 'Anti-Spam Security',
+              description: 'Submissions are rate-limited. Script spamming triggers immediate disqualification and permanent IP blocking.',
+            },
+            {
+              type: 'stat-badge',
+              stat: '1 Attempt',
+              label: 'Official Slot',
+            },
+          ]}
+        >
+          {/* Submission Form Section */}
+          <div className="max-w-[560px] mx-auto py-4">
 
-          {/* Header */}
-          <div className="text-center mb-10">
-            <span className="badge badge-gold mb-4" style={{ margin: '0 auto 1rem' }}>
-              Submission Portal
-            </span>
-            <h1 className="font-display mb-3" style={{ fontSize: 'clamp(2rem, 6vw, 3.5rem)', fontWeight: 800, letterSpacing: '-0.03em' }}>
-              Submit Your <span className="gradient-text-cyan">Answer</span>
-            </h1>
-            <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
-              Enter the secret keyword you discovered through the challenge.
-              Your submission time is recorded by the server.
-            </p>
-          </div>
-
-          {state === 'success' ? (
-            /* ── Success State ── */
-            <div
-              className="glass-card p-10 text-center unlock-success"
-              style={{ borderColor: isFirstBlood ? 'rgba(245,158,11,0.5)' : 'rgba(34,197,94,0.3)' }}
-            >
-              {isFirstBlood ? (
-                <>
-                  <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>🩸</div>
-                  <h2 className="font-display gradient-text-gold mb-3" style={{ fontSize: '2rem', fontWeight: 800 }}>
-                    FIRST BLOOD!
-                  </h2>
-                  <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
-                    You are the FIRST to crack THE HIDDEN KEY!<br />
-                    Your name will live in APPISTRY legend.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <div style={{ fontSize: '4rem', marginBottom: '1rem' }}>✅</div>
-                  <h2 className="font-display gradient-text-cyan mb-3" style={{ fontSize: '1.75rem', fontWeight: 800 }}>
-                    Submission Accepted!
-                  </h2>
-                </>
-              )}
-
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
-                {message}
-              </p>
-
-              {rank && (
-                <div
-                  className="font-display"
-                  style={{
-                    fontSize: '1.1rem',
-                    fontWeight: 800,
-                    color: 'var(--cyan)',
-                    marginBottom: '1.5rem',
-                  }}
-                >
-                  Your Rank: #{rank}
+            {state === 'success' ? (
+              /* ── Success State ── */
+              <div className="rounded-[24px] p-8 sm:p-10 text-center shadow-[0_20px_60px_rgba(0,0,0,0.9)] border border-[#00d2ff]/40 bg-[#070e24]/90">
+                <div className="w-16 h-16 rounded-2xl bg-[#00d2ff]/10 border border-[#00d2ff]/30 flex items-center justify-center text-3xl mx-auto mb-4 shadow-[0_0_25px_rgba(0,210,255,0.3)] text-[#00d2ff]">
+                  ✓
                 </div>
-              )}
+                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase mb-2">
+                  Submission Received
+                </h2>
+                <div className="inline-block px-4 py-1 rounded-full border border-[#00d2ff]/40 bg-[#00d2ff]/10 text-xs font-mono font-bold text-[#00d2ff] mb-4">
+                  Recorded &bull; Pending Event Conclusion
+                </div>
+                <p className="text-xs sm:text-sm text-white/80 max-w-md mx-auto mb-6 leading-relaxed">
+                  {message}
+                </p>
+                <div>
+                  <Link
+                    href="/leaderboard"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] text-white font-bold text-xs uppercase tracking-wider px-8 py-3 rounded-full hover:opacity-90 transition-all shadow-[0_4px_20px_rgba(0,210,255,0.4)]"
+                  >
+                    <span>View Live Leaderboard</span>
+                    <span>&rarr;</span>
+                  </Link>
+                </div>
+              </div>
+            ) : (
+              /* ── Form Card ── */
+              <div className="rounded-[24px] bg-[#070e24]/90 border border-[#00d2ff]/20 p-7 sm:p-9 shadow-[0_25px_60px_rgba(0,0,0,0.85)]">
+                <div className="mb-6 pb-4 border-b border-white/10">
+                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">
+                    Official Submission Portal
+                  </h3>
+                  <p className="text-xs text-white/50 font-mono mt-0.5">
+                    Enter the passphrase revealed via offline CLI unlock
+                  </p>
+                </div>
 
-              <Link href="/leaderboard" className="btn-primary">
-                View Leaderboard
+                <form onSubmit={handleSubmit} className="space-y-5" noValidate>
+
+                  <div>
+                    <label htmlFor="submit-name" className="block text-xs font-mono uppercase tracking-wider text-white/70 mb-2">
+                      Full Name
+                    </label>
+                    <input
+                      id="submit-name"
+                      type="text"
+                      className="w-full bg-[#02050f] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#00d2ff] transition-colors"
+                      placeholder="e.g. Aman Kumar"
+                      value={name}
+                      onChange={e => setName(e.target.value)}
+                      required
+                      minLength={2}
+                      maxLength={100}
+                      disabled={state === 'loading'}
+                      autoComplete="name"
+                    />
+                  </div>
+
+                  <div>
+                    <label htmlFor="submit-email" className="block text-xs font-mono uppercase tracking-wider text-white/70 mb-2">
+                      IIT Patna Email (@iitp.ac.in) <span className="text-[#00d2ff] font-semibold">• 1 Submission Only</span>
+                    </label>
+                    <input
+                      id="submit-email"
+                      type="email"
+                      className="w-full bg-[#02050f] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#00d2ff] transition-colors"
+                      placeholder="student_roll@iitp.ac.in"
+                      value={email}
+                      onChange={e => setEmail(e.target.value)}
+                      required
+                      disabled={state === 'loading'}
+                      autoComplete="email"
+                    />
+                    <p className="text-[11px] text-white/40 mt-1">
+                      Strictly @iitp.ac.in student emails only. Each participant can submit only 1 response.
+                    </p>
+                  </div>
+
+                  <div>
+                    <label htmlFor="submit-keyword" className="block text-xs font-mono uppercase tracking-wider text-[#00d2ff] font-semibold mb-2">
+                      Discovered Secret Keyword
+                    </label>
+                    <input
+                      id="submit-keyword"
+                      type="text"
+                      className="w-full bg-[#02050f] border border-[#00d2ff]/40 rounded-xl px-4 py-3 text-sm text-[#00d2ff] font-mono tracking-wider placeholder-white/30 focus:outline-none focus:border-[#00d2ff] shadow-[0_0_15px_rgba(0,210,255,0.1)] transition-colors"
+                      placeholder="Enter the revealed secret phrase..."
+                      value={keyword}
+                      onChange={e => setKeyword(e.target.value)}
+                      required
+                      disabled={state === 'loading'}
+                      autoComplete="off"
+                      autoCorrect="off"
+                      autoCapitalize="off"
+                      spellCheck={false}
+                    />
+                    <p className="text-[11px] text-white/40 mt-1">
+                      Revealed exclusively via <code className="text-white/70 font-mono">npm run unlock</code> in the challenge repository.
+                    </p>
+                  </div>
+
+                  {state === 'error' && (
+                    <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
+                      ⚠️ {message}
+                    </div>
+                  )}
+
+                  <button
+                    type="submit"
+                    disabled={state === 'loading'}
+                    className="w-full bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] hover:opacity-95 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all shadow-[0_4px_25px_rgba(0,210,255,0.4)] disabled:opacity-50 cursor-pointer"
+                  >
+                    {state === 'loading' ? 'Verifying with Server...' : 'Verify & Record Submission'}
+                  </button>
+
+                  <p className="text-[10px] text-center text-white/40 pt-1 font-mono">
+                    By submitting, you agree to APPISTRY honor code and single-entry guidelines.
+                  </p>
+
+                </form>
+              </div>
+            )}
+
+            {/* Back to Home Link */}
+            <div className="text-center mt-8">
+              <Link
+                href="/"
+                className="text-xs font-mono text-white/50 hover:text-[#00d2ff] transition-colors inline-flex items-center gap-1.5"
+              >
+                <span>←</span>
+                <span>Back to Main Stage</span>
               </Link>
             </div>
-          ) : (
-            /* ── Form ── */
-            <div className="glass-card p-8">
-              <form onSubmit={handleSubmit} className="flex flex-col gap-6" noValidate>
 
-                <div>
-                  <label htmlFor="submit-name" className="input-label">Full Name</label>
-                  <input
-                    id="submit-name"
-                    type="text"
-                    className="input-field"
-                    placeholder="Enter your full name"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    required
-                    minLength={2}
-                    maxLength={100}
-                    disabled={state === 'loading'}
-                    autoComplete="name"
-                  />
-                </div>
-
-                <div>
-                  <label htmlFor="submit-email" className="input-label">
-                    IIT Patna Student Email
-                  </label>
-                  <input
-                    id="submit-email"
-                    type="email"
-                    className="input-field"
-                    placeholder="yourname@iitp.ac.in"
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    required
-                    disabled={state === 'loading'}
-                    autoComplete="email"
-                  />
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.375rem' }}>
-                    Only @iitp.ac.in email addresses are accepted.
-                  </p>
-                </div>
-
-                <div>
-                  <label htmlFor="submit-keyword" className="input-label">
-                    Discovered Keyword
-                  </label>
-                  <input
-                    id="submit-keyword"
-                    type="text"
-                    className="input-field font-mono"
-                    placeholder="Enter the secret keyword..."
-                    value={keyword}
-                    onChange={e => setKeyword(e.target.value)}
-                    required
-                    disabled={state === 'loading'}
-                    autoComplete="off"
-                    autoCorrect="off"
-                    autoCapitalize="off"
-                    spellCheck={false}
-                    style={{ letterSpacing: '0.05em' }}
-                  />
-                  <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.375rem' }}>
-                    Found via the npm run unlock command in the challenge repository.
-                  </p>
-                </div>
-
-                {state === 'error' && (
-                  <div
-                    className="badge"
-                    style={{
-                      padding: '0.75rem 1rem',
-                      borderRadius: 'var(--radius-sm)',
-                      background: 'rgba(239,68,68,0.1)',
-                      border: '1px solid rgba(239,68,68,0.3)',
-                      color: '#F87171',
-                      fontSize: '0.875rem',
-                      display: 'block',
-                      textTransform: 'none',
-                      letterSpacing: 'normal',
-                    }}
-                  >
-                    ⚠️ {message}
-                  </div>
-                )}
-
-                <button
-                  type="submit"
-                  className="btn-primary"
-                  disabled={state === 'loading'}
-                  style={{
-                    width: '100%',
-                    justifyContent: 'center',
-                    fontSize: '1rem',
-                    padding: '1rem',
-                    opacity: state === 'loading' ? 0.7 : 1,
-                  }}
-                >
-                  {state === 'loading' ? (
-                    <>
-                      <span
-                        style={{
-                          width: 16,
-                          height: 16,
-                          borderRadius: '50%',
-                          border: '2px solid rgba(0,0,0,0.3)',
-                          borderTopColor: 'black',
-                          animation: 'rotate-slow 0.7s linear infinite',
-                          display: 'inline-block',
-                        }}
-                      />
-                      Verifying...
-                    </>
-                  ) : (
-                    <>
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                        <polyline points="22 4 12 14.01 9 11.01" />
-                      </svg>
-                      Submit Answer
-                    </>
-                  )}
-                </button>
-
-                <p style={{ textAlign: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.6 }}>
-                  By submitting, you confirm you are an eligible IIT Patna student
-                  and agree to the event rules. Your submission timestamp is generated
-                  by the server and determines your rank.
-                </p>
-              </form>
-            </div>
-          )}
-
-          <div className="text-center mt-8">
-            <Link
-              href="/mission"
-              style={{ color: 'var(--text-muted)', fontSize: '0.85rem', textDecoration: 'none' }}
-            >
-              ← Back to Mission Briefing
-            </Link>
           </div>
-        </div>
+        </CyberFrameStage>
       </main>
     </div>
   )

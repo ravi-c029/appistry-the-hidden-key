@@ -2,6 +2,9 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
+import Image from 'next/image'
+import RibbonWaves from '@/components/animations/RibbonWaves'
 
 export default function AdminLoginPage() {
   const [email, setEmail] = useState('')
@@ -27,7 +30,7 @@ export default function AdminLoginPage() {
       if (res.ok && data.success) {
         router.push('/admin/dashboard')
       } else {
-        setError(data.error || 'Authentication failed')
+        setError(data.error || 'Authentication failed. Please verify credentials.')
       }
     } catch {
       setError('Network error. Please try again.')
@@ -37,61 +40,45 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: 'radial-gradient(ellipse at 50% 50%, #0A1628, #050814)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '1.5rem',
-      }}
-    >
-      <div style={{ width: '100%', maxWidth: 420 }}>
+    <div className="relative min-h-screen w-full bg-[#070b16] text-white selection:bg-[#00d2ff] selection:text-black font-sans overflow-x-hidden flex items-center justify-center p-4">
+      <RibbonWaves />
+
+      <div className="relative z-10 w-full max-w-[420px] mx-auto">
         {/* Header */}
-        <div className="text-center mb-10">
-          <div
-            className="font-display gradient-text-cyan"
-            style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.25rem' }}
-          >
-            APPISTRY
+        <div className="text-center mb-8">
+          <Link href="/" className="inline-flex flex-col items-center group mb-3 gap-1">
+            <span className="text-2xl font-black tracking-[0.08em] uppercase text-white group-hover:text-[#00d2ff] transition-colors leading-none">
+              APPISTRY
+            </span>
+            <span className="block text-[10px] font-semibold tracking-[0.22em] text-[#ff007f] uppercase">
+              STC IIT PATNA HYBRID
+            </span>
+          </Link>
+          <div className="w-14 h-14 rounded-2xl overflow-hidden border border-[#00d2ff]/30 bg-[#070e24] flex items-center justify-center mx-auto mb-4 p-1 shadow-[0_0_25px_rgba(0,210,255,0.25)]">
+            <Image
+              src="/images/appistry-logo.png"
+              alt="APPISTRY Emblem"
+              width={56}
+              height={56}
+              className="w-full h-full object-cover rounded-xl"
+              priority
+            />
           </div>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '2rem' }}>
-            Admin Console
-          </div>
-          <div
-            style={{
-              width: 64,
-              height: 64,
-              borderRadius: '16px',
-              background: 'var(--cyan-ghost)',
-              border: '1px solid var(--border-cyan)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              margin: '0 auto 1.5rem',
-              fontSize: '1.75rem',
-            }}
-          >
-            🔐
-          </div>
-          <h1 className="font-display" style={{ fontSize: '1.75rem', fontWeight: 800 }}>
-            Admin Login
-          </h1>
-          <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem' }}>
-            Authorized personnel only
-          </p>
+          <h1 className="text-2xl font-bold text-white tracking-tight">Admin Console</h1>
+          <p className="text-xs text-white/50 mt-1">Authorized event organizers only</p>
         </div>
 
-        {/* Form */}
-        <div className="glass-card p-8">
-          <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+        {/* Form Card */}
+        <div className="rounded-[24px] bg-[#081226]/85 border border-white/10 p-7 shadow-[0_25px_60px_rgba(0,0,0,0.85)]">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label htmlFor="admin-email" className="input-label">Email Address</label>
+              <label htmlFor="admin-email" className="block text-xs font-mono uppercase tracking-wider text-white/70 mb-2">
+                Organizer Email
+              </label>
               <input
                 id="admin-email"
                 type="email"
-                className="input-field"
+                className="w-full bg-[#02050f] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#00d2ff] transition-colors"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="admin@appistry.dev"
@@ -102,11 +89,13 @@ export default function AdminLoginPage() {
             </div>
 
             <div>
-              <label htmlFor="admin-password" className="input-label">Password</label>
+              <label htmlFor="admin-password" className="block text-xs font-mono uppercase tracking-wider text-white/70 mb-2">
+                Password
+              </label>
               <input
                 id="admin-password"
                 type="password"
-                className="input-field"
+                className="w-full bg-[#02050f] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#00d2ff] transition-colors"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 placeholder="••••••••"
@@ -117,48 +106,26 @@ export default function AdminLoginPage() {
             </div>
 
             {error && (
-              <div
-                style={{
-                  background: 'rgba(239,68,68,0.1)',
-                  border: '1px solid rgba(239,68,68,0.3)',
-                  borderRadius: 'var(--radius-sm)',
-                  padding: '0.75rem 1rem',
-                  fontSize: '0.85rem',
-                  color: '#F87171',
-                }}
-              >
+              <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
                 ⚠️ {error}
               </div>
             )}
 
             <button
               type="submit"
-              className="btn-primary"
               disabled={loading}
-              style={{
-                width: '100%',
-                justifyContent: 'center',
-                padding: '0.875rem',
-                fontSize: '0.95rem',
-                opacity: loading ? 0.7 : 1,
-                marginTop: '0.5rem',
-              }}
+              className="w-full bg-gradient-to-r from-[#00d2ff] to-[#7942f7] hover:opacity-95 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all shadow-[0_4px_25px_rgba(0,210,255,0.3)] disabled:opacity-50 cursor-pointer mt-2"
             >
-              {loading ? 'Authenticating...' : 'Access Admin Console'}
+              {loading ? 'Authenticating...' : 'Sign In to Super-Admin'}
             </button>
           </form>
         </div>
 
-        <p
-          style={{
-            textAlign: 'center',
-            marginTop: '1.5rem',
-            fontSize: '0.75rem',
-            color: 'var(--text-muted)',
-          }}
-        >
-          No public registration. Access by invitation only.
-        </p>
+        <div className="text-center mt-6">
+          <Link href="/" className="text-xs font-mono text-white/40 hover:text-[#00d2ff] transition-colors">
+            ← Return to Event Challenge
+          </Link>
+        </div>
       </div>
     </div>
   )

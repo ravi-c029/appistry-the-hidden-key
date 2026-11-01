@@ -1,7 +1,15 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/database/prisma'
 import { SubmissionSchema } from '@/lib/validation/schemas'
-import { verifySecretKeyword, isEligibleEmail, checkRateLimit } from '@/lib/security/verify'
+import {
+  verifySecretKeyword,
+  isEligibleEmail,
+  checkRateLimit,
+  checkGlobalMinuteRateLimit,
+  recordGlobalMinuteSubmission,
+  generateSubmissionToken,
+} from '@/lib/security/verify'
+import { sendSubmissionNotification, sendStudentReceiptEmail } from '@/lib/email/mailer'
 
 export async function POST(req: NextRequest) {
   try {
@@ -21,25 +29,31 @@ export async function POST(req: NextRequest) {
 
     const { name, email, keyword } = parsed.data
 
-    // Rate limit by IP
-    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
-      || req.headers.get('x-real-ip')
-      || 'unknown'
+    // Global submission rate limit: strictly max 20 submissions per minute
+    const globalRate = checkGlobalMinuteRateLimit()
+    const oneMinuteAgo = new Date(Date.now() - 60 * 1000)
+    const recentSubmissionsCount = await prisma.submission.count({
+      where: { serverTime: { gte: oneMinuteAgo } },
+    })
 
-    const rateLimit = checkRateLimit(`submit:${ip}`)
-    if (!rateLimit.allowed) {
+    if (!globalRate.allowed || recentSubmissionsCount >= 20) {
       return NextResponse.json(
         {
-          error: `Too many submission attempts. Please wait ${Math.ceil((rateLimit.resetAt - Date.now()) / 60000)} minutes.`,
+          error: 'Is minute ke andar 20 submissions receive ho chuke hain. High server traffic ki wajah se kripya agle minute me dobara try kijiye (20 submissions limit reached for this minute. Please try again in the next minute).',
+          code: 'RATE_LIMIT_GLOBAL_MINUTE',
         },
         { status: 429 }
       )
     }
 
-    // Email eligibility check
+    const ip = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
+      || req.headers.get('x-real-ip')
+      || 'unknown'
+
+    // Email eligibility check — strictly @iitp.ac.in
     if (!isEligibleEmail(email)) {
       return NextResponse.json(
-        { error: 'Only IIT Patna students with a valid @iitp.ac.in email can participate.' },
+        { error: 'Only official IIT Patna student email addresses (@iitp.ac.in) are permitted to submit.' },
         { status: 403 }
       )
     }
@@ -51,15 +65,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Submissions are currently closed.' }, { status: 403 })
     }
 
-    // Check duplicate email
+    // Check duplicate email — strictly 1 submission per email allowed ever
     const existingParticipant = await prisma.participant.findUnique({ where: { email } })
     if (existingParticipant) {
-      const existingValidSubmission = await prisma.submission.findFirst({
-        where: { participantId: existingParticipant.id, isValid: true },
+      const existingSubmission = await prisma.submission.findFirst({
+        where: { participantId: existingParticipant.id },
       })
-      if (existingValidSubmission) {
+      if (existingSubmission) {
         return NextResponse.json(
-          { error: 'You have already submitted a valid answer. Only one submission per participant is allowed.' },
+          {
+            error: 'Aap is email address se pehle hi ek submission kar chuke hain. Har participant ko sirf ek submission ki anumati hai (Only 1 submission allowed per email).',
+          },
           { status: 409 }
         )
       }
@@ -69,7 +85,7 @@ export async function POST(req: NextRequest) {
     const isCorrect = verifySecretKeyword(keyword)
 
     // Record submission atomically
-    const result = await prisma.$transaction(async (tx) => {
+    const submissionResult = await prisma.$transaction(async (tx) => {
       // Upsert participant
       const participant = await tx.participant.upsert({
         where: { email },
@@ -81,85 +97,73 @@ export async function POST(req: NextRequest) {
       const submission = await tx.submission.create({
         data: {
           participantId: participant.id,
-          keyword: isCorrect ? '[CORRECT]' : '[REDACTED]', // Never store plaintext
-          isValid: isCorrect,
+          keyword: isCorrect ? '[CORRECT]' : '[REDACTED]',
+          isValid: false, // Remains false until organizer verifies
           ipAddress: ip,
           userAgent: req.headers.get('user-agent') || undefined,
         },
       })
 
-      if (!isCorrect) {
-        return { success: false, isFirstBlood: false, rank: null }
-      }
-
-      // Check if First Blood
       const existingFirstBlood = await tx.firstBlood.findFirst()
-      const isFirstBlood = !existingFirstBlood
-
-      if (isFirstBlood) {
-        await tx.firstBlood.create({
-          data: {
-            participantId: participant.id,
-            submissionId: submission.id,
-            serverTime: submission.serverTime,
-          },
-        })
-
-        await tx.submission.update({
-          where: { id: submission.id },
-          data: { isFirstBlood: true },
-        })
-      }
-
-      // Create or update leaderboard entry
-      const rank = await tx.leaderboardEntry.count() + 1
-      await tx.leaderboardEntry.upsert({
-        where: { participantId: participant.id },
-        update: {},
-        create: {
-          participantId: participant.id,
-          displayName: name,
-          serverTime: submission.serverTime,
-          rank,
-        },
-      })
-
-      // Recalculate ranks by serverTime
-      const allEntries = await tx.leaderboardEntry.findMany({
-        orderBy: { serverTime: 'asc' },
-      })
-      for (let i = 0; i < allEntries.length; i++) {
-        await tx.leaderboardEntry.update({
-          where: { id: allEntries[i].id },
-          data: { rank: i + 1 },
-        })
-      }
-
-      const finalEntry = await tx.leaderboardEntry.findUnique({
-        where: { participantId: participant.id },
-      })
+      const isFirstBloodCandidate = !existingFirstBlood && isCorrect
 
       return {
-        success: true,
-        isFirstBlood,
-        rank: finalEntry?.rank ?? rank,
+        submissionId: submission.id,
+        isCorrect,
+        isFirstBloodCandidate,
+        serverTime: submission.serverTime,
       }
     })
 
-    if (!result.success) {
+    // Track for minute rate limit
+    recordGlobalMinuteSubmission()
+
+    if (!submissionResult.isCorrect) {
+      // Dispatch alert for invalid attempt
+      sendSubmissionNotification({
+        submissionId: submissionResult.submissionId,
+        name,
+        email,
+        isKeywordCorrect: false,
+        isFirstBloodCandidate: false,
+        serverTime: submissionResult.serverTime,
+        ip,
+        userAgent: req.headers.get('user-agent') || undefined,
+      }).catch(err => console.error('[Submit] Alert error:', err))
+
       return NextResponse.json(
         { error: 'Incorrect keyword. Keep exploring the repository.' },
         { status: 400 }
       )
     }
 
+    // Generate 1-click verification token for the organizer
+    const verificationToken = generateSubmissionToken(submissionResult.submissionId)
+
+    // Dispatch real-time submission notification email with Verify button to Organizer
+    sendSubmissionNotification({
+      submissionId: submissionResult.submissionId,
+      verificationToken,
+      name,
+      email,
+      isKeywordCorrect: true,
+      isFirstBloodCandidate: submissionResult.isFirstBloodCandidate,
+      serverTime: submissionResult.serverTime,
+      ip,
+      userAgent: req.headers.get('user-agent') || undefined,
+    }).catch(err => console.error('[Submit] Alert error:', err))
+
+    // Dispatch automatic confirmation receipt email to the Student
+    sendStudentReceiptEmail({
+      name,
+      email,
+      serverTime: submissionResult.serverTime,
+    }).catch(err => console.error('[Submit] Student receipt error:', err))
+
     return NextResponse.json({
       success: true,
-      isFirstBlood: result.isFirstBlood,
-      rank: result.rank,
-      message: result.isFirstBlood
-        ? '🩸 FIRST BLOOD! You are the first to solve THE HIDDEN KEY!'
-        : `Correct! You've been ranked #${result.rank} on the leaderboard.`,
+      pendingVerification: true,
+      message: "We've safely received your submission! Your exact timestamp has been recorded. Our team will verify all submissions against the official keyword after the challenge wraps up, and winners will be announced.",
     })
   } catch (error) {
     console.error('[API] /api/submit error:', error)
