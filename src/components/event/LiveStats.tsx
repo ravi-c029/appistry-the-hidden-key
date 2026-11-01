@@ -25,40 +25,56 @@ export default function LiveStats() {
     return () => clearInterval(interval)
   }, [])
 
+  const totalSubs = Number(stats?.totalSubmissions || 0)
+  const totalSubsPct = Math.min(Math.round((totalSubs / 100) * 100), 100)
+
+  const validSubs = Number(stats?.validSubmissions || 0)
+  const validSubsPct = Math.min(Math.round((validSubs / 20) * 100), 100)
+
+  const activeVisitors = Number(stats?.activeVisitors || 0)
+  const activePct = Math.min(Math.round((activeVisitors / 100) * 100), 100)
+
+  const firstBloodClaimed = Boolean(stats?.firstBloodClaimed)
+  const firstBloodPct = firstBloodClaimed ? 100 : 0
+
   const items = [
     {
-      value: stats?.totalSubmissions ?? '0',
+      value: totalSubs,
       label: 'Total Submissions',
       sublabel: 'Answers evaluated by server',
       accent: '#00b4d8',
       barGradient: 'linear-gradient(90deg, #00c6ff 0%, #0072ff 100%)',
-      pct: '100%',
+      pct: `${totalSubsPct}%`,
+      progressLabel: `${totalSubs}/100`,
     },
     {
-      value: stats?.validSubmissions ?? '0',
+      value: validSubs,
       label: 'Verified Solves',
       sublabel: 'Cryptographically correct keys',
       accent: '#2563eb',
       barGradient: 'linear-gradient(90deg, #2563eb 0%, #7942f7 100%)',
-      pct: stats?.validSubmissions ? '100%' : '15%',
+      pct: `${validSubsPct}%`,
+      progressLabel: `${validSubs}/20`,
     },
     {
-      value: stats?.activeVisitors ?? '1',
+      value: activeVisitors,
       label: 'Active Participants',
       sublabel: 'Live connected sessions',
       accent: '#ff5e98',
       barGradient: 'linear-gradient(90deg, #ff5e98 0%, #ff758c 100%)',
-      pct: '85%',
+      pct: `${activePct}%`,
+      progressLabel: `${activeVisitors}/100`,
     },
     {
-      value: stats?.firstBloodClaimed ? 'Claimed' : 'Unclaimed',
+      value: firstBloodClaimed ? 'Claimed' : 'Unclaimed',
       label: 'First Blood Bounty',
-      sublabel: stats?.firstBloodClaimed ? 'Champion logged on server' : 'Awaiting fastest solver',
-      accent: stats?.firstBloodClaimed ? '#ff5e98' : '#f59e0b',
-      barGradient: stats?.firstBloodClaimed
+      sublabel: firstBloodClaimed ? 'Champion logged on server' : 'Awaiting fastest solver',
+      accent: firstBloodClaimed ? '#ff5e98' : '#f59e0b',
+      barGradient: firstBloodClaimed
         ? 'linear-gradient(90deg, #ff5e98 0%, #ff758c 100%)'
         : 'linear-gradient(90deg, #f6d365 0%, #fda085 100%)',
-      pct: stats?.firstBloodClaimed ? '100%' : '35%',
+      pct: `${firstBloodPct}%`,
+      progressLabel: firstBloodClaimed ? '1/1' : '0/1',
     },
   ]
 
@@ -87,14 +103,20 @@ export default function LiveStats() {
             {item.sublabel}
           </div>
 
+          {/* Progress Header with Ratio */}
+          <div className="mt-4 flex items-center justify-between text-[11px] font-mono text-slate-400 font-medium">
+            <span>Progress</span>
+            <span className="font-bold text-slate-600">{item.progressLabel}</span>
+          </div>
+
           {/* Soft Inset Pill Progress Bar (Exact match to reference image slider pills) */}
-          <div className="mt-4 w-full h-3 rounded-full bg-[#edf2f7] shadow-[inset_2px_2px_4px_rgba(166,180,200,0.3),inset_-2px_-2px_4px_#ffffff] p-0.5 overflow-hidden">
+          <div className="mt-1.5 w-full h-3 rounded-full bg-[#edf2f7] shadow-[inset_2px_2px_4px_rgba(166,180,200,0.3),inset_-2px_-2px_4px_#ffffff] p-0.5 overflow-hidden">
             <div
               className="h-full rounded-full transition-all duration-700"
               style={{
                 width: item.pct,
                 background: item.barGradient,
-                boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+                boxShadow: item.pct !== '0%' ? '0 2px 6px rgba(0,0,0,0.1)' : 'none',
               }}
             />
           </div>
