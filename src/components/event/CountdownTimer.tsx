@@ -73,9 +73,9 @@ export default function CountdownTimer() {
 
   if (!timeLeft) {
     return (
-      <div className="flex gap-4">
+      <div className="flex gap-2 sm:gap-4">
         {['Days', 'Hours', 'Mins', 'Secs'].map((label, i) => (
-          <div key={i} className="w-18 sm:w-22 h-20 sm:h-24 rounded-2xl bg-[#070e24] border border-white/10 animate-pulse" />
+          <div key={i} className="w-16 sm:w-22 h-18 sm:h-24 rounded-2xl bg-[#070e24] border border-white/10 animate-pulse" />
         ))}
       </div>
     )
@@ -90,12 +90,12 @@ export default function CountdownTimer() {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="flex items-center gap-3 sm:gap-5">
+      <div className="flex items-center gap-2 sm:gap-4">
         {units.map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center">
             
             {/* Timer Pod */}
-            <div className="relative w-18 sm:w-22 h-20 sm:h-24 rounded-[18px] bg-[#070e24]/90 border border-[#00d2ff]/20 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.8)] overflow-hidden">
+            <div className="relative w-16 sm:w-22 h-18 sm:h-24 rounded-[16px] sm:rounded-[18px] bg-[#070e24]/90 border border-[#00d2ff]/20 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.8)] overflow-hidden">
               {/* Notches */}
               <div className="absolute top-0 left-0 w-2 h-2 rounded-br-sm bg-[#00d2ff]" />
               <div className="absolute bottom-0 right-0 w-2 h-2 rounded-tl-sm bg-[#00d2ff]" />
