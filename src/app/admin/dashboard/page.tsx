@@ -217,30 +217,23 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div className="font-mono text-cyan" style={{ fontSize: '1rem', letterSpacing: '0.1em' }}>
-          LOADING ADMIN CONSOLE...
+      <div className="min-h-screen bg-[#eef2f6] flex items-center justify-center">
+        <div className="neu-card p-8 rounded-3xl flex items-center gap-3">
+          <div className="w-5 h-5 border-2 border-[#ff5e98] border-t-transparent rounded-full animate-spin" />
+          <div className="font-mono text-xs font-bold text-slate-700 uppercase tracking-widest">
+            Loading Admin Console...
+          </div>
         </div>
       </div>
     )
   }
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-primary)', display: 'flex', flexDirection: 'column' }}>
+    <div className="min-h-screen w-full bg-[#eef2f6] text-slate-800 flex flex-col font-sans">
       {/* Top Header */}
-      <header
-        style={{
-          borderBottom: '1px solid rgba(203, 213, 225, 0.6)',
-          background: 'rgba(255, 255, 255, 0.95)',
-          backdropFilter: 'blur(12px)',
-          padding: '1rem 2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}
-      >
+      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-6 sm:px-10 py-4 flex items-center justify-between shadow-sm">
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5">
+          <Link href="/" className="flex items-center gap-2.5 group">
             <div className="w-8 h-8 rounded-xl overflow-hidden neu-icon-btn p-0.5 flex items-center justify-center">
               <Image
                 src="/images/appistry-logo.png"
@@ -250,39 +243,32 @@ export default function AdminDashboardPage() {
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-            <span className="font-display text-slate-900" style={{ fontSize: '1.25rem', fontWeight: 900 }}>
+            <span className="font-display font-black text-slate-900 text-lg tracking-tight group-hover:text-[#ff5e98] transition-colors">
               APPISTRY
             </span>
           </Link>
-          <span className="text-slate-400">/</span>
-          <span className="font-mono font-bold" style={{ fontSize: '0.85rem', color: '#ff5e98', letterSpacing: '0.05em' }}>
+          <span className="text-slate-300 font-bold">/</span>
+          <span className="font-mono text-xs font-bold text-[#ff5e98] tracking-widest uppercase bg-pink-50 px-2.5 py-1 rounded-full border border-pink-100">
             SUPER ADMIN CONSOLE
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           {actionMessage && (
-            <div
-              className="font-mono"
-              style={{
-                fontSize: '0.8rem',
-                color: '#0072ff',
-                background: 'rgba(0, 114, 255, 0.08)',
-                padding: '0.35rem 0.75rem',
-                borderRadius: '9999px',
-                border: '1px solid rgba(0, 114, 255, 0.2)',
-              }}
-            >
+            <div className="font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200 animate-fade-in">
               ✓ {actionMessage}
             </div>
           )}
-          <Link href="/" target="_blank" className="neu-card-sm text-slate-700 font-bold px-3 py-1.5 rounded-full" style={{ fontSize: '0.8rem' }}>
+          <Link
+            href="/"
+            target="_blank"
+            className="neu-card-sm text-slate-700 font-bold px-3.5 py-1.5 rounded-full text-xs hover:text-[#ff5e98] transition-colors"
+          >
             View Public Site ↗
           </Link>
           <button
             onClick={handleLogout}
-            className="neu-card-sm px-3 py-1.5 rounded-full font-bold cursor-pointer"
-            style={{ fontSize: '0.8rem', color: '#ef4444' }}
+            className="neu-card-sm px-3.5 py-1.5 rounded-full font-bold text-xs text-rose-500 hover:text-rose-600 transition-colors cursor-pointer"
           >
             Logout
           </button>
@@ -290,109 +276,100 @@ export default function AdminDashboardPage() {
       </header>
 
       {/* Navigation Tabs */}
-      <div
-        style={{
-          borderBottom: '1px solid rgba(203, 213, 225, 0.6)',
-          background: 'rgba(255, 255, 255, 0.8)',
-          padding: '0 2rem',
-          display: 'flex',
-          gap: '1rem',
-          overflowX: 'auto',
-        }}
-      >
+      <div className="bg-white/60 backdrop-blur-sm border-b border-slate-200/60 px-6 sm:px-10 flex gap-2 overflow-x-auto py-2.5 scrollbar-none">
         {[
           { key: 'overview', label: '📊 Overview' },
           { key: 'hints', label: '💡 Hints Manager' },
           { key: 'announcements', label: '📢 Announcements' },
           { key: 'config', label: '⚙️ Event Config' },
           { key: 'logs', label: '🛡️ Audit Logs' },
-        ].map(tab => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key as typeof activeTab)}
-            style={{
-              padding: '0.85rem 1rem',
-              fontSize: '0.85rem',
-              fontWeight: 700,
-              background: 'none',
-              border: 'none',
-              borderBottom: activeTab === tab.key ? '2.5px solid #ff5e98' : '2.5px solid transparent',
-              color: activeTab === tab.key ? '#ff5e98' : '#64748b',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-            }}
-          >
-            {tab.label}
-          </button>
-        ))}
+        ].map(tab => {
+          const isActive = activeTab === tab.key
+          return (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key as typeof activeTab)}
+              className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+                isActive
+                  ? 'neu-btn-gradient-pink text-white shadow-md scale-[1.02]'
+                  : 'neu-card-sm text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {tab.label}
+            </button>
+          )
+        })}
       </div>
 
       {/* Main Content Area */}
-      <main style={{ flex: 1, padding: '2rem', maxWidth: 1400, margin: '0 auto', width: '100%' }}>
+      <main className="flex-1 p-6 sm:p-10 max-w-7xl mx-auto w-full">
         {/* OVERVIEW TAB */}
         {activeTab === 'overview' && stats && (
           <div className="flex flex-col gap-8">
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <div className="glass-card p-5">
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
+                <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   Live Active Visitors
                 </div>
-                <div className="font-display gradient-text-cyan" style={{ fontSize: '2rem', fontWeight: 800, marginTop: '0.25rem' }}>
+                <div className="text-4xl font-black text-[#00b4d8] my-2 font-mono">
                   {stats.activeVisitors}
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '0.25rem' }}>
+                <div className="text-xs font-mono text-slate-400">
                   Total sessions: {stats.totalVisitors}
                 </div>
               </div>
 
-              <div className="glass-card p-5">
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
+                <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   Verified Participants
                 </div>
-                <div className="font-display" style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--gold)', marginTop: '0.25rem' }}>
+                <div className="text-4xl font-black text-amber-500 my-2 font-mono">
                   {stats.verifiedParticipants}
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '0.25rem' }}>
+                <div className="text-xs font-mono text-slate-400">
                   Total registered: {stats.totalParticipants}
                 </div>
               </div>
 
-              <div className="glass-card p-5">
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Submissions (Success / Total)
+              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
+                <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
+                  Submissions (Valid / Total)
                 </div>
-                <div className="font-display text-emerald" style={{ fontSize: '2rem', fontWeight: 800, marginTop: '0.25rem' }}>
-                  {stats.validSubmissions} <span style={{ fontSize: '1.25rem', color: 'var(--text-muted)' }}>/ {stats.totalSubmissions}</span>
+                <div className="text-4xl font-black text-emerald-600 my-2 font-mono">
+                  {stats.validSubmissions}
+                  <span className="text-xl text-slate-400 font-semibold"> / {stats.totalSubmissions}</span>
                 </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginTop: '0.25rem' }}>
-                  Failed: {stats.failedSubmissions}
+                <div className="text-xs font-mono text-slate-400">
+                  Failed attempts: {stats.failedSubmissions}
                 </div>
               </div>
 
-              <div className="glass-card p-5">
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
+                <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   First Blood Status
                 </div>
-                <div style={{ marginTop: '0.5rem' }}>
+                <div className="my-2">
                   {stats.firstBlood ? (
                     <div>
-                      <div className="badge-gold inline-block mb-1">CLAIMED</div>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text-bright)' }}>
+                      <span className="bg-gradient-to-r from-amber-400 to-amber-500 text-white font-black text-[10px] tracking-wider px-2.5 py-0.5 rounded-full inline-block shadow-sm">
+                        CLAIMED 🏆
+                      </span>
+                      <div className="text-base font-black text-slate-900 mt-1 truncate">
                         {stats.firstBlood.winnerName}
                       </div>
-                      <div className="font-mono text-cyan" style={{ fontSize: '0.75rem', fontWeight: 600 }}>
+                      <div className="font-mono text-xs font-bold text-[#00b4d8]">
                         {new Date(stats.firstBlood.serverTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-                      </div>
-                      <div className="font-mono" style={{ fontSize: '0.65rem', color: 'var(--text-dim)' }}>
-                        {new Date(stats.firstBlood.serverTime).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                       </div>
                     </div>
                   ) : (
-                    <div style={{ fontSize: '1rem', color: 'var(--text-muted)', fontStyle: 'italic', marginTop: '0.5rem' }}>
+                    <div className="text-2xl font-black text-slate-400 italic">
                       Unclaimed
                     </div>
                   )}
+                </div>
+                <div className="text-xs font-mono text-slate-400">
+                  {stats.firstBlood ? new Date(stats.firstBlood.serverTime).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Awaiting fastest solver'}
                 </div>
               </div>
             </div>
@@ -400,48 +377,48 @@ export default function AdminDashboardPage() {
             {/* Split Tables: Recent Submissions & Recent Audit Logs */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Recent Submissions */}
-              <div className="glass-card p-6">
-                <h2 className="font-display" style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '1rem' }}>
-                  Recent Submission Activity
-                </h2>
+              <div className="neu-card p-6 sm:p-7 rounded-[28px]">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base font-extrabold text-slate-900 tracking-tight">
+                    Recent Submission Activity
+                  </h2>
+                  <span className="text-xs font-mono font-semibold text-slate-400">
+                    Live Feed
+                  </span>
+                </div>
                 {recentSubmissions.length === 0 ? (
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>No submissions recorded yet.</p>
+                  <div className="bg-[#f8fafc] rounded-2xl p-6 text-center text-slate-400 text-xs italic border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
+                    No submissions recorded yet.
+                  </div>
                 ) : (
                   <div className="flex flex-col gap-3">
                     {recentSubmissions.map(sub => (
                       <div
                         key={sub.id}
-                        style={{
-                          background: 'rgba(255,255,255,0.02)',
-                          padding: '0.75rem 1rem',
-                          borderRadius: 'var(--radius-sm)',
-                          border: '1px solid var(--border-subtle)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}
+                        className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex items-center justify-between"
                       >
                         <div>
-                          <div style={{ fontSize: '0.875rem', fontWeight: 600 }}>{sub.participant.name}</div>
-                          <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                          <div className="text-sm font-bold text-slate-900">{sub.participant.name}</div>
+                          <div className="font-mono text-xs text-slate-500">
                             {sub.participant.email}
                           </div>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right flex flex-col items-end">
                           <span
-                            className={sub.isValid ? 'badge-cyan' : 'badge'}
-                            style={{
-                              background: sub.isValid ? 'var(--cyan-ghost)' : 'rgba(239,68,68,0.1)',
-                              color: sub.isValid ? 'var(--cyan-bright)' : '#F87171',
-                              borderColor: sub.isValid ? 'var(--border-cyan)' : 'rgba(239,68,68,0.3)',
-                            }}
+                            className={`text-[10px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border ${
+                              sub.isFirstBlood
+                                ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white border-transparent shadow-sm'
+                                : sub.isValid
+                                ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
+                                : 'bg-rose-100 text-rose-700 border-rose-200'
+                            }`}
                           >
                             {sub.isFirstBlood ? '🩸 FIRST BLOOD' : sub.isValid ? 'VALID' : 'INVALID'}
                           </span>
-                          <div className="font-mono text-cyan" style={{ fontSize: '0.75rem', fontWeight: 600, marginTop: '0.25rem' }}>
+                          <div className="font-mono text-xs font-bold text-[#00b4d8] mt-1">
                             {new Date(sub.serverTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                           </div>
-                          <div className="font-mono" style={{ fontSize: '0.65rem', color: 'var(--text-dim)' }}>
+                          <div className="font-mono text-[10px] text-slate-400">
                             {new Date(sub.serverTime).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
                           </div>
                         </div>
@@ -452,36 +429,35 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* Recent Audit Logs */}
-              <div className="glass-card p-6">
-                <h2 className="font-display" style={{ fontSize: '1.15rem', fontWeight: 700, marginBottom: '1rem' }}>
-                  System Audit Trail
-                </h2>
+              <div className="neu-card p-6 sm:p-7 rounded-[28px]">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-base font-extrabold text-slate-900 tracking-tight">
+                    System Audit Trail
+                  </h2>
+                  <span className="text-xs font-mono font-semibold text-slate-400">
+                    Security Logs
+                  </span>
+                </div>
                 {recentLogs.length === 0 ? (
-                  <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>No audit logs recorded yet.</p>
+                  <div className="bg-[#f8fafc] rounded-2xl p-6 text-center text-slate-400 text-xs italic border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
+                    No audit logs recorded yet.
+                  </div>
                 ) : (
                   <div className="flex flex-col gap-3">
                     {recentLogs.map(log => (
                       <div
                         key={log.id}
-                        style={{
-                          background: 'rgba(255,255,255,0.02)',
-                          padding: '0.75rem 1rem',
-                          borderRadius: 'var(--radius-sm)',
-                          border: '1px solid var(--border-subtle)',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                        }}
+                        className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex items-center justify-between"
                       >
                         <div>
-                          <div className="font-mono text-cyan" style={{ fontSize: '0.8rem', fontWeight: 600 }}>
+                          <div className="font-mono text-xs font-bold text-[#00b4d8]">
                             {log.action}
                           </div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                          <div className="text-xs text-slate-600 font-medium mt-0.5">
                             By {log.admin ? log.admin.name : 'System'} {log.target ? `• Target: ${log.target}` : ''}
                           </div>
                         </div>
-                        <div className="font-mono" style={{ fontSize: '0.7rem', color: 'var(--text-dim)' }}>
+                        <div className="font-mono text-[10px] text-slate-400">
                           {new Date(log.createdAt).toLocaleTimeString()}
                         </div>
                       </div>
@@ -496,16 +472,16 @@ export default function AdminDashboardPage() {
         {/* HINTS TAB */}
         {activeTab === 'hints' && (
           <div className="flex flex-col gap-8">
-            <div className="glass-card p-6">
-              <h2 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
+            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+              <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Release New Mystery Hint
               </h2>
-              <form onSubmit={handleCreateHint} className="flex flex-col gap-4">
+              <form onSubmit={handleCreateHint} className="flex flex-col gap-5">
                 <div>
-                  <label className="input-label">Hint Title</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Hint Title</label>
                   <input
                     type="text"
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                     value={newHintTitle}
                     onChange={e => setNewHintTitle(e.target.value)}
                     placeholder="e.g. Hint 1: The First Clue in the Repository"
@@ -513,9 +489,9 @@ export default function AdminDashboardPage() {
                   />
                 </div>
                 <div>
-                  <label className="input-label">Hint Content</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Hint Content</label>
                   <textarea
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                     rows={4}
                     value={newHintContent}
                     onChange={e => setNewHintContent(e.target.value)}
@@ -523,65 +499,61 @@ export default function AdminDashboardPage() {
                     required
                   />
                 </div>
-                <button type="submit" className="btn-primary" style={{ alignSelf: 'flex-start' }}>
+                <button
+                  type="submit"
+                  className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer self-start"
+                >
                   Create Hint (Draft)
                 </button>
               </form>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
+            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+              <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Existing Hints ({hints.length})
               </h2>
               {hints.length === 0 ? (
-                <p style={{ color: 'var(--text-muted)' }}>No hints created yet.</p>
+                <div className="bg-[#f8fafc] rounded-2xl p-6 text-center text-slate-400 text-xs italic border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
+                  No hints created yet.
+                </div>
               ) : (
                 <div className="flex flex-col gap-4">
                   {hints.map(hint => (
                     <div
                       key={hint.id}
-                      style={{
-                        padding: '1.25rem',
-                        borderRadius: 'var(--radius-md)',
-                        background: 'rgba(255,255,255,0.02)',
-                        border: '1px solid var(--border-subtle)',
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        justifyContent: 'space-between',
-                        gap: '1rem',
-                      }}
+                      className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col md:flex-row md:items-start justify-between gap-4"
                     >
-                      <div>
+                      <div className="flex-1">
                         <div className="flex items-center gap-3">
-                          <span className="font-mono text-cyan" style={{ fontSize: '0.8rem' }}>#{hint.order}</span>
-                          <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{hint.title}</h3>
+                          <span className="font-mono text-xs font-bold text-[#ff5e98] bg-pink-50 px-2 py-0.5 rounded-lg border border-pink-100">
+                            #{hint.order}
+                          </span>
+                          <h3 className="text-sm font-bold text-slate-900">{hint.title}</h3>
                           <span
-                            className={hint.isPublished ? 'badge-cyan' : 'badge'}
-                            style={{
-                              background: hint.isPublished ? 'var(--cyan-ghost)' : 'rgba(255,255,255,0.05)',
-                              color: hint.isPublished ? 'var(--cyan-bright)' : 'var(--text-muted)',
-                            }}
+                            className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                              hint.isPublished
+                                ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
+                                : 'bg-slate-200 text-slate-600 border-slate-300'
+                            }`}
                           >
-                            {hint.isPublished ? 'LIVE ON SITE' : 'DRAFT'}
+                            {hint.isPublished ? '● LIVE ON SITE' : '○ DRAFT'}
                           </span>
                         </div>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem', whiteSpace: 'pre-wrap' }}>
+                        <p className="text-xs text-slate-600 mt-2.5 whitespace-pre-wrap leading-relaxed">
                           {hint.content}
                         </p>
                       </div>
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2 self-start md:self-center">
                         <button
                           onClick={() => toggleHintPublish(hint.id, hint.isPublished)}
-                          className={hint.isPublished ? 'btn-secondary' : 'btn-primary'}
-                          style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }}
+                          className="neu-card-sm px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-slate-900 cursor-pointer"
                         >
                           {hint.isPublished ? 'Unpublish' : 'Publish Live'}
                         </button>
                         <button
                           onClick={() => deleteHint(hint.id)}
-                          className="btn-secondary"
-                          style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem', color: '#F87171' }}
+                          className="neu-card-sm px-3.5 py-1.5 rounded-full text-xs font-bold text-rose-500 hover:text-rose-600 cursor-pointer"
                         >
                           Delete
                         </button>
@@ -597,17 +569,17 @@ export default function AdminDashboardPage() {
         {/* ANNOUNCEMENTS TAB */}
         {activeTab === 'announcements' && (
           <div className="flex flex-col gap-8">
-            <div className="glass-card p-6">
-              <h2 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
+            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+              <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Post New Announcement
               </h2>
-              <form onSubmit={handleCreateAnnouncement} className="flex flex-col gap-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <form onSubmit={handleCreateAnnouncement} className="flex flex-col gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                   <div>
-                    <label className="input-label">Announcement Title</label>
+                    <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Announcement Title</label>
                     <input
                       type="text"
-                      className="input-field"
+                      className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                       value={newAnnTitle}
                       onChange={e => setNewAnnTitle(e.target.value)}
                       placeholder="e.g. Hint 2 has been released!"
@@ -615,9 +587,9 @@ export default function AdminDashboardPage() {
                     />
                   </div>
                   <div>
-                    <label className="input-label">Type</label>
+                    <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Type</label>
                     <select
-                      className="input-field"
+                      className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans bg-transparent"
                       value={newAnnType}
                       onChange={e => setNewAnnType(e.target.value)}
                     >
@@ -630,9 +602,9 @@ export default function AdminDashboardPage() {
                   </div>
                 </div>
                 <div>
-                  <label className="input-label">Content</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Content</label>
                   <textarea
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                     rows={4}
                     value={newAnnContent}
                     onChange={e => setNewAnnContent(e.target.value)}
@@ -640,50 +612,48 @@ export default function AdminDashboardPage() {
                     required
                   />
                 </div>
-                <button type="submit" className="btn-primary" style={{ alignSelf: 'flex-start' }}>
+                <button
+                  type="submit"
+                  className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer self-start"
+                >
                   Post Live Immediately
                 </button>
               </form>
             </div>
 
-            <div className="glass-card p-6">
-              <h2 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
+            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+              <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Existing Announcements ({announcements.length})
               </h2>
               {announcements.length === 0 ? (
-                <p style={{ color: 'var(--text-muted)' }}>No announcements posted yet.</p>
+                <div className="bg-[#f8fafc] rounded-2xl p-6 text-center text-slate-400 text-xs italic border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
+                  No announcements posted yet.
+                </div>
               ) : (
                 <div className="flex flex-col gap-4">
                   {announcements.map(ann => (
                     <div
                       key={ann.id}
-                      style={{
-                        padding: '1.25rem',
-                        borderRadius: 'var(--radius-md)',
-                        background: 'rgba(255,255,255,0.02)',
-                        border: '1px solid var(--border-subtle)',
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                        justifyContent: 'space-between',
-                      }}
+                      className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col md:flex-row md:items-start justify-between gap-4"
                     >
-                      <div>
+                      <div className="flex-1">
                         <div className="flex items-center gap-3">
-                          <span className="badge-cyan">{ann.type}</span>
-                          <h3 style={{ fontSize: '1rem', fontWeight: 700 }}>{ann.title}</h3>
-                          <span style={{ fontSize: '0.75rem', color: ann.isPublished ? 'var(--cyan-bright)' : 'var(--text-dim)' }}>
+                          <span className="font-mono text-[10px] font-bold text-[#00b4d8] bg-sky-50 px-2 py-0.5 rounded-lg border border-sky-100">
+                            {ann.type}
+                          </span>
+                          <h3 className="text-sm font-bold text-slate-900">{ann.title}</h3>
+                          <span className={`text-[10px] font-bold ${ann.isPublished ? 'text-emerald-600' : 'text-slate-400'}`}>
                             {ann.isPublished ? '● Published' : '○ Hidden'}
                           </span>
                         </div>
-                        <p style={{ color: 'var(--text-muted)', fontSize: '0.875rem', marginTop: '0.5rem', whiteSpace: 'pre-wrap' }}>
+                        <p className="text-xs text-slate-600 mt-2.5 whitespace-pre-wrap leading-relaxed">
                           {ann.content}
                         </p>
                       </div>
 
                       <button
                         onClick={() => toggleAnnPublish(ann.id, ann.isPublished)}
-                        className="btn-secondary"
-                        style={{ padding: '0.4rem 0.8rem', fontSize: '0.75rem' }}
+                        className="neu-card-sm px-3.5 py-1.5 rounded-full text-xs font-bold text-slate-700 hover:text-slate-900 cursor-pointer self-start md:self-center"
                       >
                         {ann.isPublished ? 'Hide' : 'Publish'}
                       </button>
@@ -697,25 +667,25 @@ export default function AdminDashboardPage() {
 
         {/* EVENT CONFIG TAB */}
         {activeTab === 'config' && (
-          <div className="glass-card p-8">
-            <h2 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
+          <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+            <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
               Global Event Configuration
             </h2>
             <form onSubmit={handleSaveConfig} className="flex flex-col gap-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="input-label">Event Title</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Event Title</label>
                   <input
                     type="text"
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                     value={config.eventTitle || ''}
                     onChange={e => setConfig({ ...config, eventTitle: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="input-label">Event Status</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Event Status</label>
                   <select
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans bg-transparent"
                     value={config.eventStatus || 'UPCOMING'}
                     onChange={e => setConfig({ ...config, eventStatus: e.target.value })}
                   >
@@ -726,36 +696,36 @@ export default function AdminDashboardPage() {
                   </select>
                 </div>
                 <div>
-                  <label className="input-label">Event Start Date & Time (ISO 8601)</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Event Start Date & Time (ISO 8601)</label>
                   <input
                     type="text"
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                     value={config.eventStartAt || ''}
                     onChange={e => setConfig({ ...config, eventStartAt: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="input-label">Event End Date & Time (ISO 8601)</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Event End Date & Time (ISO 8601)</label>
                   <input
                     type="text"
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                     value={config.eventEndAt || ''}
                     onChange={e => setConfig({ ...config, eventEndAt: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="input-label">Official Challenge Repository URL</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Official Challenge Repository URL</label>
                   <input
                     type="text"
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                     value={config.repositoryUrl || ''}
                     onChange={e => setConfig({ ...config, repositoryUrl: e.target.value })}
                   />
                 </div>
                 <div>
-                  <label className="input-label">Submissions Enabled</label>
+                  <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Submissions Enabled</label>
                   <select
-                    className="input-field"
+                    className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans bg-transparent"
                     value={config.submissionsOpen || 'true'}
                     onChange={e => setConfig({ ...config, submissionsOpen: e.target.value })}
                   >
@@ -766,9 +736,9 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="input-label">Event Description</label>
+                <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Event Description</label>
                 <textarea
-                  className="input-field"
+                  className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                   rows={3}
                   value={config.eventDescription || ''}
                   onChange={e => setConfig({ ...config, eventDescription: e.target.value })}
@@ -776,9 +746,9 @@ export default function AdminDashboardPage() {
               </div>
 
               <div>
-                <label className="input-label">Prize Information</label>
+                <label className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">Prize Information</label>
                 <textarea
-                  className="input-field"
+                  className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                   rows={3}
                   value={config.prizeInfo || ''}
                   onChange={e => setConfig({ ...config, prizeInfo: e.target.value })}
@@ -787,9 +757,8 @@ export default function AdminDashboardPage() {
 
               <button
                 type="submit"
-                className="btn-primary"
+                className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-8 rounded-full shadow-md hover:scale-[1.02] active:scale-95 cursor-pointer self-start disabled:opacity-50"
                 disabled={configSaving}
-                style={{ alignSelf: 'flex-start', padding: '0.75rem 2rem' }}
               >
                 {configSaving ? 'Saving Changes...' : 'Save Configuration'}
               </button>
@@ -799,43 +768,41 @@ export default function AdminDashboardPage() {
 
         {/* AUDIT LOGS TAB */}
         {activeTab === 'logs' && (
-          <div className="glass-card p-6">
-            <h2 className="font-display" style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
+          <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+            <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
               Full Audit Trail
             </h2>
-            <div className="flex flex-col gap-3">
-              {recentLogs.map(log => (
-                <div
-                  key={log.id}
-                  style={{
-                    padding: '0.85rem 1.25rem',
-                    borderRadius: 'var(--radius-sm)',
-                    background: 'rgba(255,255,255,0.02)',
-                    border: '1px solid var(--border-subtle)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <div>
-                    <span className="font-mono text-cyan" style={{ fontSize: '0.85rem', fontWeight: 700 }}>
-                      [{log.action}]
-                    </span>{' '}
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
-                      Performed by {log.admin ? `${log.admin.name} (${log.admin.email})` : 'System'}
-                    </span>
-                    {log.target && (
-                      <span className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-dim)', marginLeft: '0.5rem' }}>
-                        → {log.target}
+            {recentLogs.length === 0 ? (
+              <div className="bg-[#f8fafc] rounded-2xl p-6 text-center text-slate-400 text-xs italic border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
+                No audit logs recorded yet.
+              </div>
+            ) : (
+              <div className="flex flex-col gap-3">
+                {recentLogs.map(log => (
+                  <div
+                    key={log.id}
+                    className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex items-center justify-between"
+                  >
+                    <div>
+                      <span className="font-mono text-xs font-bold text-[#00b4d8]">
+                        [{log.action}]
+                      </span>{' '}
+                      <span className="text-xs text-slate-600 font-medium">
+                        Performed by {log.admin ? `${log.admin.name} (${log.admin.email})` : 'System'}
                       </span>
-                    )}
+                      {log.target && (
+                        <span className="font-mono text-[11px] text-slate-400 ml-2">
+                          → {log.target}
+                        </span>
+                      )}
+                    </div>
+                    <div className="font-mono text-[10px] text-slate-400">
+                      {new Date(log.createdAt).toLocaleString()}
+                    </div>
                   </div>
-                  <div className="font-mono" style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                    {new Date(log.createdAt).toLocaleString()}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </main>
