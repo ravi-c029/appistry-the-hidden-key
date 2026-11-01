@@ -11,5 +11,4 @@ export async function GET() {
   }
 }
 
-// Cache for 60 seconds
-export const revalidate = 60
+export const dynamic = 'force-dynamic'

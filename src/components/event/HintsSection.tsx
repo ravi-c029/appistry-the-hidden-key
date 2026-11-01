@@ -15,11 +15,17 @@ export default function HintsSection() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/api/hints/public')
-      .then(r => r.json())
-      .then(data => setHints(data.hints ?? []))
-      .catch(() => {})
-      .finally(() => setLoading(false))
+    const loadHints = () => {
+      fetch('/api/hints/public')
+        .then(r => r.json())
+        .then(data => setHints(data.hints ?? []))
+        .catch(() => {})
+        .finally(() => setLoading(false))
+    }
+
+    loadHints()
+    const interval = setInterval(loadHints, 30000)
+    return () => clearInterval(interval)
   }, [])
 
   return (
