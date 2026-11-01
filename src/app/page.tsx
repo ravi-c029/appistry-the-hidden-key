@@ -367,7 +367,7 @@ export default function HomePage() {
               step: '01',
               title: 'Clone Repository',
               desc: 'Fetch the official challenge codebase containing the encrypted artifact and custom CLI.',
-              command: 'git clone https://github.com/appistry/hidden-key-challenge',
+              command: 'git clone https://github.com/ravi-c029/appistry-the-hidden-key',
               accent: '#00b4d8',
             },
             {

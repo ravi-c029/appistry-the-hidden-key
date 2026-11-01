@@ -9,7 +9,7 @@ import CyberFrameStage from '@/components/layout/CyberFrameStage'
 
 export default function RepositoryPage() {
   const [copied, setCopied] = useState<string | null>(null)
-  const repoUrl = 'https://github.com/appistry/hidden-key-challenge'
+  const repoUrl = 'https://github.com/ravi-c029/appistry-the-hidden-key'
 
   const copyToClipboard = (text: string, key: string) => {
     navigator.clipboard.writeText(text).then(() => {
@@ -78,7 +78,7 @@ export default function RepositoryPage() {
                   <div className="flex items-center justify-between gap-2 mb-3">
                     <span className="text-xs font-black text-slate-900 tracking-wide">01. Clone Codebase</span>
                     <button
-                      onClick={() => copyToClipboard(`git clone ${repoUrl}\ncd hidden-key-challenge`, 'clone')}
+                      onClick={() => copyToClipboard(`git clone ${repoUrl}\ncd appistry-the-hidden-key`, 'clone')}
                       className="neu-card-sm text-[11px] font-mono px-3 py-1 rounded-full text-slate-700 hover:text-[#ff5e98] font-bold transition-all cursor-pointer flex items-center gap-1 active:scale-95"
                     >
                       {copied === 'clone' ? '✓ Copied!' : '📋 Copy'}
@@ -87,7 +87,7 @@ export default function RepositoryPage() {
                   <div className="rounded-2xl bg-[#edf2f7] border border-slate-200/80 p-3 sm:p-4 shadow-[inset_2px_2px_5px_rgba(166,180,200,0.22),inset_-2px_-2px_5px_#ffffff]">
                     <pre className="font-mono text-xs sm:text-sm text-slate-900 font-bold overflow-x-auto whitespace-pre scrollbar-none select-all">
                       git clone {repoUrl}
-                      {'\n'}cd hidden-key-challenge
+                      {'\n'}cd appistry-the-hidden-key
                     </pre>
                   </div>
                 </div>

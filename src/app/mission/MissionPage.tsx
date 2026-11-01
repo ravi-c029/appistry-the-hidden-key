@@ -8,7 +8,7 @@ import CyberGrid from '@/components/animations/CyberGrid'
 import CyberFrameStage from '@/components/layout/CyberFrameStage'
 
 export default function MissionPage() {
-  const [repoUrl, setRepoUrl] = useState('https://github.com/appistry/hidden-key-challenge')
+  const [repoUrl, setRepoUrl] = useState('https://github.com/ravi-c029/appistry-the-hidden-key')
   const [copied, setCopied] = useState<string | null>(null)
 
   useEffect(() => {
@@ -233,7 +233,7 @@ const MISSION_STEPS = [
     icon: '📦',
     title: 'Clone the Repository',
     description: 'Fetch the official challenge codebase containing the encrypted artifact and custom CLI.',
-    code: `git clone https://github.com/appistry/hidden-key-challenge\ncd hidden-key-challenge`,
+    code: `git clone https://github.com/ravi-c029/appistry-the-hidden-key\ncd appistry-the-hidden-key`,
     codeKey: 'clone',
     accentColor: '#00d2ff',
   },

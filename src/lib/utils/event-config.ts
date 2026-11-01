@@ -6,7 +6,7 @@ const DEFAULT_CONFIG: Record<string, string> = {
   eventStatus: 'UPCOMING',
   eventStartAt: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(), // 48h from now
   eventEndAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
-  repositoryUrl: 'https://github.com/appistry/hidden-key-challenge',
+  repositoryUrl: 'https://github.com/ravi-c029/appistry-the-hidden-key',
   submissionsOpen: 'true',
   leaderboardPublic: 'true',
   prizeInfo: 'First place: Certificate of Excellence + Recognition by APPISTRY Club\nAll valid submissions: Digital certificate',

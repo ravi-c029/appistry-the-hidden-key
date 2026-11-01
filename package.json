@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "postinstall": "prisma generate",
+    "build": "node scripts/switch-db.js auto && next build",
+    "postinstall": "node scripts/switch-db.js auto && prisma generate",
     "start": "next start",
     "lint": "eslint",
     "unlock": "node scripts/unlock.js",
