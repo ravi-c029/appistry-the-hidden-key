@@ -38,7 +38,7 @@
     <a href="#-system-architecture"><b>Architecture</b></a> &bull;
     <a href="#-vercel-serverless-deployment"><b>Vercel Deploy</b></a> &bull;
     <a href="#-local-quickstart"><b>Quickstart</b></a> &bull;
-    <a href="#-super-admin-console"><b>Admin Console</b></a>
+    <a href="./public/Appistry_The_Hidden_Key_Participant_Rulebook.pdf"><b>📄 Rulebook PDF</b></a>
   </p>
 
   <!-- One-Click Vercel Deploy Button -->
@@ -73,20 +73,16 @@ The application features a modern, clean **Soft Clay Neuomorphic Design** (`#eef
 
 ```mermaid
 flowchart TD
-    classDef stepStyle fill:#ffffff,stroke:#ff5e98,stroke-width:2px,color:#0f172a,rx:12px;
-    classDef activeStyle fill:#ff5e98,stroke:#ff5e98,stroke-width:2px,color:#ffffff,rx:12px,font-weight:bold;
-    classDef successStyle fill:#10b981,stroke:#10b981,stroke-width:2px,color:#ffffff,rx:12px,font-weight:bold;
-
-    A["📦 1. Clone Official Repository<br/><code>git clone https://github.com/ravi-c029/appistry-the-hidden-key.git</code>"]:::stepStyle --> B["🔍 2. Investigate Clues & Repository<br/>Explore hints published on Live Stage"]:::stepStyle
-    B --> C["🧩 3. Deduce 3-Part Passphrase<br/>Combine Council, Identity & Hybrid origins"]:::stepStyle
-    C --> D["⚡ 4. Execute Offline CLI Unlock<br/><code>npm run unlock</code>"]:::stepStyle
-    D --> E{"🔑 Scrypt KDF & AES-256-GCM Check"}
-    E -- "Passphrase Mismatch" --> F["❌ Decryption Failed<br/>Re-examine Clues & Try Again"]:::stepStyle
+    A["📦 1. Clone Official Repository"] --> B["🔍 2. Investigate Clues & Repository"]
+    B --> C["🧩 3. Deduce 3-Part Passphrase"]
+    C --> D["⚡ 4. Execute Offline CLI Unlock (npm run unlock)"]
+    D --> E{"🔑 Scrypt KDF Check"}
+    E -->|Passphrase Mismatch| F["❌ Decryption Failed (Re-examine Clues)"]
     F --> C
-    E -- "Passphrase Correct" --> G["🔓 Decrypted Keyword Revealed!"]:::activeStyle
-    G --> H["🌐 5. Submit at Live Web Portal<br/>Verify with official @iitp.ac.in email"]:::stepStyle
-    H --> I["🛡️ Atomic Server-Side Timestamp & HMAC Audit"]:::stepStyle
-    I --> J["🏆 6. Official Leaderboard Ranking & First Blood Trophy!"]:::successStyle
+    E -->|Passphrase Correct| G["🔓 Decrypted Keyword Revealed!"]
+    G --> H["🌐 5. Submit at Live Web Portal (/submit)"]
+    H --> I["🛡️ Atomic Server-Side Verification"]
+    I --> J["🏆 6. Official Leaderboard & First Blood Bounty!"]
 ```
 
 ---
@@ -138,6 +134,8 @@ The First Blood bounty is awarded to the first server-verified submission!
 
 ## 🛡️ Rules of Engagement
 
+> 📄 **Official Document:** Download the complete 4-page [**Official Participant Rulebook (PDF)**](./public/Appistry_The_Hidden_Key_Participant_Rulebook.pdf) featuring design specs, cryptographic criteria, and competition directives.
+
 | # | Regulation | Technical Implementation |
 |---|------------|--------------------------|
 | **01** | **IIT Patna Eligibility Only** | Enforced strictly on client and server. Only verified `@iitp.ac.in` student email domains are accepted. |
@@ -156,11 +154,11 @@ The First Blood bounty is awarded to the first server-verified submission!
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Participant as 👨‍💻 IIT Patna Student
-    participant Portal as 🌐 Next.js Portal (/submit)
-    participant Server as ⚡ Vercel Serverless Function
-    participant DB as 🗄️ Database (Postgres / SQLite)
-    participant Admin as 🛡️ APPISTRY Admin Console
+    actor Participant as "IIT Patna Student"
+    participant Portal as "Web Portal (/submit)"
+    participant Server as "Vercel Serverless Function"
+    participant DB as "Database (Postgres / SQLite)"
+    participant Admin as "Admin Console"
 
     Participant->>Portal: Enters Name, @iitp.ac.in Email & Keyword
     Portal->>Server: POST /api/submit

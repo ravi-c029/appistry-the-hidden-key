@@ -100,13 +100,23 @@ export default function RulesPage() {
           {/* Rules Grid & First Blood Bounty Content */}
           <div className="max-w-[960px] mx-auto py-4">
 
-            <div className="mb-6">
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
-                Official Regulations
-              </h3>
-              <p className="text-xs text-slate-500 font-mono mt-0.5 font-medium">
-                8 binding directives for all participants
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div>
+                <h3 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
+                  Official Regulations
+                </h3>
+                <p className="text-xs text-slate-500 font-mono mt-0.5 font-medium">
+                  8 binding directives for all participants
+                </p>
+              </div>
+              <a
+                href="/Appistry_The_Hidden_Key_Participant_Rulebook.pdf"
+                download="Appistry_The_Hidden_Key_Participant_Rulebook.pdf"
+                className="neu-card-sm inline-flex items-center gap-2 text-xs font-mono font-bold text-slate-700 hover:text-[#ff5e98] px-4 py-2.5 rounded-full transition-all cursor-pointer shadow-xs whitespace-nowrap self-start sm:self-auto active:scale-95"
+              >
+                <span>📥</span>
+                <span>Download Rulebook PDF</span>
+              </a>
             </div>
 
             {/* Rules Grid */}
