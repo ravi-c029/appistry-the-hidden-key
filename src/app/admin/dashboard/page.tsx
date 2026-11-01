@@ -204,19 +204,24 @@ export default function AdminDashboardPage() {
   }
 
   // Create Hint
-  const handleCreateHint = async (e: React.FormEvent) => {
+  const handleCreateHint = async (e: React.FormEvent, publishImmediately = true) => {
     e.preventDefault()
     if (!newHintTitle || !newHintContent) return
     const res = await fetch('/api/admin/hints', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ title: newHintTitle, content: newHintContent, order: hints.length + 1, isPublished: false }),
+      body: JSON.stringify({
+        title: newHintTitle,
+        content: newHintContent,
+        order: hints.length + 1,
+        isPublished: publishImmediately,
+      }),
     })
     if (res.ok) {
       setNewHintTitle('')
       setNewHintContent('')
       fetchHints()
-      showToast('Hint created successfully!')
+      showToast(publishImmediately ? 'Hint published live on website!' : 'Hint saved as draft.')
     }
   }
 
@@ -747,19 +752,35 @@ export default function AdminDashboardPage() {
                     required
                   />
                 </div>
-                <button
-                  type="submit"
-                  className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer self-start w-full sm:w-auto"
-                >
-                  Create Hint (Draft)
-                </button>
+                <div className="flex items-center gap-3 pt-1 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={(e) => handleCreateHint(e, true)}
+                    className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer"
+                  >
+                    🚀 Publish Live to Website
+                  </button>
+                  <button
+                    type="button"
+                    onClick={(e) => handleCreateHint(e, false)}
+                    className="neu-card-sm text-slate-700 font-bold text-xs uppercase tracking-wider py-3.5 px-5 rounded-full transition-all hover:text-slate-900 cursor-pointer"
+                  >
+                    Save as Draft
+                  </button>
+                </div>
               </form>
             </div>
 
             <div className="neu-card p-5 sm:p-8 rounded-[28px]">
-              <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
+              <h2 className="text-lg font-black text-slate-900 mb-4 tracking-tight">
                 Existing Hints ({hints.length})
               </h2>
+
+              {hints.some(h => !h.isPublished) && (
+                <div className="mb-4 bg-amber-50 border border-amber-200/80 rounded-2xl p-3.5 text-xs text-amber-800 font-medium flex items-center justify-between gap-3">
+                  <span>⚠️ You have <strong>unpublished draft hints</strong>! Click <strong>"Publish Live"</strong> below so participants can see them on the public stage.</span>
+                </div>
+              )}
               {hints.length === 0 ? (
                 <div className="bg-[#f8fafc] rounded-2xl p-6 text-center text-slate-400 text-xs italic border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
                   No hints created yet.

@@ -11,30 +11,50 @@ interface TimeLeft {
 }
 
 export default function CountdownTimer() {
-  const [targetDate, setTargetDate] = useState<Date | null>(null)
   const [timeLeft, setTimeLeft] = useState<TimeLeft | null>(null)
   const [eventStatus, setEventStatus] = useState<string>('UPCOMING')
+  const [timerBadge, setTimerBadge] = useState<string>('COMMENCES IN')
 
   useEffect(() => {
+    // Default fallback dates: 3 Nov to 8 Nov 2026
+    let target = new Date('2026-11-03T00:00:00+05:30')
+
+    const updateTargetFromConfig = (data: { eventStatus?: string; eventStartAt?: string; eventEndAt?: string }) => {
+      const now = Date.now()
+      const start = data.eventStartAt ? new Date(data.eventStartAt) : new Date('2026-11-03T00:00:00+05:30')
+      const end = data.eventEndAt ? new Date(data.eventEndAt) : new Date('2026-11-08T23:59:59+05:30')
+
+      if (now >= start.getTime() && now < end.getTime()) {
+        target = end
+        setEventStatus('LIVE')
+        setTimerBadge('HUNT IS LIVE • CONCLUDES IN')
+      } else if (now < start.getTime()) {
+        target = start
+        setEventStatus('UPCOMING')
+        setTimerBadge('CHALLENGE COMMENCES IN')
+      } else {
+        target = end
+        setEventStatus('ENDED')
+        setTimerBadge('CHALLENGE CONCLUDED')
+      }
+    }
+
     fetch('/api/event/config')
       .then(r => r.json())
       .then(data => {
-        setEventStatus(data.eventStatus || 'UPCOMING')
-        if (data.eventStartAt) {
-          setTargetDate(new Date(data.eventStartAt))
+        if (data && !data.error) {
+          updateTargetFromConfig(data)
+        } else {
+          updateTargetFromConfig({})
         }
       })
       .catch(() => {
-        setTargetDate(new Date(Date.now() + 48 * 60 * 60 * 1000))
+        updateTargetFromConfig({})
       })
-  }, [])
-
-  useEffect(() => {
-    if (!targetDate) return
 
     const calculate = () => {
       const now = Date.now()
-      const total = targetDate.getTime() - now
+      const total = target.getTime() - now
 
       if (total <= 0) {
         setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0, total: 0 })
@@ -52,31 +72,21 @@ export default function CountdownTimer() {
     calculate()
     const interval = setInterval(calculate, 1000)
     return () => clearInterval(interval)
-  }, [targetDate])
-
-  if (eventStatus === 'LIVE') {
-    return (
-      <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-400 text-xs font-semibold uppercase tracking-wider">
-        <span className="w-2 h-2 rounded-full bg-emerald-400" />
-        <span>Hunt Is Live</span>
-      </div>
-    )
-  }
-
-  if (eventStatus === 'ENDED') {
-    return (
-      <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full border border-red-500/30 bg-red-500/10 text-red-400 text-xs font-semibold uppercase tracking-wider">
-        <span>Event Concluded</span>
-      </div>
-    )
-  }
+  }, [])
 
   if (!timeLeft) {
     return (
-      <div className="flex gap-2 sm:gap-4">
-        {['Days', 'Hours', 'Mins', 'Secs'].map((label, i) => (
-          <div key={i} className="w-16 sm:w-22 h-18 sm:h-24 rounded-2xl bg-[#070e24] border border-white/10 animate-pulse" />
-        ))}
+      <div className="flex flex-col items-center">
+        <div className="flex items-center gap-2 sm:gap-4">
+          {['Days', 'Hours', 'Mins', 'Secs'].map((label, i) => (
+            <div key={i} className="flex flex-col items-center">
+              <div className="relative w-16 sm:w-22 h-18 sm:h-24 rounded-[18px] sm:rounded-[22px] bg-white border border-white/90 flex items-center justify-center shadow-[8px_8px_20px_rgba(166,180,200,0.35),-8px_-8px_20px_#ffffff] animate-pulse">
+                <span className="font-mono text-2xl sm:text-4xl font-black text-slate-300">00</span>
+              </div>
+              <span className="text-xs font-bold tracking-wider uppercase text-slate-400 mt-2">{label}</span>
+            </div>
+          ))}
+        </div>
       </div>
     )
   }
@@ -90,11 +100,27 @@ export default function CountdownTimer() {
 
   return (
     <div className="flex flex-col items-center">
+      {/* Live / Status Indicator Pill */}
+      <div className="mb-4">
+        <span className={`inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full text-[11px] font-mono font-bold tracking-wider uppercase border shadow-xs ${
+          eventStatus === 'LIVE'
+            ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
+            : eventStatus === 'ENDED'
+              ? 'bg-rose-50 text-rose-700 border-rose-200'
+              : 'bg-pink-50 text-[#ff5e98] border-pink-200'
+        }`}>
+          <span className={`w-2 h-2 rounded-full ${
+            eventStatus === 'LIVE' ? 'bg-emerald-500 animate-ping' : 'bg-[#ff5e98]'
+          }`} />
+          <span>{timerBadge}</span>
+        </span>
+      </div>
+
       <div className="flex items-center gap-2 sm:gap-4">
         {units.map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center">
             
-            {/* Timer Pod (Neuomorphic Clay) */}
+            {/* Timer Pod (Neuomorphic Clay White) */}
             <div className="relative w-16 sm:w-22 h-18 sm:h-24 rounded-[18px] sm:rounded-[22px] bg-white border border-white/90 flex items-center justify-center shadow-[8px_8px_20px_rgba(166,180,200,0.35),-8px_-8px_20px_#ffffff] overflow-hidden">
               {/* Digits */}
               <span className="font-mono text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">

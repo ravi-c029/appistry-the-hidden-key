@@ -4,8 +4,8 @@ const DEFAULT_CONFIG: Record<string, string> = {
   eventTitle: 'THE HIDDEN KEY',
   eventDescription: 'A Code Mystery Hunt — Dive into the source. Find what lies beneath.',
   eventStatus: 'UPCOMING',
-  eventStartAt: new Date(Date.now() + 48 * 60 * 60 * 1000).toISOString(), // 48h from now
-  eventEndAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
+  eventStartAt: '2026-11-03T00:00:00+05:30',
+  eventEndAt: '2026-11-08T23:59:59+05:30',
   repositoryUrl: 'https://github.com/ravi-c029/appistry-the-hidden-key',
   submissionsOpen: 'true',
   leaderboardPublic: 'true',
@@ -45,15 +45,24 @@ const DEFAULT_CONFIG: Record<string, string> = {
 }
 
 export async function getEventConfig(key: string): Promise<string | null> {
-  const record = await prisma.eventConfig.findUnique({ where: { key } })
-  return record?.value ?? DEFAULT_CONFIG[key] ?? null
+  try {
+    const record = await prisma.eventConfig.findUnique({ where: { key } })
+    return record?.value ?? DEFAULT_CONFIG[key] ?? null
+  } catch {
+    return DEFAULT_CONFIG[key] ?? null
+  }
 }
 
 export async function getAllEventConfig(): Promise<Record<string, string>> {
-  const records = await prisma.eventConfig.findMany()
-  const config: Record<string, string> = { ...DEFAULT_CONFIG }
-  records.forEach(r => { config[r.key] = r.value })
-  return config
+  try {
+    const records = await prisma.eventConfig.findMany()
+    const config: Record<string, string> = { ...DEFAULT_CONFIG }
+    records.forEach(r => { config[r.key] = r.value })
+    return config
+  } catch (err) {
+    console.warn('[event-config] DB unavailable, using fallback DEFAULT_CONFIG:', err)
+    return { ...DEFAULT_CONFIG }
+  }
 }
 
 export async function setEventConfig(key: string, value: string): Promise<void> {
