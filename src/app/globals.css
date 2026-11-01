@@ -903,13 +903,13 @@ h1, h2, h3, h4, h5, h6 {
    ================================================================ */
 
 :root {
-  --bg-dark: #040814;
-  --bg-deep-blue: #09172c;
-  --bg-indigo: #0c1c36;
-  --bg-panel: #060914;
-  --bg-purple-dark: #110825;
-  --neon-cyan: #00d2ff;
-  --neon-pink: #ff007f;
+  --bg-dark: #eef2f6;
+  --bg-deep-blue: #f0f4f8;
+  --bg-indigo: #ffffff;
+  --bg-panel: #ffffff;
+  --bg-purple-dark: #f8fafc;
+  --neon-cyan: #00b4d8;
+  --neon-pink: #ff5e98;
   --neon-purple: #7942f7;
   --neon-purple-light: #9d6fff;
 }
