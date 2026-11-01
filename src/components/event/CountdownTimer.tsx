@@ -94,20 +94,16 @@ export default function CountdownTimer() {
         {units.map(({ value, label }) => (
           <div key={label} className="flex flex-col items-center">
             
-            {/* Timer Pod */}
-            <div className="relative w-16 sm:w-22 h-18 sm:h-24 rounded-[16px] sm:rounded-[18px] bg-[#070e24]/90 border border-[#00d2ff]/20 flex items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.8)] overflow-hidden">
-              {/* Notches */}
-              <div className="absolute top-0 left-0 w-2 h-2 rounded-br-sm bg-[#00d2ff]" />
-              <div className="absolute bottom-0 right-0 w-2 h-2 rounded-tl-sm bg-[#00d2ff]" />
-
+            {/* Timer Pod (Neuomorphic Clay) */}
+            <div className="relative w-16 sm:w-22 h-18 sm:h-24 rounded-[18px] sm:rounded-[22px] bg-white border border-white/90 flex items-center justify-center shadow-[8px_8px_20px_rgba(166,180,200,0.35),-8px_-8px_20px_#ffffff] overflow-hidden">
               {/* Digits */}
-              <span className="font-mono text-2xl sm:text-4xl font-bold text-white tracking-tight">
+              <span className="font-mono text-2xl sm:text-4xl font-black text-slate-900 tracking-tight">
                 {String(value).padStart(2, '0')}
               </span>
             </div>
 
             {/* Label */}
-            <span className="text-xs font-medium tracking-wide text-white/60 mt-2">
+            <span className="text-xs font-bold tracking-wider uppercase text-slate-500 mt-2">
               {label}
             </span>
           </div>

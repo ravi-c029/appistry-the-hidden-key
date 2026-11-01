@@ -57,7 +57,7 @@ export default function SubmitPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-[#030612] text-white selection:bg-[#00d2ff] selection:text-black font-sans overflow-x-hidden">
+    <div className="relative min-h-screen w-full bg-[#eef2f6] text-slate-800 selection:bg-[#ff5e98] selection:text-white font-sans overflow-x-hidden">
       <AntiInspection />
       <RibbonWaves />
       <CyberGrid />
@@ -108,23 +108,23 @@ export default function SubmitPage() {
 
             {state === 'success' ? (
               /* ── Success State ── */
-              <div className="rounded-[24px] p-8 sm:p-10 text-center shadow-[0_20px_60px_rgba(0,0,0,0.9)] border border-[#00d2ff]/40 bg-[#070e24]/90">
-                <div className="w-16 h-16 rounded-2xl bg-[#00d2ff]/10 border border-[#00d2ff]/30 flex items-center justify-center text-3xl mx-auto mb-4 shadow-[0_0_25px_rgba(0,210,255,0.3)] text-[#00d2ff]">
+              <div className="neu-card rounded-[32px] p-8 sm:p-10 text-center">
+                <div className="w-16 h-16 rounded-2xl neu-icon-btn flex items-center justify-center text-3xl mx-auto mb-4 text-[#ff5e98]">
                   ✓
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight uppercase mb-2">
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight uppercase mb-2">
                   Submission Received
                 </h2>
-                <div className="inline-block px-4 py-1 rounded-full border border-[#00d2ff]/40 bg-[#00d2ff]/10 text-xs font-mono font-bold text-[#00d2ff] mb-4">
+                <div className="neu-card-sm inline-block px-5 py-1.5 rounded-full text-xs font-mono font-bold text-[#ff5e98] mb-4">
                   Recorded &bull; Pending Event Conclusion
                 </div>
-                <p className="text-xs sm:text-sm text-white/80 max-w-md mx-auto mb-6 leading-relaxed">
+                <p className="text-xs sm:text-sm text-slate-600 max-w-md mx-auto mb-6 leading-relaxed font-medium">
                   {message}
                 </p>
                 <div>
                   <Link
                     href="/leaderboard"
-                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] text-white font-bold text-xs uppercase tracking-wider px-8 py-3 rounded-full hover:opacity-90 transition-all shadow-[0_4px_20px_rgba(0,210,255,0.4)]"
+                    className="neu-btn-gradient-pink inline-flex items-center gap-2 text-white font-bold text-xs uppercase tracking-wider px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
                   >
                     <span>View Live Leaderboard</span>
                     <span>&rarr;</span>
@@ -133,12 +133,12 @@ export default function SubmitPage() {
               </div>
             ) : (
               /* ── Form Card ── */
-              <div className="rounded-[24px] bg-[#070e24]/90 border border-[#00d2ff]/20 p-7 sm:p-9 shadow-[0_25px_60px_rgba(0,0,0,0.85)]">
-                <div className="mb-6 pb-4 border-b border-white/10">
-                  <h3 className="text-lg font-bold text-white uppercase tracking-wider">
+              <div className="neu-card rounded-[32px] p-7 sm:p-9">
+                <div className="mb-6 pb-4 border-b border-slate-200/60">
+                  <h3 className="text-lg font-black text-slate-900 uppercase tracking-wider">
                     Official Submission Portal
                   </h3>
-                  <p className="text-xs text-white/50 font-mono mt-0.5">
+                  <p className="text-xs text-slate-500 font-mono mt-0.5 font-medium">
                     Enter the passphrase revealed via offline CLI unlock
                   </p>
                 </div>
@@ -146,13 +146,13 @@ export default function SubmitPage() {
                 <form onSubmit={handleSubmit} className="space-y-5" noValidate>
 
                   <div>
-                    <label htmlFor="submit-name" className="block text-xs font-mono uppercase tracking-wider text-white/70 mb-2">
+                    <label htmlFor="submit-name" className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">
                       Full Name
                     </label>
                     <input
                       id="submit-name"
                       type="text"
-                      className="w-full bg-[#02050f] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#00d2ff] transition-colors"
+                      className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                       placeholder="e.g. Aman Kumar"
                       value={name}
                       onChange={e => setName(e.target.value)}
@@ -165,13 +165,13 @@ export default function SubmitPage() {
                   </div>
 
                   <div>
-                    <label htmlFor="submit-email" className="block text-xs font-mono uppercase tracking-wider text-white/70 mb-2">
-                      IIT Patna Email (@iitp.ac.in) <span className="text-[#00d2ff] font-semibold">• 1 Submission Only</span>
+                    <label htmlFor="submit-email" className="block text-xs font-mono uppercase tracking-wider text-slate-700 font-bold mb-2">
+                      IIT Patna Email (@iitp.ac.in) <span className="text-[#ff5e98] font-bold">• 1 Submission Only</span>
                     </label>
                     <input
                       id="submit-email"
                       type="email"
-                      className="w-full bg-[#02050f] border border-white/15 rounded-xl px-4 py-3 text-sm text-white placeholder-white/30 focus:outline-none focus:border-[#00d2ff] transition-colors"
+                      className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
                       placeholder="student_roll@iitp.ac.in"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
@@ -179,19 +179,19 @@ export default function SubmitPage() {
                       disabled={state === 'loading'}
                       autoComplete="email"
                     />
-                    <p className="text-[11px] text-white/40 mt-1">
+                    <p className="text-[11px] text-slate-500 mt-1.5 font-medium">
                       Strictly @iitp.ac.in student emails only. Each participant can submit only 1 response.
                     </p>
                   </div>
 
                   <div>
-                    <label htmlFor="submit-keyword" className="block text-xs font-mono uppercase tracking-wider text-[#00d2ff] font-semibold mb-2">
+                    <label htmlFor="submit-keyword" className="block text-xs font-mono uppercase tracking-wider text-[#ff5e98] font-black mb-2">
                       Discovered Secret Keyword
                     </label>
                     <input
                       id="submit-keyword"
                       type="text"
-                      className="w-full bg-[#02050f] border border-[#00d2ff]/40 rounded-xl px-4 py-3 text-sm text-[#00d2ff] font-mono tracking-wider placeholder-white/30 focus:outline-none focus:border-[#00d2ff] shadow-[0_0_15px_rgba(0,210,255,0.1)] transition-colors"
+                      className="neu-input w-full rounded-2xl px-4 py-3.5 text-sm text-[#ff5e98] font-mono font-bold tracking-wider placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/40 transition-all"
                       placeholder="Enter the revealed secret phrase..."
                       value={keyword}
                       onChange={e => setKeyword(e.target.value)}
@@ -202,13 +202,13 @@ export default function SubmitPage() {
                       autoCapitalize="off"
                       spellCheck={false}
                     />
-                    <p className="text-[11px] text-white/40 mt-1">
-                      Revealed exclusively via <code className="text-white/70 font-mono">npm run unlock</code> in the challenge repository.
+                    <p className="text-[11px] text-slate-500 mt-1.5 font-medium">
+                      Revealed exclusively via <code className="text-slate-800 font-mono bg-slate-200/50 px-1.5 py-0.5 rounded">npm run unlock</code> in the challenge repository.
                     </p>
                   </div>
 
                   {state === 'error' && (
-                    <div className="rounded-xl border border-red-500/30 bg-red-500/10 p-3 text-xs text-red-300">
+                    <div className="rounded-2xl border border-rose-300 bg-rose-50 p-3.5 text-xs text-rose-700 font-medium">
                       ⚠️ {message}
                     </div>
                   )}
@@ -216,12 +216,12 @@ export default function SubmitPage() {
                   <button
                     type="submit"
                     disabled={state === 'loading'}
-                    className="w-full bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] hover:opacity-95 text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all shadow-[0_4px_25px_rgba(0,210,255,0.4)] disabled:opacity-50 cursor-pointer"
+                    className="neu-btn-gradient-pink w-full text-white font-bold text-xs uppercase tracking-wider py-4 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md disabled:opacity-50 cursor-pointer"
                   >
                     {state === 'loading' ? 'Verifying with Server...' : 'Verify & Record Submission'}
                   </button>
 
-                  <p className="text-[10px] text-center text-white/40 pt-1 font-mono">
+                  <p className="text-[11px] text-center text-slate-500 pt-1 font-mono font-medium">
                     By submitting, you agree to APPISTRY honor code and single-entry guidelines.
                   </p>
 
@@ -233,7 +233,7 @@ export default function SubmitPage() {
             <div className="text-center mt-8">
               <Link
                 href="/"
-                className="text-xs font-mono text-white/50 hover:text-[#00d2ff] transition-colors inline-flex items-center gap-1.5"
+                className="text-xs font-mono text-slate-500 hover:text-[#ff5e98] font-medium transition-colors inline-flex items-center gap-1.5"
               >
                 <span>←</span>
                 <span>Back to Main Stage</span>

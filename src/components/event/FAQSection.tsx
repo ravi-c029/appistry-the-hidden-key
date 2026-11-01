@@ -38,26 +38,26 @@ export default function FAQSection() {
     <div className="w-full">
       {/* Header */}
       <div className="text-center mb-12">
-        <span className="text-xs text-[#00d2ff] tracking-widest uppercase font-bold px-4 py-1.5 rounded-full border border-[#00d2ff]/30 bg-[#00d2ff]/10">
+        <span className="neu-card-sm text-xs text-[#0072ff] tracking-widest uppercase font-bold px-5 py-2 rounded-full inline-block">
           Support &amp; FAQ
         </span>
-        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white uppercase mt-4">
-          Frequently Asked <span className="text-[#00d2ff]">Questions</span>
+        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 uppercase mt-4">
+          Frequently Asked <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#0072ff] to-[#ff5e98]">Questions</span>
         </h2>
-        <p className="text-xs sm:text-sm text-white/60 mt-2 max-w-lg mx-auto">
+        <p className="text-xs sm:text-sm text-slate-600 mt-2 max-w-lg mx-auto font-medium">
           Operational details, eligibility rules, and unlock guidelines.
         </p>
       </div>
 
       {/* Accordion List */}
-      <div className="flex flex-col gap-3 max-w-[800px] mx-auto">
+      <div className="flex flex-col gap-4 max-w-[800px] mx-auto">
         {faqItems.map((item, i) => {
           const isOpen = openIndex === i
           return (
             <div
               key={i}
-              className={`rounded-[18px] bg-[#070e24]/85 border transition-all overflow-hidden ${
-                isOpen ? 'border-[#00d2ff]/40 shadow-[0_15px_35px_rgba(0,210,255,0.1)]' : 'border-white/10 hover:border-white/20'
+              className={`neu-card rounded-[22px] transition-all overflow-hidden ${
+                isOpen ? 'ring-2 ring-[#0072ff]/30' : ''
               }`}
             >
               <button
@@ -65,12 +65,12 @@ export default function FAQSection() {
                 onClick={() => setOpenIndex(isOpen ? null : i)}
                 aria-expanded={isOpen}
               >
-                <span className="text-sm sm:text-base font-bold text-white tracking-wide pr-4">
+                <span className="text-sm sm:text-base font-bold text-slate-900 tracking-wide pr-4">
                   {item.q}
                 </span>
 
-                <div className={`w-6 h-6 rounded-full border flex items-center justify-center shrink-0 transition-all ${
-                  isOpen ? 'border-[#00d2ff] text-[#00d2ff] bg-[#00d2ff]/10 rotate-180' : 'border-white/20 text-white/50'
+                <div className={`w-8 h-8 rounded-full neu-icon-btn flex items-center justify-center shrink-0 transition-transform ${
+                  isOpen ? 'text-[#ff5e98] rotate-180' : 'text-slate-600'
                 }`}>
                   <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <polyline points="6 9 12 15 18 9" />
@@ -79,7 +79,7 @@ export default function FAQSection() {
               </button>
 
               {isOpen && (
-                <div className="px-5 pb-5 pt-1 border-t border-white/[0.06] text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+                <div className="px-5 pb-5 pt-1 border-t border-slate-100 text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                   {item.a}
                 </div>
               )}

@@ -107,7 +107,7 @@ export default function CyberTabsShowcase({ initialTab = 'mission-brief' }: Cybe
   return (
     <div id="challenge-tabs-showcase" className="relative w-full max-w-[1240px] mx-auto py-8">
       
-      {/* ── 4 TABS NAVIGATION BAR (MATCHING IMAGE 1 EXACT CYBER STYLE) ── */}
+      {/* ── 4 TABS NAVIGATION BAR (SOFT CLAY NEUOMORPHIC PILLS) ── */}
       <div className="flex items-center justify-start sm:justify-center overflow-x-auto pb-4 mb-10 gap-2 sm:gap-3 px-2 no-scrollbar">
         {TABS.map(tab => {
           const isActive = tab.id === activeTabId
@@ -115,33 +115,33 @@ export default function CyberTabsShowcase({ initialTab = 'mission-brief' }: Cybe
             <button
               key={tab.id}
               onClick={() => setActiveTabId(tab.id)}
-              className={`flex items-center gap-2.5 px-4 sm:px-6 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all duration-300 cursor-pointer shrink-0 ${
+              className={`flex items-center gap-2.5 px-5 sm:px-6 py-2.5 rounded-full text-xs font-mono uppercase tracking-wider transition-all duration-300 cursor-pointer shrink-0 ${
                 isActive
-                  ? 'bg-gradient-to-r from-[#2962ff]/30 to-[#7942f7]/30 border border-[#00d2ff] text-white shadow-[0_0_20px_rgba(0,210,255,0.35)]'
-                  : 'bg-white/[0.04] border border-white/10 text-white/60 hover:text-white hover:border-white/20 hover:bg-white/[0.08]'
+                  ? 'bg-white text-slate-900 border border-white/90 shadow-[6px_6px_16px_rgba(166,180,200,0.4),-6px_-6px_16px_#ffffff] font-bold'
+                  : 'bg-[#edf2f7] border border-slate-200/40 text-slate-500 hover:text-slate-800 shadow-[inset_2px_2px_4px_rgba(166,180,200,0.2),inset_-2px_-2px_4px_#ffffff]'
               }`}
             >
-              <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-[#00d2ff] shadow-[0_0_8px_#00d2ff]' : 'bg-white/30'}`} />
-              <span className="font-bold">{tab.tabName}</span>
+              <span className={`w-2 h-2 rounded-full ${isActive ? 'bg-[#00b4d8] shadow-[0_0_8px_#00b4d8]' : 'bg-slate-300'}`} />
+              <span>{tab.tabName}</span>
             </button>
           )
         })}
       </div>
 
-      {/* ── DUAL COLUMN HERO FEATURE (EXACT MATCH TO IMAGE 1 REFERENCE) ── */}
+      {/* ── DUAL COLUMN HERO FEATURE ── */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
         
         {/* Left Column: Heading + Bullet List + Dual Glowing Buttons */}
         <div className="lg:col-span-7 flex flex-col justify-center">
           
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#00d2ff]/30 bg-[#00d2ff]/10 text-[#00d2ff] text-[10px] font-mono tracking-widest uppercase mb-4 w-fit">
-            <span>●</span>
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white border border-slate-200/80 shadow-[2px_2px_6px_rgba(166,180,200,0.25),-2px_-2px_6px_#ffffff] text-[#00b4d8] text-[10px] font-mono tracking-widest uppercase mb-4 w-fit font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#00b4d8]" />
             <span>{currentTab.badgeLabel}</span>
           </div>
 
-          <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-white tracking-tight leading-[1.15] mb-6">
+          <h2 className="text-3xl sm:text-4xl lg:text-[2.75rem] font-black text-slate-900 tracking-tight leading-[1.15] mb-6">
             <span>{currentTab.headlineMain} </span>
-            <span className="bg-gradient-to-r from-[#00d2ff] via-[#4d88ff] to-[#7942f7] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-[#00b4d8] via-[#2563eb] to-[#ff5e98] bg-clip-text text-transparent">
               {currentTab.headlineHighlight}
             </span>
           </h2>
@@ -149,18 +149,18 @@ export default function CyberTabsShowcase({ initialTab = 'mission-brief' }: Cybe
           {/* Glowing Bullet Features */}
           <ul className="space-y-3 mb-8">
             {currentTab.bullets.map((bullet, idx) => (
-              <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-white/85">
-                <span className="w-2 h-2 rounded-full bg-[#00d2ff] shadow-[0_0_8px_#00d2ff] shrink-0" />
+              <li key={idx} className="flex items-center gap-3 text-xs sm:text-sm text-slate-700">
+                <span className="w-2 h-2 rounded-full bg-[#00b4d8] shadow-[0_0_6px_#00b4d8] shrink-0" />
                 <span className="font-medium tracking-wide">{bullet}</span>
               </li>
             ))}
           </ul>
 
-          {/* Dual Action Buttons matching Image 1 */}
+          {/* Dual Action Buttons matching Image */}
           <div className="flex flex-wrap items-center gap-4">
             <Link
               href={currentTab.primaryBtn.href}
-              className="bg-gradient-to-r from-[#1d4ed8] via-[#2563eb] to-[#3b82f6] hover:from-[#2563eb] hover:to-[#60a5fa] text-white font-bold text-xs uppercase tracking-wider px-7 py-3 rounded-full transition-all shadow-[0_4px_25px_rgba(37,99,235,0.5)] hover:shadow-[0_6px_30px_rgba(59,130,246,0.7)] flex items-center gap-2"
+              className="neu-btn-gradient-pink font-bold text-xs uppercase tracking-wider px-7 py-3 rounded-full hover:opacity-95 transition-all flex items-center gap-2"
             >
               <span>{currentTab.primaryBtn.text}</span>
               <span>→</span>
@@ -168,7 +168,7 @@ export default function CyberTabsShowcase({ initialTab = 'mission-brief' }: Cybe
 
             <Link
               href={currentTab.secondaryBtn.href}
-              className="bg-white/[0.04] hover:bg-white/[0.08] text-white font-semibold text-xs uppercase tracking-wider px-6 py-3 rounded-full border border-white/20 hover:border-[#00d2ff]/60 transition-all"
+              className="neu-btn font-semibold text-xs uppercase tracking-wider px-6 py-3 rounded-full text-slate-700 hover:text-slate-900 transition-all"
             >
               {currentTab.secondaryBtn.text}
             </Link>
@@ -176,74 +176,73 @@ export default function CyberTabsShowcase({ initialTab = 'mission-brief' }: Cybe
 
         </div>
 
-        {/* Right Column: High-End Cyber Text + Holographic Showcase Card */}
+        {/* Right Column: High-End Clay Card Showcase */}
         <div className="lg:col-span-5 flex flex-col justify-center space-y-5">
           
-          <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+          <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
             {currentTab.paragraph1}
           </p>
 
-          <p className="text-xs sm:text-sm text-white/60 leading-relaxed font-light">
+          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed font-normal">
             {currentTab.paragraph2}
           </p>
 
-          {/* Holographic Cyber Card from Image 1 */}
-          <div className="relative rounded-2xl bg-gradient-to-br from-[#0c1836]/90 via-[#070e22]/95 to-[#160a2b]/90 border border-white/10 p-5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden group">
-            {/* Ambient inner glow */}
-            <div className="absolute top-0 right-0 w-40 h-40 bg-[#00d2ff]/10 rounded-full blur-3xl pointer-events-none" />
+          {/* Soft Clay Showcase Card (Matching Reference Card) */}
+          <div className="relative rounded-[28px] bg-white border border-white/90 p-6 shadow-[10px_10px_25px_rgba(166,180,200,0.35),-10px_-10px_25px_#ffffff] overflow-hidden group">
             
-            <div className="flex items-center justify-between mb-3 border-b border-white/10 pb-3">
+            <div className="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2">
-                <span className="w-2.5 h-2.5 rounded-full bg-[#00d2ff] animate-ping" />
-                <span className="text-[11px] font-mono text-white/80 font-bold tracking-wider">
+                <span className="w-2.5 h-2.5 rounded-full bg-[#10b981]" />
+                <span className="text-[11px] font-mono text-slate-800 font-bold tracking-wider">
                   {currentTab.tabName.toUpperCase()} PREVIEW
                 </span>
               </div>
-              <span className="text-[10px] font-mono text-[#00d2ff] bg-[#00d2ff]/10 px-2 py-0.5 rounded border border-[#00d2ff]/20">
+              <span className="text-[10px] font-mono font-bold text-[#00b4d8] bg-[#edf2f7] px-2.5 py-1 rounded-full border border-slate-200/60 shadow-[inset_1px_1px_2px_rgba(166,180,200,0.2)]">
                 ACTIVE
               </span>
             </div>
 
             {/* Dynamic Card Content depending on Tab */}
             {activeTabId === 'mission-brief' && (
-              <div className="font-mono text-xs text-white/70 space-y-1.5 bg-black/40 p-3 rounded-lg border border-white/5">
-                <p className="text-[#00d2ff]">$ git clone &lt;repo-url&gt;</p>
-                <p className="text-white/40">&gt; Verifying checksum...</p>
-                <p className="text-[#4ade80]">✓ Ready: mystery challenge unlocked</p>
+              <div className="font-mono text-xs text-slate-700 space-y-1.5 bg-[#edf2f7] p-4 rounded-2xl shadow-[inset_2px_2px_5px_rgba(166,180,200,0.25),inset_-2px_-2px_5px_#ffffff] border border-slate-200/50">
+                <p className="text-[#0284c7] font-bold">$ git clone &lt;repo-url&gt;</p>
+                <p className="text-slate-500">&gt; Verifying checksum...</p>
+                <p className="text-emerald-600 font-semibold">✓ Ready: mystery challenge unlocked</p>
               </div>
             )}
 
             {activeTabId === 'repository-cli' && (
-              <div className="font-mono text-xs text-white/70 space-y-1.5 bg-black/40 p-3 rounded-lg border border-white/5">
-                <p className="text-[#00d2ff]">$ npm run unlock</p>
-                <p className="text-[#ff007f]">&gt; Enter Passphrase: ****************</p>
-                <p className="text-[#4ade80]">✓ Decryption Successful</p>
+              <div className="font-mono text-xs text-slate-700 space-y-1.5 bg-[#edf2f7] p-4 rounded-2xl shadow-[inset_2px_2px_5px_rgba(166,180,200,0.25),inset_-2px_-2px_5px_#ffffff] border border-slate-200/50">
+                <p className="text-[#0284c7] font-bold">$ npm run unlock</p>
+                <p className="text-[#ff5e98] font-bold">&gt; Enter Passphrase: ****************</p>
+                <p className="text-emerald-600 font-semibold">✓ Decryption Successful</p>
               </div>
             )}
 
             {activeTabId === 'submit-answer' && (
-              <div className="font-mono text-xs text-white/70 space-y-1.5 bg-black/40 p-3 rounded-lg border border-white/5">
-                <p className="text-white/50">Target: POST /api/submit</p>
-                <p className="text-[#00d2ff]">Email: user@iitp.ac.in</p>
-                <p className="text-[#ff007f] font-bold">First Blood Evaluation: ATOMIC</p>
+              <div className="font-mono text-xs text-slate-700 space-y-1.5 bg-[#edf2f7] p-4 rounded-2xl shadow-[inset_2px_2px_5px_rgba(166,180,200,0.25),inset_-2px_-2px_5px_#ffffff] border border-slate-200/50">
+                <p className="text-[#0284c7] font-bold">&gt; Student: verified @iitp.ac.in</p>
+                <p className="text-[#7942f7] font-bold">&gt; Timestamp: atomic server logged</p>
+                <p className="text-emerald-600 font-semibold">✓ Rank Assigned: Leaderboard synced</p>
               </div>
             )}
 
             {activeTabId === 'rules-bounty' && (
-              <div className="font-mono text-xs text-white/70 space-y-1.5 bg-black/40 p-3 rounded-lg border border-white/5">
-                <p className="text-[#00d2ff]">● Eligibility: IIT Patna Students Only</p>
-                <p className="text-white/70">● Single verified entry per participant</p>
-                <p className="text-amber-400">● Prize: First Blood Champion Trophy</p>
+              <div className="font-mono text-xs text-slate-700 space-y-1.5 bg-[#edf2f7] p-4 rounded-2xl shadow-[inset_2px_2px_5px_rgba(166,180,200,0.25),inset_-2px_-2px_5px_#ffffff] border border-slate-200/50">
+                <p className="text-slate-600">&gt; Single submission per student: ACTIVE</p>
+                <p className="text-slate-600">&gt; Max 20/min rate protection: ACTIVE</p>
+                <p className="text-[#ff5e98] font-bold">★ First Blood Honor: UNCLAIMED</p>
               </div>
             )}
 
-            <div className="mt-4 flex items-center justify-between text-[11px] text-white/40 pt-1">
+            <div className="mt-4 flex items-center justify-between text-[11px] text-slate-500 pt-2 font-medium border-t border-slate-200/60">
               <span>APPISTRY × STC IITP</span>
-              <Link href={currentTab.primaryBtn.href} className="text-[#00d2ff] hover:underline flex items-center gap-1 font-mono">
+              <Link href={currentTab.primaryBtn.href} className="text-[#ff5e98] hover:underline flex items-center gap-1 font-mono font-bold">
                 <span>Open Dedicated Page</span>
                 <span>↗</span>
               </Link>
             </div>
+
           </div>
 
         </div>

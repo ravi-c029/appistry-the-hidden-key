@@ -51,7 +51,7 @@ const RULES_LIST = [
 
 export default function RulesPage() {
   return (
-    <div className="relative min-h-screen w-full bg-[#030612] text-white selection:bg-[#00d2ff] selection:text-black font-sans overflow-x-hidden">
+    <div className="relative min-h-screen w-full bg-[#eef2f6] text-slate-800 selection:bg-[#ff5e98] selection:text-white font-sans overflow-x-hidden">
       <AntiInspection />
       <RibbonWaves />
       <CyberGrid />
@@ -101,28 +101,28 @@ export default function RulesPage() {
           <div className="max-w-[960px] mx-auto py-4">
 
             <div className="mb-6">
-              <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight">
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight">
                 Official Regulations
               </h3>
-              <p className="text-xs text-white/50 font-mono mt-0.5">
+              <p className="text-xs text-slate-500 font-mono mt-0.5 font-medium">
                 8 binding directives for all participants
               </p>
             </div>
 
             {/* Rules Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
               {RULES_LIST.map((rule, idx) => (
                 <div
                   key={idx}
-                  className="rounded-2xl bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_15px_40px_rgba(0,0,0,0.6)] hover:border-[#00d2ff]/40 transition-all"
+                  className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]"
                 >
                   <div className="flex items-center gap-3 mb-2.5">
-                    <span className="w-8 h-8 rounded-full bg-[#00d2ff]/10 border border-[#00d2ff]/30 text-[#00d2ff] font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                    <span className="w-9 h-9 rounded-full neu-icon-btn text-slate-800 font-mono text-xs font-black flex items-center justify-center shrink-0">
                       {rule.num}
                     </span>
-                    <h4 className="text-base font-bold text-white tracking-wide">{rule.title}</h4>
+                    <h4 className="text-base font-black text-slate-900 tracking-wide">{rule.title}</h4>
                   </div>
-                  <p className="text-xs text-white/70 leading-relaxed font-light pl-11">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-12">
                     {rule.desc}
                   </p>
                 </div>
@@ -130,17 +130,19 @@ export default function RulesPage() {
             </div>
 
             {/* First Blood Bounty Banner */}
-            <div className="rounded-2xl bg-gradient-to-r from-[#0a1835]/90 via-[#070e24]/90 to-[#120a2e]/90 border border-[#00d2ff]/40 p-6 sm:p-8 text-center shadow-[0_20px_50px_rgba(0,0,0,0.8)] mb-8">
-              <div className="text-3xl mb-2">⚡</div>
-              <h3 className="text-xl sm:text-2xl font-black text-white tracking-tight uppercase mb-2">
+            <div className="neu-card rounded-[28px] p-7 sm:p-9 text-center mb-8">
+              <div className="w-14 h-14 rounded-2xl neu-icon-btn mx-auto flex items-center justify-center text-3xl mb-3 text-[#ff5e98]">
+                ⚡
+              </div>
+              <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight uppercase mb-2">
                 The First Blood Bounty
               </h3>
-              <p className="text-xs sm:text-sm text-white/70 max-w-lg mx-auto mb-6">
+              <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto mb-6 font-medium leading-relaxed">
                 The first participant to decrypt the mystery artifact and register a valid keyword submission on the server will receive the First Blood award and headline APPISTRY communications.
               </p>
               <Link
                 href="/mission"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] text-white text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full hover:opacity-95 transition-all shadow-[0_4px_25px_rgba(0,210,255,0.4)]"
+                className="neu-btn-gradient-pink inline-flex items-center gap-2 text-white text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
               >
                 <span>Read Mission Protocol</span>
                 <span>→</span>
@@ -151,7 +153,7 @@ export default function RulesPage() {
             <div className="text-center mt-6">
               <Link
                 href="/"
-                className="text-xs font-mono text-white/50 hover:text-[#00d2ff] transition-colors inline-flex items-center gap-1.5"
+                className="text-xs font-mono text-slate-500 hover:text-[#ff5e98] transition-colors inline-flex items-center gap-1.5 font-medium"
               >
                 <span>←</span>
                 <span>Back to Main Stage</span>

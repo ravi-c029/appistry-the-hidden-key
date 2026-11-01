@@ -30,43 +30,45 @@ export default function LiveStats() {
       value: stats?.totalSubmissions ?? '0',
       label: 'Total Submissions',
       sublabel: 'Answers evaluated by server',
-      accent: '#00d2ff',
+      accent: '#00b4d8',
+      barGradient: 'linear-gradient(90deg, #00c6ff 0%, #0072ff 100%)',
+      pct: '100%',
     },
     {
       value: stats?.validSubmissions ?? '0',
       label: 'Verified Solves',
       sublabel: 'Cryptographically correct keys',
       accent: '#2563eb',
+      barGradient: 'linear-gradient(90deg, #2563eb 0%, #7942f7 100%)',
+      pct: stats?.validSubmissions ? '100%' : '15%',
     },
     {
       value: stats?.activeVisitors ?? '1',
       label: 'Active Participants',
       sublabel: 'Live connected sessions',
-      accent: '#7942f7',
+      accent: '#ff5e98',
+      barGradient: 'linear-gradient(90deg, #ff5e98 0%, #ff758c 100%)',
+      pct: '85%',
     },
     {
       value: stats?.firstBloodClaimed ? 'Claimed' : 'Unclaimed',
       label: 'First Blood Bounty',
       sublabel: stats?.firstBloodClaimed ? 'Champion logged on server' : 'Awaiting fastest solver',
-      accent: stats?.firstBloodClaimed ? '#ff007f' : '#00d2ff',
+      accent: stats?.firstBloodClaimed ? '#ff5e98' : '#f59e0b',
+      barGradient: stats?.firstBloodClaimed
+        ? 'linear-gradient(90deg, #ff5e98 0%, #ff758c 100%)'
+        : 'linear-gradient(90deg, #f6d365 0%, #fda085 100%)',
+      pct: stats?.firstBloodClaimed ? '100%' : '35%',
     },
   ]
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {items.map((item, idx) => (
         <div
           key={idx}
-          className="relative rounded-[20px] bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_15px_40px_rgba(0,0,0,0.7)] overflow-hidden transition-all hover:border-[#00d2ff]/40"
+          className="relative rounded-[28px] bg-white border border-white/90 p-6 shadow-[10px_10px_25px_rgba(166,180,200,0.35),-10px_-10px_25px_#ffffff] transition-all hover:-translate-y-1"
         >
-          {/* Subtle Corner Notches */}
-          <div className="absolute top-0 left-0 w-3 h-3 pointer-events-none">
-            <div className="w-1.5 h-1.5 rounded-br-sm" style={{ backgroundColor: item.accent }} />
-          </div>
-          <div className="absolute bottom-0 right-0 w-3 h-3 pointer-events-none flex items-end justify-end">
-            <div className="w-1.5 h-1.5 rounded-tl-sm" style={{ backgroundColor: item.accent }} />
-          </div>
-
           {/* Metric Value */}
           <div
             className="font-mono text-3xl sm:text-4xl font-black tracking-tight"
@@ -76,13 +78,25 @@ export default function LiveStats() {
           </div>
 
           {/* Label */}
-          <div className="text-sm font-bold text-white tracking-wide mt-2">
+          <div className="text-sm font-bold text-slate-800 tracking-wide mt-2">
             {item.label}
           </div>
 
           {/* Sublabel */}
-          <div className="text-xs text-white/50 leading-relaxed mt-1 font-light">
+          <div className="text-xs text-slate-500 leading-relaxed mt-1 font-normal">
             {item.sublabel}
+          </div>
+
+          {/* Soft Inset Pill Progress Bar (Exact match to reference image slider pills) */}
+          <div className="mt-4 w-full h-3 rounded-full bg-[#edf2f7] shadow-[inset_2px_2px_4px_rgba(166,180,200,0.3),inset_-2px_-2px_4px_#ffffff] p-0.5 overflow-hidden">
+            <div
+              className="h-full rounded-full transition-all duration-700"
+              style={{
+                width: item.pct,
+                background: item.barGradient,
+                boxShadow: '0 2px 6px rgba(0,0,0,0.1)',
+              }}
+            />
           </div>
         </div>
       ))}

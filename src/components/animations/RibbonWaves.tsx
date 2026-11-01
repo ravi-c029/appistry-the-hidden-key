@@ -30,9 +30,9 @@ export default function RibbonWaves() {
       >
         <defs>
           <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.6" />
-            <stop offset="50%" stopColor="#00d2ff" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#7942f7" stopOpacity="0.2" />
+            <stop offset="0%" stopColor="#00b4d8" stopOpacity="0.25" />
+            <stop offset="50%" stopColor="#ff5e98" stopOpacity="0.2" />
+            <stop offset="100%" stopColor="#7942f7" stopOpacity="0.15" />
           </linearGradient>
         </defs>
 

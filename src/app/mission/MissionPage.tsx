@@ -26,7 +26,7 @@ export default function MissionPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-[#030612] text-white selection:bg-[#00d2ff] selection:text-black font-sans overflow-x-hidden">
+    <div className="relative min-h-screen w-full bg-[#eef2f6] text-slate-800 selection:bg-[#ff5e98] selection:text-white font-sans overflow-x-hidden">
       <AntiInspection />
       <RibbonWaves />
       <CyberGrid />
@@ -76,21 +76,21 @@ export default function MissionPage() {
           <div className="max-w-[920px] mx-auto py-4">
 
             {/* Terminal Briefing */}
-            <div className="rounded-[20px] bg-[#02050f]/90 border border-[#00d2ff]/20 overflow-hidden shadow-[0_15px_40px_rgba(0,0,0,0.8)] mb-8">
-              <div className="flex items-center gap-2 px-4 py-3 border-b border-white/10 bg-white/[0.03]">
-                <div className="w-2.5 h-2.5 rounded-full bg-[#00d2ff]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#2563eb]" />
-                <div className="w-2.5 h-2.5 rounded-full bg-[#7942f7]" />
-                <span className="text-[11px] font-mono text-white/50 ml-2">
+            <div className="neu-card rounded-[24px] overflow-hidden mb-8">
+              <div className="flex items-center gap-2 px-5 py-3.5 border-b border-slate-200/60 bg-slate-50">
+                <div className="w-2.5 h-2.5 rounded-full bg-[#ff5e98]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#00c6ff]" />
+                <div className="w-2.5 h-2.5 rounded-full bg-[#10b981]" />
+                <span className="text-[11px] font-mono text-slate-500 font-bold ml-2">
                   APPISTRY SECURITY TERMINAL — STC IIT PATNA HYBRID
                 </span>
               </div>
-              <div className="p-5 font-mono text-xs sm:text-sm text-white/80 space-y-2 leading-relaxed bg-[#01030a]">
-                <p className="text-[#00d2ff]">&gt; APPISTRY CHALLENGE SUITE v2.0 [LIVE]</p>
+              <div className="p-5 font-mono text-xs sm:text-sm text-white/90 space-y-2 leading-relaxed bg-[#0b1329]">
+                <p className="text-[#00c6ff]">&gt; APPISTRY CHALLENGE SUITE v2.0 [LIVE]</p>
                 <p className="text-white/60">Initializing mystery environment...</p>
-                <p className="text-[#4ade80]">✓ Cryptographic checksum verified</p>
-                <p className="text-[#4ade80]">✓ AES-256-GCM artifact locked and sealed</p>
-                <p className="text-[#00d2ff] font-semibold mt-2">
+                <p className="text-[#10b981]">✓ Cryptographic checksum verified</p>
+                <p className="text-[#10b981]">✓ AES-256-GCM artifact locked and sealed</p>
+                <p className="text-[#ff5e98] font-semibold mt-2">
                   ⚡ DIRECTIVE: Only the genuine passphrase unlocks the secret keyword.
                 </p>
                 <p className="text-white/60">
@@ -101,48 +101,44 @@ export default function MissionPage() {
 
             {/* Step-by-Step Instructions */}
             <div className="space-y-4 mb-8">
-              <h3 className="text-lg font-bold text-white uppercase tracking-wider mb-2">
+              <h3 className="text-lg font-black text-slate-900 uppercase tracking-wider mb-2">
                 Operational Roadmap
               </h3>
               {MISSION_STEPS.map((step, i) => (
                 <div 
                   key={i} 
-                  className="relative rounded-[16px] bg-[#070e24]/80 border border-white/10 p-5 sm:p-6 transition-all hover:border-[#00d2ff]/40 shadow-[0_10px_30px_rgba(0,0,0,0.5)]"
+                  className="relative neu-card rounded-[22px] p-5 sm:p-6 transition-all hover:scale-[1.01]"
                 >
                   <div 
-                    className="absolute left-0 top-0 bottom-0 w-1 rounded-l-[16px]" 
+                    className="absolute left-0 top-0 bottom-0 w-1.5 rounded-l-[22px]" 
                     style={{ background: step.accentColor }} 
                   />
                   
                   <div className="pl-3">
                     <div className="flex items-center gap-2.5 mb-2">
                       <span 
-                        className="text-[10px] font-mono font-bold px-2 py-0.5 rounded border"
-                        style={{ 
-                          color: step.accentColor, 
-                          borderColor: step.accentColor + '40', 
-                          background: step.accentColor + '10' 
-                        }}
+                        className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full neu-card-sm"
+                        style={{ color: step.accentColor }}
                       >
                         STEP {i + 1}
                       </span>
                       <span className="text-base">{step.icon}</span>
-                      <h4 className="text-base sm:text-lg font-bold text-white">{step.title}</h4>
+                      <h4 className="text-base sm:text-lg font-black text-slate-900">{step.title}</h4>
                     </div>
 
-                    <p className="text-xs sm:text-sm text-white/70 leading-relaxed mb-3">
+                    <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium mb-3">
                       {step.description}
                     </p>
 
                     {step.code && (
                       <div className="relative mt-2">
-                        <pre className="font-mono text-xs text-[#00d2ff] bg-[#01030a] border border-white/10 rounded-lg p-3 overflow-x-auto">
+                        <pre className="font-mono text-xs text-[#00c6ff] bg-[#0b1329] rounded-xl p-3.5 overflow-x-auto shadow-inner">
                           {step.code}
                         </pre>
                         {step.codeKey && (
                           <button
                             onClick={() => copyToClipboard(step.code!, step.codeKey!)}
-                            className="absolute top-2 right-2 text-[10px] font-mono px-2 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition-colors"
+                            className="absolute top-2.5 right-2.5 text-[10px] font-mono px-2.5 py-1 rounded-full neu-card-sm text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
                           >
                             {copied === step.codeKey ? '✓ Copied' : 'Copy'}
                           </button>
@@ -155,19 +151,19 @@ export default function MissionPage() {
             </div>
 
             {/* Repository Box */}
-            <div className="rounded-[18px] bg-gradient-to-r from-[#071e3b]/90 to-[#0c1328]/90 border border-[#00d2ff]/30 p-6 mb-8 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+            <div className="neu-card rounded-[24px] p-6 mb-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-base font-bold text-white mb-1">📦 Official Repository</h3>
-                  <p className="text-xs text-white/60 mb-2">Contains challenge scripts, hints, and locked artifact.</p>
-                  <code className="text-xs font-mono text-[#00d2ff] bg-black/40 px-3 py-1.5 rounded border border-white/10 inline-block break-all">
+                  <h3 className="text-base font-black text-slate-900 mb-1">📦 Official Repository</h3>
+                  <p className="text-xs text-slate-600 font-medium mb-2">Contains challenge scripts, hints, and locked artifact.</p>
+                  <code className="neu-input text-xs font-mono text-[#0072ff] font-bold px-3 py-1.5 rounded-xl inline-block break-all">
                     {repoUrl}
                   </code>
                 </div>
                 <div className="flex items-center gap-3 shrink-0">
                   <button
                     onClick={() => copyToClipboard(`git clone ${repoUrl}`, 'clone')}
-                    className="bg-white/10 hover:bg-white/20 text-white text-xs font-semibold px-4 py-2 rounded-full border border-white/20 transition-all"
+                    className="neu-btn text-slate-800 text-xs font-bold px-4 py-2 rounded-full cursor-pointer hover:scale-105 active:scale-95 transition-all"
                   >
                     {copied === 'clone' ? '✓ Copied!' : 'Copy Clone'}
                   </button>
@@ -175,7 +171,7 @@ export default function MissionPage() {
                     href={repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-gradient-to-r from-[#00d2ff] to-[#2563eb] text-white text-xs font-bold px-5 py-2 rounded-full transition-all shadow-[0_2px_15px_rgba(0,210,255,0.4)]"
+                    className="neu-btn-gradient-blue text-white text-xs font-bold px-5 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
                   >
                     GitHub →
                   </a>
@@ -184,22 +180,22 @@ export default function MissionPage() {
             </div>
 
             {/* Prerequisites */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-8">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
               {IDE_STEPS.map((item, i) => (
-                <div key={i} className="rounded-xl bg-[#070e24]/80 border border-white/10 p-4 text-center">
+                <div key={i} className="neu-card rounded-2xl p-4 text-center">
                   <div className="text-2xl mb-1">{item.icon}</div>
-                  <div className="text-xs font-bold text-white">{item.title}</div>
-                  <div className="text-[10px] text-white/50 mt-1">{item.description}</div>
+                  <div className="text-xs font-black text-slate-900">{item.title}</div>
+                  <div className="text-[10px] text-slate-500 mt-1 font-medium">{item.description}</div>
                 </div>
               ))}
             </div>
 
             {/* Final CTA Button */}
             <div className="text-center pt-2">
-              <p className="text-xs text-white/50 mb-3">Found the key? Submit immediately to secure your ranking.</p>
+              <p className="text-xs text-slate-500 mb-3 font-medium">Found the key? Submit immediately to secure your ranking.</p>
               <Link
                 href="/submit"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] text-white text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full hover:opacity-95 transition-all shadow-[0_4px_25px_rgba(0,210,255,0.4)]"
+                className="neu-btn-gradient-pink inline-flex items-center gap-2 text-white text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
               >
                 <span>Submit Discovered Keyword</span>
                 <span>→</span>
@@ -210,7 +206,7 @@ export default function MissionPage() {
             <div className="text-center mt-6">
               <Link
                 href="/"
-                className="text-xs font-mono text-white/50 hover:text-[#00d2ff] transition-colors inline-flex items-center gap-1.5"
+                className="text-xs font-mono text-slate-500 hover:text-[#ff5e98] transition-colors inline-flex items-center gap-1.5 font-medium"
               >
                 <span>←</span>
                 <span>Back to Main Stage</span>

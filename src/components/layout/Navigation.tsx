@@ -31,15 +31,15 @@ export default function Navigation() {
       <nav
         className={`fixed top-0 left-0 right-0 z-50 h-16 transition-all duration-300 flex items-center px-4 sm:px-8 ${
           scrolled 
-            ? 'bg-[#050814]/90 backdrop-blur-xl border-b border-white/10 shadow-[0_10px_30px_rgba(0,0,0,0.8)]' 
-            : 'bg-transparent border-b border-transparent'
+            ? 'bg-[#ffffff]/90 backdrop-blur-xl border-b border-slate-200/80 shadow-[0_10px_30px_rgba(166,180,200,0.25)]' 
+            : 'bg-[#eef2f6]/75 backdrop-blur-md border-b border-transparent'
         }`}
       >
         <div className="w-full max-w-[1280px] mx-auto flex items-center justify-between">
           
           {/* Brand Logo with Official Appistry Emblem */}
           <Link href="/" className="flex items-center gap-3 select-none group">
-            <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-[#00d2ff]/30 bg-[#070e24] flex items-center justify-center p-0.5 shadow-[0_0_20px_rgba(0,210,255,0.2)] group-hover:border-[#00d2ff] group-hover:shadow-[0_0_25px_rgba(0,210,255,0.4)] transition-all">
+            <div className="relative w-9 h-9 rounded-xl overflow-hidden border border-slate-200 bg-white flex items-center justify-center p-0.5 shadow-[3px_3px_8px_rgba(166,180,200,0.35),-3px_-3px_8px_#ffffff] group-hover:scale-105 transition-all">
               <Image
                 src="/images/appistry-logo.png"
                 alt="APPISTRY Logo"
@@ -49,11 +49,11 @@ export default function Navigation() {
                 priority
               />
             </div>
-            <div className="flex flex-col gap-1">
-              <span className="text-lg font-black tracking-[0.08em] uppercase text-white group-hover:text-[#00d2ff] transition-colors leading-none">
+            <div className="flex flex-col gap-0.5">
+              <span className="text-lg font-black tracking-[0.08em] uppercase text-slate-900 group-hover:text-[#00b4d8] transition-colors leading-none">
                 APPISTRY
               </span>
-              <span className="text-[9px] font-semibold tracking-[0.2em] text-[#ff007f] uppercase leading-none">
+              <span className="text-[9px] font-bold tracking-[0.2em] text-[#ff5e98] uppercase leading-none">
                 STC IIT PATNA HYBRID
               </span>
             </div>
@@ -67,8 +67,8 @@ export default function Navigation() {
                 href={href}
                 className={`text-xs uppercase tracking-wider font-semibold transition-colors ${
                   pathname === href 
-                    ? 'text-[#00d2ff] font-bold' 
-                    : 'text-white/70 hover:text-white'
+                    ? 'text-[#00b4d8] font-bold' 
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
               >
                 {label}
@@ -80,14 +80,14 @@ export default function Navigation() {
           <div className="flex items-center gap-4">
             <Link
               href="/admin"
-              className="text-[10px] font-mono text-white/40 hover:text-[#00d2ff] uppercase tracking-widest transition-colors hidden sm:inline-block"
+              className="text-[10px] font-mono text-slate-400 hover:text-[#00b4d8] uppercase tracking-widest transition-colors hidden sm:inline-block"
             >
               Admin
             </Link>
 
             <Link
               href="/submit"
-              className="bg-white text-[#040814] font-bold text-xs uppercase tracking-wider px-5 py-2 rounded-full hover:bg-[#00d2ff] hover:text-black transition-all shadow-[0_2px_15px_rgba(255,255,255,0.2)] hover:shadow-[0_4px_20px_rgba(0,210,255,0.4)] whitespace-nowrap hidden sm:inline-flex items-center gap-1.5"
+              className="neu-btn-gradient-pink font-bold text-xs uppercase tracking-wider px-5 py-2 rounded-full hover:opacity-95 transition-all whitespace-nowrap hidden sm:inline-flex items-center gap-1.5"
             >
               <span>Submit Key</span>
             </Link>
@@ -95,12 +95,12 @@ export default function Navigation() {
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="md:hidden flex flex-col items-end justify-center gap-1.5 p-2 text-white"
+              className="md:hidden flex flex-col items-end justify-center gap-1.5 p-2 text-slate-800"
               aria-label="Toggle navigation menu"
             >
-              <div className={`h-[2px] bg-white transition-all ${menuOpen ? 'w-6 rotate-45 translate-y-2' : 'w-6'}`} />
-              <div className={`h-[2px] bg-white transition-all ${menuOpen ? 'opacity-0' : 'w-4'}`} />
-              <div className={`h-[2px] bg-white transition-all ${menuOpen ? 'w-6 -rotate-45 -translate-y-2' : 'w-6'}`} />
+              <div className={`h-[2px] bg-slate-800 transition-all ${menuOpen ? 'w-6 rotate-45 translate-y-2' : 'w-6'}`} />
+              <div className={`h-[2px] bg-slate-800 transition-all ${menuOpen ? 'opacity-0' : 'w-4'}`} />
+              <div className={`h-[2px] bg-slate-800 transition-all ${menuOpen ? 'w-6 -rotate-45 -translate-y-2' : 'w-6'}`} />
             </button>
           </div>
 
@@ -109,13 +109,13 @@ export default function Navigation() {
 
       {/* Mobile Drawer Menu */}
       {menuOpen && (
-        <div className="fixed inset-0 z-40 bg-[#050814]/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-6 p-6 md:hidden">
+        <div className="fixed inset-0 z-40 bg-[#ffffff]/98 backdrop-blur-2xl flex flex-col items-center justify-center gap-6 p-6 md:hidden shadow-2xl">
           {NAV_ITEMS.map(({ href, label }) => (
             <Link
               key={href}
               href={href}
               onClick={closeMenu}
-              className="text-xl font-bold tracking-wider uppercase text-white hover:text-[#00d2ff] transition-colors"
+              className="text-xl font-bold tracking-wider uppercase text-slate-900 hover:text-[#00b4d8] transition-colors"
             >
               {label}
             </Link>
@@ -123,14 +123,14 @@ export default function Navigation() {
           <Link
             href="/admin"
             onClick={closeMenu}
-            className="text-sm font-mono text-white/50 hover:text-[#00d2ff] uppercase tracking-widest mt-2"
+            className="text-sm font-mono text-slate-500 hover:text-[#00b4d8] uppercase tracking-widest mt-2"
           >
             Admin Console
           </Link>
           <Link
             href="/submit"
             onClick={closeMenu}
-            className="bg-gradient-to-r from-[#00d2ff] to-[#7942f7] text-black font-bold text-sm uppercase tracking-wider px-8 py-3 rounded-full mt-4 shadow-[0_4px_20px_rgba(0,210,255,0.3)]"
+            className="neu-btn-gradient-pink text-white font-bold text-sm uppercase tracking-wider px-8 py-3 rounded-full mt-4"
           >
             Submit Discovered Key
           </Link>

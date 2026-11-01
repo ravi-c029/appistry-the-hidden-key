@@ -19,7 +19,7 @@ export default function RepositoryPage() {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-[#030612] text-white selection:bg-[#00d2ff] selection:text-black font-sans overflow-x-hidden">
+    <div className="relative min-h-screen w-full bg-[#eef2f6] text-slate-800 selection:bg-[#ff5e98] selection:text-white font-sans overflow-x-hidden">
       <AntiInspection />
       <RibbonWaves />
       <CyberGrid />
@@ -74,17 +74,17 @@ export default function RepositoryPage() {
               <div className="lg:col-span-7 space-y-4">
                 
                 {/* Clone Box */}
-                <div className="rounded-2xl bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                <div className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-[#00d2ff]">01. Clone Codebase</span>
+                    <span className="text-xs font-black text-slate-900">01. Clone Codebase</span>
                     <button
                       onClick={() => copyToClipboard(`git clone ${repoUrl}`, 'clone')}
-                      className="text-xs px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition-colors cursor-pointer"
+                      className="neu-card-sm text-xs px-3 py-1 rounded-full text-slate-700 hover:text-slate-900 font-bold transition-colors cursor-pointer"
                     >
                       {copied === 'clone' ? 'Copied' : 'Copy'}
                     </button>
                   </div>
-                  <pre className="font-mono text-xs text-white/90 bg-[#01030a] border border-white/10 rounded-xl p-3.5 overflow-x-auto">
+                  <pre className="font-mono text-xs text-white/95 bg-[#0b1329] rounded-xl p-4 overflow-x-auto shadow-inner">
                     git clone {repoUrl}
                     <br />
                     cd hidden-key-challenge
@@ -92,36 +92,36 @@ export default function RepositoryPage() {
                 </div>
 
                 {/* Install Box */}
-                <div className="rounded-2xl bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                <div className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-[#2563eb]">02. Install Dependencies</span>
+                    <span className="text-xs font-black text-[#0072ff]">02. Install Dependencies</span>
                     <button
                       onClick={() => copyToClipboard('npm install', 'install')}
-                      className="text-xs px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition-colors cursor-pointer"
+                      className="neu-card-sm text-xs px-3 py-1 rounded-full text-slate-700 hover:text-slate-900 font-bold transition-colors cursor-pointer"
                     >
                       {copied === 'install' ? 'Copied' : 'Copy'}
                     </button>
                   </div>
-                  <pre className="font-mono text-xs text-white/90 bg-[#01030a] border border-white/10 rounded-xl p-3.5 overflow-x-auto">
+                  <pre className="font-mono text-xs text-white/95 bg-[#0b1329] rounded-xl p-4 overflow-x-auto shadow-inner">
                     npm install
                   </pre>
                 </div>
 
                 {/* Unlock CLI Box */}
-                <div className="rounded-2xl bg-[#070e24]/85 border border-[#00d2ff]/30 p-5 sm:p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
+                <div className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]">
                   <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-bold text-[#00d2ff]">03. Run Offline Unlock CLI</span>
+                    <span className="text-xs font-black text-[#ff5e98]">03. Run Offline Unlock CLI</span>
                     <button
                       onClick={() => copyToClipboard('npm run unlock', 'unlock')}
-                      className="text-xs px-3 py-1 rounded bg-white/10 hover:bg-white/20 text-white/80 transition-colors cursor-pointer"
+                      className="neu-card-sm text-xs px-3 py-1 rounded-full text-slate-700 hover:text-slate-900 font-bold transition-colors cursor-pointer"
                     >
                       {copied === 'unlock' ? 'Copied' : 'Copy'}
                     </button>
                   </div>
-                  <pre className="font-mono text-xs text-[#00d2ff] bg-[#01030a] border border-white/10 rounded-xl p-3.5 overflow-x-auto">
+                  <pre className="font-mono text-xs text-[#00c6ff] bg-[#0b1329] rounded-xl p-4 overflow-x-auto shadow-inner font-bold">
                     npm run unlock
                   </pre>
-                  <p className="text-xs text-white/50 mt-2">
+                  <p className="text-xs text-slate-600 mt-2 font-medium">
                     Supplies your deduced mystery passphrase to derive the AES-256-GCM key and decrypt the payload.
                   </p>
                 </div>
@@ -131,29 +131,29 @@ export default function RepositoryPage() {
               {/* Right: Security & Architecture Specs */}
               <div className="lg:col-span-5 space-y-4">
                 
-                <div className="rounded-2xl bg-gradient-to-br from-[#0c1836]/90 via-[#070e22]/95 to-[#160a2b]/90 border border-[#00d2ff]/20 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
-                  <h3 className="text-base font-bold text-white mb-4">
+                <div className="neu-card rounded-[28px] p-6 sm:p-7">
+                  <h3 className="text-base font-black text-slate-900 mb-4 uppercase tracking-wider">
                     Cryptographic Specifications
                   </h3>
-                  <ul className="space-y-3 text-xs text-white/70 leading-relaxed font-light">
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 shrink-0" />
-                      <span><strong>Algorithm:</strong> AES-256-GCM with Authenticated Decryption tag.</span>
+                  <ul className="space-y-3.5 text-xs text-slate-700 leading-relaxed font-medium">
+                    <li className="flex items-start gap-2.5">
+                      <span className="w-2 h-2 rounded-full bg-[#ff5e98] mt-1.5 shrink-0" />
+                      <span><strong className="text-slate-900">Algorithm:</strong> AES-256-GCM with Authenticated Decryption tag.</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 shrink-0" />
-                      <span><strong>Key Derivation:</strong> Scrypt KDF with N=32768, r=8, p=1 and unique random salt.</span>
+                    <li className="flex items-start gap-2.5">
+                      <span className="w-2 h-2 rounded-full bg-[#0072ff] mt-1.5 shrink-0" />
+                      <span><strong className="text-slate-900">Key Derivation:</strong> Scrypt KDF with N=32768, r=8, p=1 and unique random salt.</span>
                     </li>
-                    <li className="flex items-start gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] mt-1.5 shrink-0" />
-                      <span><strong>Verification:</strong> Strict server-side verification in atomic transaction.</span>
+                    <li className="flex items-start gap-2.5">
+                      <span className="w-2 h-2 rounded-full bg-[#10b981] mt-1.5 shrink-0" />
+                      <span><strong className="text-slate-900">Verification:</strong> Strict server-side verification in atomic transaction.</span>
                     </li>
                   </ul>
 
-                  <div className="mt-6 pt-4 border-t border-white/10">
+                  <div className="mt-6 pt-5 border-t border-slate-200/60">
                     <Link
                       href="/submit"
-                      className="w-full inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all shadow-[0_4px_25px_rgba(0,210,255,0.4)] hover:opacity-95"
+                      className="w-full neu-btn-gradient-pink inline-flex items-center justify-center gap-2 text-white font-bold text-xs uppercase tracking-wider py-4 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md"
                     >
                       <span>Proceed to Submission Portal</span>
                       <span>→</span>
@@ -169,7 +169,7 @@ export default function RepositoryPage() {
             <div className="text-center mt-6">
               <Link
                 href="/"
-                className="text-xs font-mono text-white/50 hover:text-[#00d2ff] transition-colors inline-flex items-center gap-1.5"
+                className="text-xs font-mono text-slate-500 hover:text-[#ff5e98] transition-colors inline-flex items-center gap-1.5 font-medium"
               >
                 <span>←</span>
                 <span>Back to Main Stage</span>

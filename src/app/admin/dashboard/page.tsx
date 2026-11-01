@@ -230,8 +230,8 @@ export default function AdminDashboardPage() {
       {/* Top Header */}
       <header
         style={{
-          borderBottom: '1px solid var(--border-cyan)',
-          background: 'rgba(5, 8, 20, 0.9)',
+          borderBottom: '1px solid rgba(203, 213, 225, 0.6)',
+          background: 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(12px)',
           padding: '1rem 2rem',
           display: 'flex',
@@ -241,7 +241,7 @@ export default function AdminDashboardPage() {
       >
         <div className="flex items-center gap-3">
           <Link href="/" className="flex items-center gap-2.5">
-            <div className="w-7 h-7 rounded-lg overflow-hidden border border-[#00d2ff]/30 bg-[#070e24] p-0.5 flex items-center justify-center">
+            <div className="w-8 h-8 rounded-xl overflow-hidden neu-icon-btn p-0.5 flex items-center justify-center">
               <Image
                 src="/images/appistry-logo.png"
                 alt="Logo"
@@ -250,12 +250,12 @@ export default function AdminDashboardPage() {
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-            <span className="font-display gradient-text-cyan" style={{ fontSize: '1.25rem', fontWeight: 800 }}>
+            <span className="font-display text-slate-900" style={{ fontSize: '1.25rem', fontWeight: 900 }}>
               APPISTRY
             </span>
           </Link>
-          <span style={{ color: 'var(--border-cyan)' }}>/</span>
-          <span className="font-mono" style={{ fontSize: '0.85rem', color: 'var(--cyan-bright)', letterSpacing: '0.05em' }}>
+          <span className="text-slate-400">/</span>
+          <span className="font-mono font-bold" style={{ fontSize: '0.85rem', color: '#ff5e98', letterSpacing: '0.05em' }}>
             SUPER ADMIN CONSOLE
           </span>
         </div>
@@ -266,23 +266,23 @@ export default function AdminDashboardPage() {
               className="font-mono"
               style={{
                 fontSize: '0.8rem',
-                color: 'var(--cyan-bright)',
-                background: 'var(--cyan-ghost)',
+                color: '#0072ff',
+                background: 'rgba(0, 114, 255, 0.08)',
                 padding: '0.35rem 0.75rem',
-                borderRadius: '4px',
-                border: '1px solid var(--border-cyan)',
+                borderRadius: '9999px',
+                border: '1px solid rgba(0, 114, 255, 0.2)',
               }}
             >
               ✓ {actionMessage}
             </div>
           )}
-          <Link href="/" target="_blank" className="btn-secondary" style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem' }}>
+          <Link href="/" target="_blank" className="neu-card-sm text-slate-700 font-bold px-3 py-1.5 rounded-full" style={{ fontSize: '0.8rem' }}>
             View Public Site ↗
           </Link>
           <button
             onClick={handleLogout}
-            className="btn-secondary"
-            style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem', color: '#F87171', borderColor: 'rgba(239,68,68,0.3)' }}
+            className="neu-card-sm px-3 py-1.5 rounded-full font-bold cursor-pointer"
+            style={{ fontSize: '0.8rem', color: '#ef4444' }}
           >
             Logout
           </button>
@@ -292,8 +292,8 @@ export default function AdminDashboardPage() {
       {/* Navigation Tabs */}
       <div
         style={{
-          borderBottom: '1px solid var(--border-subtle)',
-          background: 'rgba(8, 14, 30, 0.6)',
+          borderBottom: '1px solid rgba(203, 213, 225, 0.6)',
+          background: 'rgba(255, 255, 255, 0.8)',
           padding: '0 2rem',
           display: 'flex',
           gap: '1rem',
@@ -313,11 +313,11 @@ export default function AdminDashboardPage() {
             style={{
               padding: '0.85rem 1rem',
               fontSize: '0.85rem',
-              fontWeight: 600,
+              fontWeight: 700,
               background: 'none',
               border: 'none',
-              borderBottom: activeTab === tab.key ? '2px solid var(--cyan-bright)' : '2px solid transparent',
-              color: activeTab === tab.key ? 'var(--cyan-bright)' : 'var(--text-muted)',
+              borderBottom: activeTab === tab.key ? '2.5px solid #ff5e98' : '2.5px solid transparent',
+              color: activeTab === tab.key ? '#ff5e98' : '#64748b',
               cursor: 'pointer',
               transition: 'all 0.2s',
             }}

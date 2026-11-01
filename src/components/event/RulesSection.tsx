@@ -35,29 +35,29 @@ export default function RulesSection() {
     <div className="w-full">
       {/* Header */}
       <div className="text-center mb-12">
-        <span className="text-xs text-[#00d2ff] tracking-widest uppercase font-bold px-4 py-1.5 rounded-full border border-[#00d2ff]/30 bg-[#00d2ff]/10">
+        <span className="neu-card-sm text-xs text-[#ff5e98] tracking-widest uppercase font-bold px-5 py-2 rounded-full inline-block">
           Official Guidelines
         </span>
-        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-white uppercase mt-4">
-          Challenge <span className="text-[#00d2ff]">Rules</span>
+        <h2 className="text-3xl sm:text-5xl font-black tracking-tight text-slate-900 uppercase mt-4">
+          Challenge <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#ff5e98] to-[#0072ff]">Rules</span>
         </h2>
-        <p className="text-xs sm:text-sm text-white/60 mt-2 max-w-lg mx-auto">
+        <p className="text-xs sm:text-sm text-slate-600 mt-2 max-w-lg mx-auto font-medium">
           Standard code of conduct and regulations enforced by APPISTRY — STC IIT Patna Hybrid.
         </p>
       </div>
 
       {/* 2-Column Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-[1000px] mx-auto mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 max-w-[1000px] mx-auto mb-10">
         {rules.map((rule, i) => (
           <div
             key={i}
-            className="relative rounded-[20px] bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_15px_40px_rgba(0,0,0,0.6)] overflow-hidden transition-all hover:border-[#00d2ff]/40"
+            className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]"
           >
             <div className="flex items-start gap-4">
-              <span className="w-8 h-8 rounded-full bg-[#00d2ff]/10 border border-[#00d2ff]/25 text-[#00d2ff] font-mono text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">
+              <span className="w-9 h-9 rounded-full neu-icon-btn text-slate-800 font-mono text-xs font-black flex items-center justify-center shrink-0 mt-0.5">
                 {String(i + 1).padStart(2, '0')}
               </span>
-              <p className="text-xs sm:text-sm text-white/75 leading-relaxed font-light">
+              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-medium">
                 {rule}
               </p>
             </div>
@@ -66,17 +66,19 @@ export default function RulesSection() {
       </div>
 
       {/* First Blood Guarantee Banner */}
-      <div className="relative rounded-[24px] bg-gradient-to-r from-[#0a1835]/90 via-[#070e24]/90 to-[#120a2e]/90 border border-[#00d2ff]/30 p-6 sm:p-8 text-center max-w-[800px] mx-auto shadow-[0_20px_50px_rgba(0,0,0,0.8)] overflow-hidden">
-        <div className="text-3xl mb-2">⚡</div>
-        <h3 className="text-xl sm:text-2xl font-black text-white uppercase tracking-tight mb-2">
+      <div className="neu-card rounded-[28px] p-7 sm:p-9 text-center max-w-[800px] mx-auto">
+        <div className="w-12 h-12 rounded-2xl neu-icon-btn mx-auto flex items-center justify-center text-2xl mb-3 text-[#ff5e98]">
+          ⚡
+        </div>
+        <h3 className="text-xl sm:text-2xl font-black text-slate-900 uppercase tracking-tight mb-2">
           The First Blood Bounty
         </h3>
-        <p className="text-xs sm:text-sm text-white/70 max-w-lg mx-auto mb-5 font-light leading-relaxed">
+        <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto mb-6 font-medium leading-relaxed">
           The fastest solver to verify their secret key on the server earns the First Blood title, recognized on the official IIT Patna leaderboard.
         </p>
         <Link
           href="/rules"
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-[#00d2ff] via-[#2563eb] to-[#7942f7] text-white text-xs uppercase tracking-wider font-bold px-7 py-2.5 rounded-full hover:opacity-95 transition-all shadow-[0_2px_15px_rgba(0,210,255,0.4)]"
+          className="neu-btn-gradient-pink inline-flex items-center gap-2 text-white text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
         >
           <span>View Complete Rulebook</span>
           <span>→</span>

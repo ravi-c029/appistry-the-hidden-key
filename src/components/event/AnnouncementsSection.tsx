@@ -35,10 +35,10 @@ export default function AnnouncementsSection() {
     <div className="w-full">
       {/* Clean Header */}
       <div className="flex items-center gap-3 mb-6">
-        <span className="text-xs uppercase tracking-widest text-[#00d2ff] font-bold">
+        <span className="text-xs uppercase tracking-widest text-[#00b4d8] font-bold">
           Announcements &amp; Updates
         </span>
-        <div className="flex-1 h-[1px] bg-white/10" />
+        <div className="flex-1 h-[1px] bg-slate-200" />
       </div>
 
       <div className="flex flex-col gap-4">
@@ -47,36 +47,28 @@ export default function AnnouncementsSection() {
           const isWarning = ann.type === 'WARNING'
           const isSuccess = ann.type === 'SUCCESS'
 
-          const accentColor = isFirstBlood ? '#ff007f' : isWarning ? '#febc2e' : isSuccess ? '#28c840' : '#00d2ff'
+          const accentColor = isFirstBlood ? '#ff5e98' : isWarning ? '#f59e0b' : isSuccess ? '#10b981' : '#00b4d8'
           const tagLabel = isFirstBlood ? 'First Blood Bounty' : isWarning ? 'Notice' : isSuccess ? 'Update' : 'Announcement'
 
           return (
             <div
               key={ann.id || idx}
-              className="relative rounded-[20px] bg-[#070e24]/85 border border-white/10 p-5 sm:p-6 shadow-[0_15px_40px_rgba(0,0,0,0.7)] overflow-hidden transition-all hover:border-[#00d2ff]/40"
+              className="relative rounded-[28px] bg-white border border-white/90 p-6 shadow-[10px_10px_25px_rgba(166,180,200,0.35),-10px_-10px_25px_#ffffff] transition-all hover:-translate-y-1"
             >
-              {/* Corner Notches */}
-              <div className="absolute top-0 left-0 w-3.5 h-3.5 pointer-events-none">
-                <div className="w-2 h-2 rounded-br-sm" style={{ backgroundColor: accentColor }} />
-              </div>
-              <div className="absolute bottom-0 right-0 w-3.5 h-3.5 pointer-events-none flex items-end justify-end">
-                <div className="w-2 h-2 rounded-tl-sm" style={{ backgroundColor: accentColor }} />
-              </div>
-
               <div className="relative z-10">
                 <div className="flex flex-wrap items-center justify-between gap-2 mb-2.5">
                   <span
-                    className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold tracking-wide"
+                    className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-bold tracking-wide shadow-[inset_1px_1px_2px_rgba(166,180,200,0.15)]"
                     style={{
                       backgroundColor: `${accentColor}15`,
                       color: accentColor,
-                      border: `1px solid ${accentColor}35`,
+                      border: `1px solid ${accentColor}30`,
                     }}
                   >
                     {tagLabel}
                   </span>
 
-                  <span className="text-xs text-white/40">
+                  <span className="text-xs text-slate-400 font-medium">
                     {new Date(ann.publishedAt).toLocaleDateString('en-IN', {
                       day: 'numeric',
                       month: 'short',
@@ -88,10 +80,10 @@ export default function AnnouncementsSection() {
                   </span>
                 </div>
 
-                <h3 className="text-base sm:text-lg font-bold text-white tracking-wide mb-1.5">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 tracking-wide mb-1.5">
                   {ann.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-white/70 leading-relaxed font-light">
+                <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
                   {ann.content}
                 </p>
               </div>
