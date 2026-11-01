@@ -164,17 +164,17 @@ export default function RulesPage() {
                 </div>
               </div>
 
-              {/* Top 10 Instagram Spotlight Banner */}
+              {/* Top 10 Council Spotlight Banner */}
               <div className="neu-card rounded-[28px] p-6 sm:p-8 text-center flex flex-col justify-between">
                 <div>
                   <div className="w-12 h-12 rounded-2xl neu-icon-btn mx-auto flex items-center justify-center text-2xl mb-3 text-[#0072ff]">
                     🌟
                   </div>
                   <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight uppercase mb-2">
-                    Top 10 STC Instagram Spotlight
+                    Top 10 Social Spotlight
                   </h3>
                   <p className="text-xs text-slate-600 font-medium leading-relaxed mb-4">
-                    The top 10 fastest and correct verified solvers will be featured on the official <strong>STC IIT Patna Hybrid Instagram & social handles</strong> with their photo, rank, and shoutout (with their consent).
+                    The top 10 fastest and correct verified solvers will receive a dedicated showcase across official <strong>council media handles and digital platforms</strong> with their photo, rank, and shoutout (with their consent).
                   </p>
                 </div>
                 <div>

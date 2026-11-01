@@ -68,7 +68,7 @@ Unlike traditional competitive programming contests, **THE HIDDEN KEY** tests re
 * **Challenge Dates:** **3 November 2026 (00:00 IST) &ndash; 8 November 2026 (23:59 IST)** (6-Day Challenge Window).
 * **Direct Entry:** **No prior registration required** &mdash; students simply clone the codebase, solve the challenge, and submit their discovered keyword directly on `/submit` using their `@iitp.ac.in` credentials.
 * **First Blood Champion:** First participant whose submission verifies successfully wins the permanent First Blood title, trophy emblem, and headline feature.
-* **Top 10 Instagram Spotlight:** The **Top 10 fastest & correct verified solvers** will be featured on the official **STC IIT Patna Hybrid Instagram & social handles** with their name, rank, and photo (with prior consent).
+* **Top 10 Spotlight:** The **Top 10 fastest & correct verified solvers** will be celebrated across official council media platforms and digital channels with their name, rank, and photo (with prior consent).
 
 ### 🎨 The Soft Clay Neuomorphic Design Aesthetic
 The application features a modern, clean **Soft Clay Neuomorphic Design** (`#eef2f6` frosted canvas, dual extruded drop-shadow cards, inset tactile containers) electrified with vibrant cyberpunk accents (**#ff5e98 Coral Pink** & **#0072ff Cyber Cyan**). It looks and feels like a tangible physical hardware dashboard reimagined as high-performance modern web software.
