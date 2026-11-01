@@ -432,7 +432,7 @@ export default function HomePage() {
       </section>
 
       {/* ── SECTION 6: LIVE HINTS ── */}
-      <section className="relative z-10 max-w-[1400px] mx-auto px-6 py-12">
+      <section id="hints" className="relative z-10 max-w-[1400px] mx-auto px-6 py-12 scroll-mt-28">
         <HintsSection />
       </section>
 

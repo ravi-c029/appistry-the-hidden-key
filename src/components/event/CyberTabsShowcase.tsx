@@ -168,7 +168,19 @@ export default function CyberTabsShowcase({ initialTab = 'mission-brief' }: Cybe
 
             <Link
               href={currentTab.secondaryBtn.href}
-              className="neu-btn font-semibold text-xs uppercase tracking-wider px-6 py-3 rounded-full text-slate-700 hover:text-slate-900 transition-all"
+              onClick={(e) => {
+                if (currentTab.secondaryBtn.href.startsWith('#')) {
+                  e.preventDefault()
+                  const targetId = currentTab.secondaryBtn.href.slice(1)
+                  const el = document.getElementById(targetId) || document.querySelector(currentTab.secondaryBtn.href)
+                  if (el) {
+                    el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  } else {
+                    window.location.href = `/${currentTab.secondaryBtn.href}`
+                  }
+                }
+              }}
+              className="neu-btn font-semibold text-xs uppercase tracking-wider px-6 py-3 rounded-full text-slate-700 hover:text-slate-900 transition-all cursor-pointer"
             >
               {currentTab.secondaryBtn.text}
             </Link>
