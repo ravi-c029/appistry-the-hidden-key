@@ -34,6 +34,25 @@ interface Submission {
   }
 }
 
+interface AdminSubmission {
+  id: string
+  keyword: string
+  isValid: boolean
+  isFirstBlood: boolean
+  ipAddress?: string | null
+  userAgent?: string | null
+  serverTime: string
+  reviewedAt?: string | null
+  reviewNote?: string | null
+  participant: {
+    id: string
+    name: string
+    email: string
+    isVerified: boolean
+    isDisqualified: boolean
+  }
+}
+
 interface AuditLog {
   id: string
   action: string
@@ -53,6 +72,15 @@ export default function AdminDashboardPage() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'overview' | 'submissions' | 'hints' | 'announcements' | 'config' | 'logs'>('overview')
 
+  // Submissions Management state
+  const [submissionsList, setSubmissionsList] = useState<AdminSubmission[]>([])
+  const [submissionsTotal, setSubmissionsTotal] = useState(0)
+  const [submissionsPage, setSubmissionsPage] = useState(1)
+  const [submissionsFilter, setSubmissionsFilter] = useState<'all' | 'valid' | 'invalid'>('all')
+  const [submissionsSearch, setSubmissionsSearch] = useState('')
+  const [submissionsLoading, setSubmissionsLoading] = useState(false)
+  const [reviewingId, setReviewingId] = useState<string | null>(null)
+
   // Hints state
   const [hints, setHints] = useState<Array<{ id: string; title: string; content: string; order: number; isPublished: boolean }>>([])
   const [newHintTitle, setNewHintTitle] = useState('')
@@ -68,6 +96,11 @@ export default function AdminDashboardPage() {
   const [config, setConfig] = useState<Record<string, string>>({})
   const [configSaving, setConfigSaving] = useState(false)
   const [actionMessage, setActionMessage] = useState('')
+
+  const showToast = (msg: string) => {
+    setActionMessage(msg)
+    setTimeout(() => setActionMessage(''), 3500)
+  }
 
   const fetchOverview = useCallback(async () => {
     try {
@@ -88,6 +121,29 @@ export default function AdminDashboardPage() {
       setLoading(false)
     }
   }, [router])
+
+  const fetchSubmissions = useCallback(async (page = 1, status = submissionsFilter, search = submissionsSearch) => {
+    setSubmissionsLoading(true)
+    try {
+      const params = new URLSearchParams()
+      params.set('page', String(page))
+      params.set('limit', '30')
+      if (status !== 'all') params.set('status', status)
+      if (search) params.set('search', search)
+
+      const res = await fetch(`/api/admin/submissions?${params.toString()}`)
+      const data = await res.json()
+      if (data.success) {
+        setSubmissionsList(data.submissions || [])
+        setSubmissionsTotal(data.total || 0)
+        setSubmissionsPage(data.page || 1)
+      }
+    } catch (err) {
+      console.error(err)
+    } finally {
+      setSubmissionsLoading(false)
+    }
+  }, [submissionsFilter, submissionsSearch])
 
   const fetchHints = useCallback(async () => {
     const res = await fetch('/api/admin/hints')
@@ -112,19 +168,39 @@ export default function AdminDashboardPage() {
   }, [fetchOverview])
 
   useEffect(() => {
+    if (activeTab === 'submissions') fetchSubmissions(1, submissionsFilter, submissionsSearch)
     if (activeTab === 'hints') fetchHints()
     if (activeTab === 'announcements') fetchAnnouncements()
     if (activeTab === 'config') fetchConfig()
-  }, [activeTab, fetchHints, fetchAnnouncements, fetchConfig])
+  }, [activeTab, submissionsFilter, fetchSubmissions, submissionsSearch, fetchHints, fetchAnnouncements, fetchConfig])
 
   const handleLogout = async () => {
     await fetch('/api/admin/auth/logout', { method: 'POST' })
     router.push('/admin')
   }
 
-  const showToast = (msg: string) => {
-    setActionMessage(msg)
-    setTimeout(() => setActionMessage(''), 3500)
+  // Handle Review Submission (Approve / Reject)
+  const handleReviewSubmission = async (submissionId: string, isValid: boolean) => {
+    setReviewingId(submissionId)
+    try {
+      const res = await fetch('/api/admin/submissions', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ submissionId, isValid }),
+      })
+      const data = await res.json()
+      if (data.success) {
+        showToast(isValid ? '✓ Submission verified as VALID!' : '✓ Submission marked as INVALID.')
+        fetchSubmissions(submissionsPage, submissionsFilter, submissionsSearch)
+        fetchOverview()
+      } else {
+        showToast(data.error || 'Failed to update submission')
+      }
+    } catch {
+      showToast('Network error while updating submission')
+    } finally {
+      setReviewingId(null)
+    }
   }
 
   // Create Hint
@@ -217,7 +293,7 @@ export default function AdminDashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#eef2f6] flex items-center justify-center">
+      <div className="min-h-screen bg-[#eef2f6] flex items-center justify-center p-4">
         <div className="neu-card p-8 rounded-3xl flex items-center gap-3">
           <div className="w-5 h-5 border-2 border-[#ff5e98] border-t-transparent rounded-full animate-spin" />
           <div className="font-mono text-xs font-bold text-slate-700 uppercase tracking-widest">
@@ -229,12 +305,12 @@ export default function AdminDashboardPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-[#eef2f6] text-slate-800 flex flex-col font-sans">
-      {/* Top Header */}
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-6 sm:px-10 py-4 flex items-center justify-between shadow-sm">
-        <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2.5 group">
-            <div className="w-8 h-8 rounded-xl overflow-hidden neu-icon-btn p-0.5 flex items-center justify-center">
+    <div className="min-h-screen w-full bg-[#eef2f6] text-slate-800 flex flex-col font-sans selection:bg-[#ff5e98] selection:text-white">
+      {/* Top Header — Fully Responsive Across All Devices */}
+      <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-slate-200/80 px-4 sm:px-8 py-3 sm:py-4 flex items-center justify-between shadow-xs">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0">
+          <Link href="/" className="flex items-center gap-2 group flex-shrink-0">
+            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-xl overflow-hidden neu-icon-btn p-0.5 flex items-center justify-center">
               <Image
                 src="/images/appistry-logo.png"
                 alt="Logo"
@@ -243,42 +319,50 @@ export default function AdminDashboardPage() {
                 className="w-full h-full object-cover rounded-md"
               />
             </div>
-            <span className="font-display font-black text-slate-900 text-lg tracking-tight group-hover:text-[#ff5e98] transition-colors">
+            <span className="font-display font-black text-slate-900 text-base sm:text-lg tracking-tight group-hover:text-[#ff5e98] transition-colors">
               APPISTRY
             </span>
           </Link>
-          <span className="text-slate-300 font-bold">/</span>
-          <span className="font-mono text-xs font-bold text-[#ff5e98] tracking-widest uppercase bg-pink-50 px-2.5 py-1 rounded-full border border-pink-100">
-            SUPER ADMIN CONSOLE
+          <span className="text-slate-300 font-bold text-xs sm:text-sm">/</span>
+          <span className="font-mono text-[10px] sm:text-xs font-bold text-[#ff5e98] tracking-wider uppercase bg-pink-50 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full border border-pink-100 whitespace-nowrap">
+            <span className="hidden sm:inline">SUPER </span>ADMIN
           </span>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
           {actionMessage && (
-            <div className="font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200 animate-fade-in">
-              ✓ {actionMessage}
+            <div className="hidden md:flex font-mono text-xs font-semibold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200 animate-fade-in">
+              {actionMessage}
             </div>
           )}
           <Link
             href="/"
             target="_blank"
-            className="neu-card-sm text-slate-700 font-bold px-3.5 py-1.5 rounded-full text-xs hover:text-[#ff5e98] transition-colors"
+            className="neu-card-sm text-slate-700 font-bold px-2.5 sm:px-3.5 py-1.5 rounded-full text-[11px] sm:text-xs hover:text-[#ff5e98] transition-colors whitespace-nowrap"
           >
-            View Public Site ↗
+            <span className="hidden sm:inline">View </span>Public<span className="hidden sm:inline"> Site</span> ↗
           </Link>
           <button
             onClick={handleLogout}
-            className="neu-card-sm px-3.5 py-1.5 rounded-full font-bold text-xs text-rose-500 hover:text-rose-600 transition-colors cursor-pointer"
+            className="neu-card-sm px-2.5 sm:px-3.5 py-1.5 rounded-full font-bold text-[11px] sm:text-xs text-rose-500 hover:text-rose-600 transition-colors cursor-pointer whitespace-nowrap"
           >
             Logout
           </button>
         </div>
       </header>
 
-      {/* Navigation Tabs */}
-      <div className="bg-white/60 backdrop-blur-sm border-b border-slate-200/60 px-6 sm:px-10 flex gap-2 overflow-x-auto py-2.5 scrollbar-none">
+      {/* Mobile Toast Banner */}
+      {actionMessage && (
+        <div className="md:hidden bg-emerald-600 text-white font-mono text-xs font-bold text-center py-1.5 px-4 animate-fade-in">
+          {actionMessage}
+        </div>
+      )}
+
+      {/* Navigation Tabs — Horizontal Smooth Scroll on Mobile */}
+      <div className="bg-white/70 backdrop-blur-sm border-b border-slate-200/60 px-4 sm:px-8 flex gap-2 overflow-x-auto py-2.5 scrollbar-none touch-pan-x">
         {[
           { key: 'overview', label: '📊 Overview' },
+          { key: 'submissions', label: `📥 Submissions ${stats ? `(${stats.totalSubmissions})` : ''}` },
           { key: 'hints', label: '💡 Hints Manager' },
           { key: 'announcements', label: '📢 Announcements' },
           { key: 'config', label: '⚙️ Event Config' },
@@ -289,7 +373,7 @@ export default function AdminDashboardPage() {
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key as typeof activeTab)}
-              className={`px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap ${
+              className={`px-3.5 sm:px-4 py-2 rounded-2xl text-xs font-bold transition-all cursor-pointer whitespace-nowrap flex-shrink-0 ${
                 isActive
                   ? 'neu-btn-gradient-pink text-white shadow-md scale-[1.02]'
                   : 'neu-card-sm text-slate-600 hover:text-slate-900'
@@ -302,17 +386,17 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* Main Content Area */}
-      <main className="flex-1 p-6 sm:p-10 max-w-7xl mx-auto w-full">
+      <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl mx-auto w-full">
         {/* OVERVIEW TAB */}
         {activeTab === 'overview' && stats && (
-          <div className="flex flex-col gap-8">
+          <div className="flex flex-col gap-6 sm:gap-8">
             {/* KPI Cards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="neu-card p-5 sm:p-6 rounded-[28px] flex flex-col justify-between">
                 <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   Live Active Visitors
                 </div>
-                <div className="text-4xl font-black text-[#00b4d8] my-2 font-mono">
+                <div className="text-3xl sm:text-4xl font-black text-[#00b4d8] my-2 font-mono">
                   {stats.activeVisitors}
                 </div>
                 <div className="text-xs font-mono text-slate-400">
@@ -320,11 +404,11 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
+              <div className="neu-card p-5 sm:p-6 rounded-[28px] flex flex-col justify-between">
                 <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   Verified Participants
                 </div>
-                <div className="text-4xl font-black text-amber-500 my-2 font-mono">
+                <div className="text-3xl sm:text-4xl font-black text-amber-500 my-2 font-mono">
                   {stats.verifiedParticipants}
                 </div>
                 <div className="text-xs font-mono text-slate-400">
@@ -332,11 +416,18 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
-                <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
-                  Submissions (Valid / Total)
+              <div
+                onClick={() => setActiveTab('submissions')}
+                className="neu-card p-5 sm:p-6 rounded-[28px] flex flex-col justify-between cursor-pointer hover:scale-[1.01] transition-transform"
+                title="Click to view all submissions"
+              >
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
+                    Submissions (Valid / Total)
+                  </span>
+                  <span className="text-[10px] font-bold text-[#ff5e98]">View All →</span>
                 </div>
-                <div className="text-4xl font-black text-emerald-600 my-2 font-mono">
+                <div className="text-3xl sm:text-4xl font-black text-emerald-600 my-2 font-mono">
                   {stats.validSubmissions}
                   <span className="text-xl text-slate-400 font-semibold"> / {stats.totalSubmissions}</span>
                 </div>
@@ -345,14 +436,14 @@ export default function AdminDashboardPage() {
                 </div>
               </div>
 
-              <div className="neu-card p-6 rounded-[28px] flex flex-col justify-between">
+              <div className="neu-card p-5 sm:p-6 rounded-[28px] flex flex-col justify-between">
                 <div className="text-xs font-mono font-bold uppercase tracking-wider text-slate-500">
                   First Blood Status
                 </div>
                 <div className="my-2">
                   {stats.firstBlood ? (
                     <div>
-                      <span className="bg-gradient-to-r from-amber-400 to-amber-500 text-white font-black text-[10px] tracking-wider px-2.5 py-0.5 rounded-full inline-block shadow-sm">
+                      <span className="bg-gradient-to-r from-amber-400 to-amber-500 text-white font-black text-[10px] tracking-wider px-2.5 py-0.5 rounded-full inline-block shadow-xs">
                         CLAIMED 🏆
                       </span>
                       <div className="text-base font-black text-slate-900 mt-1 truncate">
@@ -375,16 +466,19 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Split Tables: Recent Submissions & Recent Audit Logs */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
               {/* Recent Submissions */}
-              <div className="neu-card p-6 sm:p-7 rounded-[28px]">
+              <div className="neu-card p-5 sm:p-7 rounded-[28px]">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base font-extrabold text-slate-900 tracking-tight">
-                    Recent Submission Activity
+                    Recent Submissions
                   </h2>
-                  <span className="text-xs font-mono font-semibold text-slate-400">
-                    Live Feed
-                  </span>
+                  <button
+                    onClick={() => setActiveTab('submissions')}
+                    className="text-xs font-bold text-[#ff5e98] hover:underline cursor-pointer"
+                  >
+                    Manage All ({stats.totalSubmissions}) →
+                  </button>
                 </div>
                 {recentSubmissions.length === 0 ? (
                   <div className="bg-[#f8fafc] rounded-2xl p-6 text-center text-slate-400 text-xs italic border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
@@ -395,27 +489,32 @@ export default function AdminDashboardPage() {
                     {recentSubmissions.map(sub => (
                       <div
                         key={sub.id}
-                        className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex items-center justify-between"
+                        className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col sm:flex-row sm:items-center justify-between gap-3"
                       >
-                        <div>
-                          <div className="text-sm font-bold text-slate-900">{sub.participant.name}</div>
-                          <div className="font-mono text-xs text-slate-500">
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <span className="text-sm font-bold text-slate-900">{sub.participant.name}</span>
+                            <span className="font-mono text-xs font-bold text-[#ff5e98] bg-pink-50 px-2 py-0.5 rounded-lg border border-pink-100">
+                              Key: {sub.keyword}
+                            </span>
+                          </div>
+                          <div className="font-mono text-xs text-slate-500 truncate mt-0.5">
                             {sub.participant.email}
                           </div>
                         </div>
-                        <div className="text-right flex flex-col items-end">
+                        <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-1 flex-shrink-0">
                           <span
                             className={`text-[10px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border ${
                               sub.isFirstBlood
-                                ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white border-transparent shadow-sm'
+                                ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white border-transparent shadow-xs'
                                 : sub.isValid
                                 ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
-                                : 'bg-rose-100 text-rose-700 border-rose-200'
+                                : 'bg-amber-100 text-amber-700 border-amber-200'
                             }`}
                           >
-                            {sub.isFirstBlood ? '🩸 FIRST BLOOD' : sub.isValid ? 'VALID' : 'INVALID'}
+                            {sub.isFirstBlood ? '🩸 FIRST BLOOD' : sub.isValid ? 'VALID' : 'UNVERIFIED'}
                           </span>
-                          <div className="font-mono text-xs font-bold text-[#00b4d8] mt-1">
+                          <div className="font-mono text-xs font-bold text-[#00b4d8]">
                             {new Date(sub.serverTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                           </div>
                           <div className="font-mono text-[10px] text-slate-400">
@@ -429,7 +528,7 @@ export default function AdminDashboardPage() {
               </div>
 
               {/* Recent Audit Logs */}
-              <div className="neu-card p-6 sm:p-7 rounded-[28px]">
+              <div className="neu-card p-5 sm:p-7 rounded-[28px]">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-base font-extrabold text-slate-900 tracking-tight">
                     System Audit Trail
@@ -447,17 +546,17 @@ export default function AdminDashboardPage() {
                     {recentLogs.map(log => (
                       <div
                         key={log.id}
-                        className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex items-center justify-between"
+                        className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                       >
-                        <div>
+                        <div className="min-w-0">
                           <div className="font-mono text-xs font-bold text-[#00b4d8]">
                             {log.action}
                           </div>
-                          <div className="text-xs text-slate-600 font-medium mt-0.5">
+                          <div className="text-xs text-slate-600 font-medium mt-0.5 truncate">
                             By {log.admin ? log.admin.name : 'System'} {log.target ? `• Target: ${log.target}` : ''}
                           </div>
                         </div>
-                        <div className="font-mono text-[10px] text-slate-400">
+                        <div className="font-mono text-[10px] text-slate-400 flex-shrink-0">
                           {new Date(log.createdAt).toLocaleTimeString()}
                         </div>
                       </div>
@@ -469,10 +568,159 @@ export default function AdminDashboardPage() {
           </div>
         )}
 
+        {/* SUBMISSIONS TAB — FULL MANAGEMENT & VERIFICATION */}
+        {activeTab === 'submissions' && (
+          <div className="flex flex-col gap-6">
+            {/* Header, Filters & Search */}
+            <div className="neu-card p-5 sm:p-6 rounded-[28px]">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-lg font-black text-slate-900 tracking-tight flex items-center gap-2">
+                    Participant Submissions
+                    <span className="text-xs font-mono font-bold text-[#ff5e98] bg-pink-50 px-2.5 py-0.5 rounded-full border border-pink-100">
+                      {submissionsTotal} Total
+                    </span>
+                  </h2>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Review secret keys submitted by students and approve valid entries for First Blood & Leaderboard.
+                  </p>
+                </div>
+
+                {/* Filters */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {(['all', 'valid', 'invalid'] as const).map(filter => (
+                    <button
+                      key={filter}
+                      onClick={() => {
+                        setSubmissionsFilter(filter)
+                        fetchSubmissions(1, filter, submissionsSearch)
+                      }}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all cursor-pointer capitalize ${
+                        submissionsFilter === filter
+                          ? 'neu-btn-gradient-pink text-white shadow-xs'
+                          : 'neu-card-sm text-slate-600 hover:text-slate-900'
+                      }`}
+                    >
+                      {filter === 'all' ? 'All' : filter === 'valid' ? 'Valid Only' : 'Unverified / Invalid'}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => fetchSubmissions(submissionsPage, submissionsFilter, submissionsSearch)}
+                    className="neu-card-sm px-3 py-1.5 rounded-xl text-xs font-bold text-slate-700 hover:text-[#00b4d8] cursor-pointer"
+                    title="Refresh Submissions"
+                  >
+                    🔄 Refresh
+                  </button>
+                </div>
+              </div>
+
+              {/* Search Bar */}
+              <div className="mt-4">
+                <input
+                  type="text"
+                  placeholder="Search by student name or @iitp.ac.in email..."
+                  value={submissionsSearch}
+                  onChange={e => {
+                    setSubmissionsSearch(e.target.value)
+                    fetchSubmissions(1, submissionsFilter, e.target.value)
+                  }}
+                  className="neu-input w-full rounded-2xl px-4 py-3 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#ff5e98]/30 transition-all font-sans"
+                />
+              </div>
+            </div>
+
+            {/* Submissions List */}
+            <div className="neu-card p-5 sm:p-7 rounded-[28px]">
+              {submissionsLoading ? (
+                <div className="py-12 text-center text-slate-400 font-mono text-xs flex items-center justify-center gap-2">
+                  <div className="w-4 h-4 border-2 border-[#ff5e98] border-t-transparent rounded-full animate-spin" />
+                  Loading submissions...
+                </div>
+              ) : submissionsList.length === 0 ? (
+                <div className="bg-[#f8fafc] rounded-2xl p-10 text-center text-slate-400 text-sm border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)]">
+                  <p className="font-bold text-slate-700">No submissions found.</p>
+                  <p className="text-xs text-slate-400 mt-1">Students&apos; submitted keys will appear here instantly when they submit on the challenge page.</p>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-4">
+                  {submissionsList.map(sub => (
+                    <div
+                      key={sub.id}
+                      className="bg-[#f8fafc] rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col lg:flex-row lg:items-center justify-between gap-4"
+                    >
+                      {/* Left: Participant info & Key */}
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-2 sm:gap-3 flex-wrap">
+                          <h3 className="text-sm font-extrabold text-slate-900">{sub.participant.name}</h3>
+                          <span
+                            className={`text-[10px] font-bold tracking-wider uppercase px-2.5 py-0.5 rounded-full border ${
+                              sub.isFirstBlood
+                                ? 'bg-gradient-to-r from-pink-500 to-rose-500 text-white border-transparent shadow-xs'
+                                : sub.isValid
+                                ? 'bg-emerald-100 text-emerald-700 border-emerald-200'
+                                : 'bg-amber-100 text-amber-700 border-amber-200'
+                            }`}
+                          >
+                            {sub.isFirstBlood ? '🩸 FIRST BLOOD' : sub.isValid ? 'VALID' : 'UNVERIFIED'}
+                          </span>
+                        </div>
+                        <div className="font-mono text-xs text-slate-500 mt-0.5">
+                          {sub.participant.email}
+                        </div>
+
+                        {/* Submitted Key Chip & Timestamp */}
+                        <div className="mt-3 flex items-center gap-2 sm:gap-3 flex-wrap">
+                          <div className="flex items-center gap-1.5 bg-white px-3 py-1.5 rounded-xl border border-slate-200/80 shadow-xs">
+                            <span className="text-[10px] font-mono uppercase tracking-wider text-slate-400 font-bold">Key:</span>
+                            <span className="font-mono text-xs font-black text-[#ff5e98] tracking-wider select-all">
+                              {sub.keyword}
+                            </span>
+                          </div>
+                          <div className="text-[11px] font-mono text-slate-500 flex items-center gap-1">
+                            <span>⏱️ {new Date(sub.serverTime).toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}</span>
+                            <span className="text-slate-300">•</span>
+                            <span>{new Date(sub.serverTime).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+                          </div>
+                          {sub.ipAddress && (
+                            <span className="text-[10px] font-mono text-slate-400 hidden sm:inline">
+                              IP: {sub.ipAddress}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Right: Actions */}
+                      <div className="flex items-center gap-2 self-start lg:self-center flex-shrink-0 pt-2 lg:pt-0 border-t lg:border-t-0 border-slate-200/60 w-full lg:w-auto justify-end">
+                        {!sub.isValid ? (
+                          <button
+                            onClick={() => handleReviewSubmission(sub.id, true)}
+                            disabled={reviewingId === sub.id}
+                            className="neu-btn-gradient-pink text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow-xs hover:scale-105 active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+                          >
+                            {reviewingId === sub.id ? 'Verifying...' : '✓ Approve & Validate'}
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => handleReviewSubmission(sub.id, false)}
+                            disabled={reviewingId === sub.id}
+                            className="neu-card-sm text-rose-600 text-xs font-bold px-4 py-2.5 rounded-xl hover:text-rose-700 transition-all cursor-pointer disabled:opacity-50"
+                          >
+                            {reviewingId === sub.id ? 'Updating...' : '✕ Revoke / Invalidate'}
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
         {/* HINTS TAB */}
         {activeTab === 'hints' && (
-          <div className="flex flex-col gap-8">
-            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+          <div className="flex flex-col gap-6 sm:gap-8">
+            <div className="neu-card p-5 sm:p-8 rounded-[28px]">
               <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Release New Mystery Hint
               </h2>
@@ -501,14 +749,14 @@ export default function AdminDashboardPage() {
                 </div>
                 <button
                   type="submit"
-                  className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer self-start"
+                  className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer self-start w-full sm:w-auto"
                 >
                   Create Hint (Draft)
                 </button>
               </form>
             </div>
 
-            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+            <div className="neu-card p-5 sm:p-8 rounded-[28px]">
               <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Existing Hints ({hints.length})
               </h2>
@@ -521,7 +769,7 @@ export default function AdminDashboardPage() {
                   {hints.map(hint => (
                     <div
                       key={hint.id}
-                      className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col md:flex-row md:items-start justify-between gap-4"
+                      className="bg-[#f8fafc] rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col md:flex-row md:items-start justify-between gap-4"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-3">
@@ -568,8 +816,8 @@ export default function AdminDashboardPage() {
 
         {/* ANNOUNCEMENTS TAB */}
         {activeTab === 'announcements' && (
-          <div className="flex flex-col gap-8">
-            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+          <div className="flex flex-col gap-6 sm:gap-8">
+            <div className="neu-card p-5 sm:p-8 rounded-[28px]">
               <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Post New Announcement
               </h2>
@@ -614,14 +862,14 @@ export default function AdminDashboardPage() {
                 </div>
                 <button
                   type="submit"
-                  className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer self-start"
+                  className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full transition-all hover:scale-[1.02] active:scale-95 shadow-md cursor-pointer self-start w-full sm:w-auto"
                 >
                   Post Live Immediately
                 </button>
               </form>
             </div>
 
-            <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+            <div className="neu-card p-5 sm:p-8 rounded-[28px]">
               <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
                 Existing Announcements ({announcements.length})
               </h2>
@@ -634,7 +882,7 @@ export default function AdminDashboardPage() {
                   {announcements.map(ann => (
                     <div
                       key={ann.id}
-                      className="bg-[#f8fafc] rounded-2xl p-5 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col md:flex-row md:items-start justify-between gap-4"
+                      className="bg-[#f8fafc] rounded-2xl p-4 sm:p-5 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col md:flex-row md:items-start justify-between gap-4"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-3">
@@ -667,7 +915,7 @@ export default function AdminDashboardPage() {
 
         {/* EVENT CONFIG TAB */}
         {activeTab === 'config' && (
-          <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+          <div className="neu-card p-5 sm:p-8 rounded-[28px]">
             <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
               Global Event Configuration
             </h2>
@@ -757,7 +1005,7 @@ export default function AdminDashboardPage() {
 
               <button
                 type="submit"
-                className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-8 rounded-full shadow-md hover:scale-[1.02] active:scale-95 cursor-pointer self-start disabled:opacity-50"
+                className="neu-btn-gradient-pink text-white font-bold text-xs uppercase tracking-wider py-3.5 px-8 rounded-full shadow-md hover:scale-[1.02] active:scale-95 cursor-pointer self-start disabled:opacity-50 w-full sm:w-auto"
                 disabled={configSaving}
               >
                 {configSaving ? 'Saving Changes...' : 'Save Configuration'}
@@ -768,7 +1016,7 @@ export default function AdminDashboardPage() {
 
         {/* AUDIT LOGS TAB */}
         {activeTab === 'logs' && (
-          <div className="neu-card p-6 sm:p-8 rounded-[28px]">
+          <div className="neu-card p-5 sm:p-8 rounded-[28px]">
             <h2 className="text-lg font-black text-slate-900 mb-6 tracking-tight">
               Full Audit Trail
             </h2>
@@ -781,9 +1029,9 @@ export default function AdminDashboardPage() {
                 {recentLogs.map(log => (
                   <div
                     key={log.id}
-                    className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex items-center justify-between"
+                    className="bg-[#f8fafc] rounded-2xl p-4 border border-slate-100 shadow-[inset_1px_1px_3px_rgba(166,180,200,0.15)] flex flex-col sm:flex-row sm:items-center justify-between gap-2"
                   >
-                    <div>
+                    <div className="min-w-0">
                       <span className="font-mono text-xs font-bold text-[#00b4d8]">
                         [{log.action}]
                       </span>{' '}
@@ -796,7 +1044,7 @@ export default function AdminDashboardPage() {
                         </span>
                       )}
                     </div>
-                    <div className="font-mono text-[10px] text-slate-400">
+                    <div className="font-mono text-[10px] text-slate-400 flex-shrink-0">
                       {new Date(log.createdAt).toLocaleString()}
                     </div>
                   </div>
