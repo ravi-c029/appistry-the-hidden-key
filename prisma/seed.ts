@@ -107,7 +107,7 @@ From where it all begins to where dreams reach their peak. 🔥`,
     repositoryUrl: 'https://github.com/ravi-c029/appistry-the-hidden-key',
     submissionsOpen: 'true',
     leaderboardPublic: 'true',
-    prizeInfo: 'First Place: First Blood Trophy + Certificate of Excellence\nAll Valid Submissions: Official APPISTRY Digital Certificate',
+    prizeInfo: 'First Place: First Blood Trophy + Certificate of Excellence + STC Instagram Headline\nTop 10: Official STC Instagram Spotlight (Name, Rank & Photo with consent) + Certificate of Excellence\nAll Valid Submissions: Official APPISTRY Digital Certificate',
   }
 
   for (const [key, value] of Object.entries(configs)) {

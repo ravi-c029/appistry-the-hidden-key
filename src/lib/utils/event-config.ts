@@ -9,7 +9,7 @@ const DEFAULT_CONFIG: Record<string, string> = {
   repositoryUrl: 'https://github.com/ravi-c029/appistry-the-hidden-key',
   submissionsOpen: 'true',
   leaderboardPublic: 'true',
-  prizeInfo: 'First place: Certificate of Excellence + Recognition by APPISTRY Club\nAll valid submissions: Digital certificate',
+  prizeInfo: 'First Place: First Blood Trophy + Certificate of Excellence + STC Instagram Headline\nTop 10: Official STC Instagram Spotlight (Name, Rank & Photo with consent) + Certificate of Excellence\nAll Valid Submissions: Official APPISTRY Digital Certificate',
   rules: JSON.stringify([
     'Participation is strictly limited to eligible IIT Patna students.',
     'Individual participation only — no teams.',

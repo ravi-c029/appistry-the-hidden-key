@@ -139,24 +139,53 @@ export default function RulesPage() {
               ))}
             </div>
 
-            {/* First Blood Bounty Banner */}
-            <div className="neu-card rounded-[28px] p-7 sm:p-9 text-center mb-8">
-              <div className="w-14 h-14 rounded-2xl neu-icon-btn mx-auto flex items-center justify-center text-3xl mb-3 text-[#ff5e98]">
-                ⚡
+            {/* Bounties & Top 10 Spotlight Banners */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mb-8">
+              {/* First Blood Bounty Banner */}
+              <div className="neu-card rounded-[28px] p-6 sm:p-8 text-center flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl neu-icon-btn mx-auto flex items-center justify-center text-2xl mb-3 text-[#ff5e98]">
+                    ⚡
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight uppercase mb-2">
+                    First Blood Bounty
+                  </h3>
+                  <p className="text-xs text-slate-600 font-medium leading-relaxed mb-4">
+                    The 1st participant whose submission verifies successfully will receive the First Blood award, trophy emblem, and headline announcement.
+                  </p>
+                </div>
+                <div>
+                  <Link
+                    href="/mission"
+                    className="neu-btn-gradient-pink inline-flex items-center gap-2 text-white text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
+                  >
+                    <span>Mission Protocol →</span>
+                  </Link>
+                </div>
               </div>
-              <h3 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight uppercase mb-2">
-                The First Blood Bounty
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 max-w-lg mx-auto mb-6 font-medium leading-relaxed">
-                The first participant to decrypt the mystery artifact and register a valid keyword submission on the server will receive the First Blood award and headline APPISTRY communications.
-              </p>
-              <Link
-                href="/mission"
-                className="neu-btn-gradient-pink inline-flex items-center gap-2 text-white text-xs uppercase tracking-wider font-bold px-8 py-3.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
-              >
-                <span>Read Mission Protocol</span>
-                <span>→</span>
-              </Link>
+
+              {/* Top 10 Instagram Spotlight Banner */}
+              <div className="neu-card rounded-[28px] p-6 sm:p-8 text-center flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-2xl neu-icon-btn mx-auto flex items-center justify-center text-2xl mb-3 text-[#0072ff]">
+                    🌟
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-black text-slate-900 tracking-tight uppercase mb-2">
+                    Top 10 STC Instagram Spotlight
+                  </h3>
+                  <p className="text-xs text-slate-600 font-medium leading-relaxed mb-4">
+                    The top 10 fastest and correct verified solvers will be featured on the official <strong>STC IIT Patna Hybrid Instagram & social handles</strong> with their photo, rank, and shoutout (with their consent).
+                  </p>
+                </div>
+                <div>
+                  <Link
+                    href="/leaderboard"
+                    className="neu-card-sm inline-flex items-center gap-2 text-slate-800 text-xs uppercase tracking-wider font-bold px-6 py-3 rounded-full hover:text-[#ff5e98] transition-all cursor-pointer"
+                  >
+                    <span>View Leaderboard →</span>
+                  </Link>
+                </div>
+              </div>
             </div>
 
             {/* Back to Home Link */}

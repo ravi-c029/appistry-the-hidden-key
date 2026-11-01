@@ -64,6 +64,12 @@ Unlike traditional competitive programming contests, **THE HIDDEN KEY** tests re
 * **Offline Decryption CLI:** Deriving AES-256 keys via Scrypt KDF to unlock the local encrypted artifact.
 * **Atomic Server Verification:** Registering the authentic keyword to secure microsecond-accurate placement on the live leaderboard and win the **First Blood Bounty**.
 
+### 🗓️ Event Timeline & Honors
+* **Challenge Dates:** **3 November 2026 (00:00 IST) &ndash; 8 November 2026 (23:59 IST)** (6-Day Challenge Window).
+* **Direct Entry:** **No prior registration required** &mdash; students simply clone the codebase, solve the challenge, and submit their discovered keyword directly on `/submit` using their `@iitp.ac.in` credentials.
+* **First Blood Champion:** First participant whose submission verifies successfully wins the permanent First Blood title, trophy emblem, and headline feature.
+* **Top 10 Instagram Spotlight:** The **Top 10 fastest & correct verified solvers** will be featured on the official **STC IIT Patna Hybrid Instagram & social handles** with their name, rank, and photo (with prior consent).
+
 ### 🎨 The Soft Clay Neuomorphic Design Aesthetic
 The application features a modern, clean **Soft Clay Neuomorphic Design** (`#eef2f6` frosted canvas, dual extruded drop-shadow cards, inset tactile containers) electrified with vibrant cyberpunk accents (**#ff5e98 Coral Pink** & **#0072ff Cyber Cyan**). It looks and feels like a tangible physical hardware dashboard reimagined as high-performance modern web software.
 
@@ -154,24 +160,23 @@ The First Blood bounty is awarded to the first server-verified submission!
 ```mermaid
 sequenceDiagram
     autonumber
-    actor Participant as "IIT Patna Student"
-    participant Portal as "Web Portal (/submit)"
-    participant Server as "Vercel Serverless Function"
-    participant DB as "Database (Postgres / SQLite)"
-    participant Admin as "Admin Console"
+    actor Participant as Student
+    participant Portal as Web Portal
+    participant Server as Serverless API
+    participant DB as Database
+    participant Admin as Admin Console
 
-    Participant->>Portal: Enters Name, @iitp.ac.in Email & Keyword
+    Participant->>Portal: Submit Name, Email and Key
     Portal->>Server: POST /api/submit
-    Note over Server: 1. Validate @iitp.ac.in format<br/>2. Check Global Rate Limit (20/min)<br/>3. Verify Unique Participant Constraint
-    Server->>DB: Record Atomic Timestamp & Submission (Transaction)
-    Server-->>Portal: 200 OK (Submission Recorded & Queued)
-    Portal-->>Participant: Displays Confirmation & Link to Live Board
-    
-    Admin->>Server: Real-Time Polling & Verification Review
-    Server->>DB: Query Submissions & Compare Timing-Safe Hashes
-    Admin->>Server: Trigger Instant / Batch Approval
-    Server->>DB: Update Ranks, Lock First Blood
-    Participant->>Portal: Views Live Leaderboard with Real-Time Rank
+    Note over Server: Validate Email and Rate Limit
+    Server->>DB: Record Atomic Timestamp
+    Server-->>Portal: Submission Recorded (200 OK)
+    Portal-->>Participant: Display Confirmation
+    Admin->>Server: Review Submissions
+    Server->>DB: Compare Cryptographic Hashes
+    Admin->>Server: Approve and Lock First Blood
+    Server->>DB: Update Leaderboard Ranks
+    Participant->>Portal: View Verified Live Rank
 ```
 
 ---
