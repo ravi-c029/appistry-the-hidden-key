@@ -101,7 +101,7 @@ export default function CyberFrameStage({
         <div className="absolute top-0 bottom-0 right-12 w-[1px] bg-slate-200/40 pointer-events-none hidden sm:block" />
 
         {/* ── TOP NAV BAR INSIDE THE FRAME ── */}
-        <div className="relative z-30 flex items-center justify-between px-6 sm:px-14 py-4 border-b border-slate-200/60">
+        <div className="relative z-30 flex items-center justify-between px-4 sm:px-10 py-3 sm:py-4 border-b border-slate-200/60">
           <Link href="/" className="flex items-center gap-2 select-none group">
             <span className="text-base sm:text-lg font-black tracking-[0.08em] uppercase text-slate-900 group-hover:text-[#ff5e98] transition-colors">
               APPISTRY
@@ -141,10 +141,10 @@ export default function CyberFrameStage({
             })}
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/submit"
-              className={`font-bold text-xs uppercase tracking-wider px-6 py-2.5 rounded-full transition-all neu-btn-gradient-pink text-white hover:scale-105 active:scale-95 shadow-md`}
+              className="font-bold text-[11px] sm:text-xs uppercase tracking-wider px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full transition-all neu-btn-gradient-pink text-white hover:scale-105 active:scale-95 shadow-md whitespace-nowrap"
             >
               Submit Key
             </Link>
@@ -152,7 +152,7 @@ export default function CyberFrameStage({
             {/* Mobile Hamburger Button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex flex-col justify-center items-center gap-1.5 w-9 h-9 rounded-xl neu-card-sm text-slate-700 p-1"
+              className="md:hidden flex flex-col justify-center items-center gap-1.5 w-9 h-9 rounded-xl neu-card-sm text-slate-700 p-1 cursor-pointer"
               aria-label="Toggle menu"
             >
               <span className={`w-5 h-[2px] bg-[#ff5e98] transition-all ${mobileMenuOpen ? 'rotate-45 translate-y-2' : ''}`} />
@@ -176,10 +176,10 @@ export default function CyberFrameStage({
         )}
 
         {/* ── HERO STAGE: BACKDROP TITLE + CENTERED CYBER CHARACTER + CALLOUTS ── */}
-        <div className="relative z-10 px-6 sm:px-14 pt-8 pb-12">
+        <div className="relative z-10 px-4 sm:px-10 pt-6 sm:pt-8 pb-8 sm:pb-12">
           
           {/* Massive Backdrop Title */}
-          <div className="absolute top-6 left-0 right-0 flex items-center justify-between px-6 sm:px-16 pointer-events-none select-none z-0">
+          <div className="absolute top-6 left-0 right-0 hidden sm:flex items-center justify-between px-6 sm:px-16 pointer-events-none select-none z-0">
             <span 
               className="text-4xl sm:text-6xl md:text-8xl font-black uppercase tracking-tight text-slate-900/[0.04]"
               style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
@@ -194,7 +194,7 @@ export default function CyberFrameStage({
             </span>
           </div>
 
-          <div className="relative grid grid-cols-1 lg:grid-cols-12 items-center gap-8 min-h-[460px] pt-6">
+          <div className="relative grid grid-cols-1 lg:grid-cols-12 items-center gap-6 sm:gap-8 min-h-[420px] pt-4 sm:pt-6">
             
             {/* Left Side: Callout Box with Elbow Line */}
             <div className="lg:col-span-3 flex flex-col justify-center order-2 lg:order-1 relative z-20">
@@ -221,7 +221,7 @@ export default function CyberFrameStage({
 
             {/* Center: Focal Cyber Character */}
             <div className="lg:col-span-5 flex items-center justify-center order-1 lg:order-2 relative z-10">
-              <div className="relative w-[280px] sm:w-[340px] md:w-[380px] aspect-square flex items-center justify-center neu-card rounded-[32px] p-4">
+              <div className="relative w-[220px] sm:w-[320px] md:w-[380px] aspect-square flex items-center justify-center neu-card rounded-[28px] sm:rounded-[32px] p-3 sm:p-4">
                 <Image
                   src={characterImage}
                   alt="Cyber Intelligence Character"
@@ -232,8 +232,8 @@ export default function CyberFrameStage({
                 />
 
                 {/* Glowing Target Ring on Character */}
-                <div className="absolute top-[48%] left-[28%] w-10 h-10 rounded-full border-2 border-[#ff5e98]/60 bg-[#ff5e98]/10 animate-pulse flex items-center justify-center pointer-events-none">
-                  <div className="w-2.5 h-2.5 rounded-full bg-[#ff5e98] shadow-[0_0_10px_#ff5e98]" />
+                <div className="absolute top-[48%] left-[28%] w-8 h-8 sm:w-10 sm:h-10 rounded-full border-2 border-[#ff5e98]/60 bg-[#ff5e98]/10 animate-pulse flex items-center justify-center pointer-events-none">
+                  <div className="w-2 sm:w-2.5 h-2 sm:h-2.5 rounded-full bg-[#ff5e98] shadow-[0_0_10px_#ff5e98]" />
                 </div>
               </div>
             </div>

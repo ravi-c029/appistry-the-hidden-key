@@ -122,7 +122,7 @@ export default function RulesPage() {
                     </span>
                     <h4 className="text-base font-black text-slate-900 tracking-wide">{rule.title}</h4>
                   </div>
-                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium pl-12">
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium sm:pl-12">
                     {rule.desc}
                   </p>
                 </div>

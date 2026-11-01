@@ -144,10 +144,12 @@ export default function LeaderboardPage() {
             ) : (
               <div className="neu-card rounded-[28px] overflow-hidden">
                 {/* Table Header */}
-                <div className="grid grid-cols-12 gap-4 px-6 py-4 bg-slate-50 border-b border-slate-200/60 text-[10px] font-mono font-bold tracking-widest uppercase text-slate-500">
-                  <div className="col-span-2">Rank</div>
-                  <div className="col-span-6">Participant</div>
-                  <div className="col-span-4 text-right">Verified Time (IST)</div>
+                <div className="flex items-center justify-between px-4 sm:px-6 py-3.5 bg-slate-50 border-b border-slate-200/60 text-[10px] font-mono font-bold tracking-widest uppercase text-slate-500">
+                  <div className="flex items-center gap-4">
+                    <span className="w-8 text-center">Rank</span>
+                    <span>Participant</span>
+                  </div>
+                  <div className="text-right">Verified Time (IST)</div>
                 </div>
 
                 {/* Table Body */}
@@ -155,17 +157,17 @@ export default function LeaderboardPage() {
                   {entries.map((entry, i) => (
                     <div
                       key={i}
-                      className={`grid grid-cols-12 gap-4 px-6 py-4 items-center transition-colors ${
+                      className={`flex items-center justify-between gap-3 px-4 sm:px-6 py-3.5 sm:py-4 transition-colors ${
                         entry.isFirstBlood 
                           ? 'bg-pink-50/50 border-l-4 border-l-[#ff5e98]' 
                           : i % 2 === 0 ? 'bg-white' : 'bg-slate-50/40'
                       } hover:bg-slate-100/50`}
                     >
-                      {/* Rank Badge */}
-                      <div className="col-span-2 flex items-center gap-2">
-                        <span className={`w-8 h-8 rounded-full flex items-center justify-center font-mono text-xs font-black ${
+                      {/* Rank & Participant */}
+                      <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                        <span className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center font-mono text-xs font-black shrink-0 ${
                           entry.rank === 1 
-                            ? 'neu-btn-gradient-pink text-white shadow-sm' 
+                            ? 'neu-btn-gradient-pink text-white shadow-xs' 
                             : entry.rank === 2 
                               ? 'bg-slate-200 text-slate-800' 
                               : entry.rank === 3 
@@ -174,31 +176,30 @@ export default function LeaderboardPage() {
                         }`}>
                           {entry.rank}
                         </span>
-                      </div>
 
-                      {/* Participant Name */}
-                      <div className="col-span-6 flex flex-col justify-center">
-                        <span className="text-sm font-bold text-slate-900 tracking-wide">
-                          {entry.displayName}
-                        </span>
-                        {entry.isFirstBlood && (
-                          <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#ff5e98] mt-0.5">
-                            <span>⚡</span>
-                            <span>First Blood Champion</span>
+                        <div className="min-w-0">
+                          <span className="text-xs sm:text-sm font-bold text-slate-900 tracking-wide block truncate">
+                            {entry.displayName}
                           </span>
-                        )}
+                          {entry.isFirstBlood && (
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold uppercase tracking-wider text-[#ff5e98] mt-0.5 whitespace-nowrap">
+                              <span>⚡</span>
+                              <span>First Blood Champion</span>
+                            </span>
+                          )}
+                        </div>
                       </div>
 
                       {/* Timestamp */}
-                      <div className="col-span-4 text-right">
-                        <div className="text-xs font-mono text-[#0072ff] font-bold">
+                      <div className="text-right shrink-0">
+                        <div className="text-[11px] sm:text-xs font-mono text-[#0072ff] font-bold whitespace-nowrap">
                           {new Date(entry.serverTime).toLocaleTimeString('en-IN', {
                             hour: '2-digit',
                             minute: '2-digit',
                             second: '2-digit',
                           })}
                         </div>
-                        <div className="text-[10px] text-slate-400 mt-0.5 font-mono">
+                        <div className="text-[9px] sm:text-[10px] text-slate-400 mt-0.5 font-mono whitespace-nowrap">
                           {new Date(entry.serverTime).toLocaleDateString('en-IN', {
                             day: '2-digit',
                             month: 'short',

@@ -115,15 +115,15 @@ export default function MissionPage() {
                   />
                   
                   <div className="pl-3">
-                    <div className="flex items-center gap-2.5 mb-2">
+                    <div className="flex items-center gap-2 sm:gap-2.5 mb-2 flex-wrap">
                       <span 
-                        className="text-[10px] font-mono font-bold px-2.5 py-0.5 rounded-full neu-card-sm"
+                        className="text-[10px] font-mono font-bold px-3 py-1 rounded-full neu-card-sm whitespace-nowrap shrink-0 inline-flex items-center"
                         style={{ color: step.accentColor }}
                       >
                         STEP {i + 1}
                       </span>
-                      <span className="text-base">{step.icon}</span>
-                      <h4 className="text-base sm:text-lg font-black text-slate-900">{step.title}</h4>
+                      <span className="text-base shrink-0">{step.icon}</span>
+                      <h4 className="text-base sm:text-lg font-black text-slate-900 tracking-tight">{step.title}</h4>
                     </div>
 
                     <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-medium mb-3">
@@ -131,18 +131,26 @@ export default function MissionPage() {
                     </p>
 
                     {step.code && (
-                      <div className="relative mt-2">
-                        <pre className="font-mono text-xs text-[#00c6ff] bg-[#0b1329] rounded-xl p-3.5 overflow-x-auto shadow-inner">
+                      <div className="mt-3 rounded-2xl bg-[#edf2f7] border border-slate-200/80 p-3 sm:p-4 shadow-[inset_2px_2px_5px_rgba(166,180,200,0.22),inset_-2px_-2px_5px_#ffffff]">
+                        <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-slate-200/70">
+                          <div className="flex items-center gap-1.5 shrink-0">
+                            <span className="w-2 h-2 rounded-full bg-rose-400" />
+                            <span className="w-2 h-2 rounded-full bg-amber-400" />
+                            <span className="w-2 h-2 rounded-full bg-emerald-400" />
+                            <span className="text-[10px] font-mono font-bold text-slate-400 ml-1">TERMINAL</span>
+                          </div>
+                          {step.codeKey && (
+                            <button
+                              onClick={() => copyToClipboard(step.code!, step.codeKey!)}
+                              className="neu-card-sm text-[11px] font-mono font-bold px-3 py-1 rounded-full text-slate-700 hover:text-[#ff5e98] transition-all cursor-pointer flex items-center gap-1 shrink-0 active:scale-95"
+                            >
+                              {copied === step.codeKey ? '✓ Copied!' : '📋 Copy'}
+                            </button>
+                          )}
+                        </div>
+                        <pre className="font-mono text-xs sm:text-sm text-slate-900 font-bold overflow-x-auto whitespace-pre scrollbar-none py-1 select-all">
                           {step.code}
                         </pre>
-                        {step.codeKey && (
-                          <button
-                            onClick={() => copyToClipboard(step.code!, step.codeKey!)}
-                            className="absolute top-2.5 right-2.5 text-[10px] font-mono px-2.5 py-1 rounded-full neu-card-sm text-slate-700 hover:text-slate-900 transition-colors cursor-pointer"
-                          >
-                            {copied === step.codeKey ? '✓ Copied' : 'Copy'}
-                          </button>
-                        )}
                       </div>
                     )}
                   </div>
@@ -151,27 +159,27 @@ export default function MissionPage() {
             </div>
 
             {/* Repository Box */}
-            <div className="neu-card rounded-[24px] p-6 mb-8">
+            <div className="neu-card rounded-[24px] p-5 sm:p-6 mb-8">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div>
+                <div className="min-w-0 flex-1">
                   <h3 className="text-base font-black text-slate-900 mb-1">📦 Official Repository</h3>
                   <p className="text-xs text-slate-600 font-medium mb-2">Contains challenge scripts, hints, and locked artifact.</p>
-                  <code className="neu-input text-xs font-mono text-[#0072ff] font-bold px-3 py-1.5 rounded-xl inline-block break-all">
+                  <code className="neu-input text-xs font-mono text-[#0072ff] font-bold px-3 py-2 rounded-xl block break-all select-all">
                     {repoUrl}
                   </code>
                 </div>
-                <div className="flex items-center gap-3 shrink-0">
+                <div className="flex items-center gap-2.5 shrink-0 w-full sm:w-auto">
                   <button
                     onClick={() => copyToClipboard(`git clone ${repoUrl}`, 'clone')}
-                    className="neu-btn text-slate-800 text-xs font-bold px-4 py-2 rounded-full cursor-pointer hover:scale-105 active:scale-95 transition-all"
+                    className="neu-btn text-slate-800 text-xs font-bold px-4 py-2.5 rounded-full cursor-pointer hover:scale-105 active:scale-95 transition-all flex-1 sm:flex-none text-center"
                   >
-                    {copied === 'clone' ? '✓ Copied!' : 'Copy Clone'}
+                    {copied === 'clone' ? '✓ Copied!' : '📋 Copy Clone'}
                   </button>
                   <a
                     href={repoUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="neu-btn-gradient-blue text-white text-xs font-bold px-5 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md"
+                    className="neu-btn-gradient-blue text-white text-xs font-bold px-5 py-2.5 rounded-full hover:scale-105 active:scale-95 transition-all shadow-md flex-1 sm:flex-none text-center"
                   >
                     GitHub →
                   </a>

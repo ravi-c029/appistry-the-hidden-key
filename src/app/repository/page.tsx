@@ -75,53 +75,58 @@ export default function RepositoryPage() {
                 
                 {/* Clone Box */}
                 <div className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-black text-slate-900">01. Clone Codebase</span>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-xs font-black text-slate-900 tracking-wide">01. Clone Codebase</span>
                     <button
-                      onClick={() => copyToClipboard(`git clone ${repoUrl}`, 'clone')}
-                      className="neu-card-sm text-xs px-3 py-1 rounded-full text-slate-700 hover:text-slate-900 font-bold transition-colors cursor-pointer"
+                      onClick={() => copyToClipboard(`git clone ${repoUrl}\ncd hidden-key-challenge`, 'clone')}
+                      className="neu-card-sm text-[11px] font-mono px-3 py-1 rounded-full text-slate-700 hover:text-[#ff5e98] font-bold transition-all cursor-pointer flex items-center gap-1 active:scale-95"
                     >
-                      {copied === 'clone' ? 'Copied' : 'Copy'}
+                      {copied === 'clone' ? '✓ Copied!' : '📋 Copy'}
                     </button>
                   </div>
-                  <pre className="font-mono text-xs text-white/95 bg-[#0b1329] rounded-xl p-4 overflow-x-auto shadow-inner">
-                    git clone {repoUrl}
-                    <br />
-                    cd hidden-key-challenge
-                  </pre>
+                  <div className="rounded-2xl bg-[#edf2f7] border border-slate-200/80 p-3 sm:p-4 shadow-[inset_2px_2px_5px_rgba(166,180,200,0.22),inset_-2px_-2px_5px_#ffffff]">
+                    <pre className="font-mono text-xs sm:text-sm text-slate-900 font-bold overflow-x-auto whitespace-pre scrollbar-none select-all">
+                      git clone {repoUrl}
+                      {'\n'}cd hidden-key-challenge
+                    </pre>
+                  </div>
                 </div>
 
                 {/* Install Box */}
                 <div className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-black text-[#0072ff]">02. Install Dependencies</span>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-xs font-black text-[#0072ff] tracking-wide">02. Install Dependencies</span>
                     <button
                       onClick={() => copyToClipboard('npm install', 'install')}
-                      className="neu-card-sm text-xs px-3 py-1 rounded-full text-slate-700 hover:text-slate-900 font-bold transition-colors cursor-pointer"
+                      className="neu-card-sm text-[11px] font-mono px-3 py-1 rounded-full text-slate-700 hover:text-[#ff5e98] font-bold transition-all cursor-pointer flex items-center gap-1 active:scale-95"
                     >
-                      {copied === 'install' ? 'Copied' : 'Copy'}
+                      {copied === 'install' ? '✓ Copied!' : '📋 Copy'}
                     </button>
                   </div>
-                  <pre className="font-mono text-xs text-white/95 bg-[#0b1329] rounded-xl p-4 overflow-x-auto shadow-inner">
-                    npm install
-                  </pre>
+                  <div className="rounded-2xl bg-[#edf2f7] border border-slate-200/80 p-3 sm:p-4 shadow-[inset_2px_2px_5px_rgba(166,180,200,0.22),inset_-2px_-2px_5px_#ffffff]">
+                    <pre className="font-mono text-xs sm:text-sm text-slate-900 font-bold overflow-x-auto whitespace-pre scrollbar-none select-all">
+                      npm install
+                    </pre>
+                  </div>
                 </div>
 
                 {/* Unlock CLI Box */}
                 <div className="neu-card rounded-[24px] p-5 sm:p-6 transition-all hover:scale-[1.01]">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-xs font-black text-[#ff5e98]">03. Run Offline Unlock CLI</span>
+                  <div className="flex items-center justify-between gap-2 mb-3">
+                    <span className="text-xs font-black text-[#ff5e98] tracking-wide">03. Run Offline Unlock CLI</span>
                     <button
                       onClick={() => copyToClipboard('npm run unlock', 'unlock')}
-                      className="neu-card-sm text-xs px-3 py-1 rounded-full text-slate-700 hover:text-slate-900 font-bold transition-colors cursor-pointer"
+                      className="neu-card-sm text-[11px] font-mono px-3 py-1 rounded-full text-slate-700 hover:text-[#ff5e98] font-bold transition-all cursor-pointer flex items-center gap-1 active:scale-95"
                     >
-                      {copied === 'unlock' ? 'Copied' : 'Copy'}
+                      {copied === 'unlock' ? '✓ Copied!' : '📋 Copy'}
                     </button>
                   </div>
-                  <pre className="font-mono text-xs text-[#00c6ff] bg-[#0b1329] rounded-xl p-4 overflow-x-auto shadow-inner font-bold">
-                    npm run unlock
-                  </pre>
-                  <p className="text-xs text-slate-600 mt-2 font-medium">
+                  <div className="rounded-2xl bg-[#edf2f7] border border-slate-200/80 p-3 sm:p-4 shadow-[inset_2px_2px_5px_rgba(166,180,200,0.22),inset_-2px_-2px_5px_#ffffff]">
+                    <pre className="font-mono text-xs sm:text-sm text-[#0072ff] font-bold overflow-x-auto whitespace-pre scrollbar-none select-all">
+                      npm run unlock
+                    </pre>
+                  </div>
+                  <p className="text-xs text-slate-600 mt-2.5 font-medium leading-relaxed">
                     Supplies your deduced mystery passphrase to derive the AES-256-GCM key and decrypt the payload.
                   </p>
                 </div>
